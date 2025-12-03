@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Navbar from './components/navbar/navbar';
 import Sidebar from './components/sidebar/sidebar';
+import { useMediaQuery } from './hooks/useBreakpoint';
 
 function Layout() {
-    const [isOpen, setIsOpen] = useState(window.innerWidth >= 768 ? true : false);
+    const isDesktop = useMediaQuery("(min-width: 768px)");
+    const [isOpen, setIsOpen] = useState(isDesktop);
+
+    useEffect(() => {
+        setIsOpen(isDesktop);
+    }, [isDesktop]);
+
     return (
         <>
             <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -24,6 +31,7 @@ export default function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Layout />}>
+                    {/* Falta realicar los demas componentes pages */}
                 </Route>
             </Routes>
         </BrowserRouter>

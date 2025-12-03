@@ -24,13 +24,21 @@
   :root {
     color-scheme: dark;
     --bg-body-color: #0f0f0f;
+    --bg-body-color-rgb: 15, 15, 15;
 		--text-body-color: #f1f1f1;
 		--bg-anchor-hover-color: #272727;
 		--bg-anchor-active-color: #525252;
 		--bg-hr-color: #3f3f3f;
     --border-bg-search-color: #222222;
-    --border-focus-search-color: white;
+    --border-focus-search-color: gray;
+    --color-youtube: white;
+    --color-white-focus-visible: white;
   }
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--color-white-focus-visible);
+  border-radius: 10px;
 }
 
 body {
@@ -38,7 +46,7 @@ body {
   width: 100vw;
   overflow-x: hidden;
   min-height: 100vh;
-  background-color: var(--text-body-color);
+  background-color: #161616;
 }
 
 #root {
