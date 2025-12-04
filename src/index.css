@@ -47,10 +47,9 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   background-color: #161616;
+  position: relative;
 }
 
 #root {
   width: 100%;
-  position: relative;
-  min-height: 100vh;
 }
