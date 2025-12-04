@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useMediaQuery } from './hooks/useBreakpoint';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Navbar from './components/navbar/navbar';
 import Sidebar from './components/sidebar/sidebar';
-import { useMediaQuery } from './hooks/useBreakpoint';
+import LandingPage from './pages/landingPage';
 
 function Layout() {
     const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -12,11 +13,15 @@ function Layout() {
         setIsOpen(isDesktop);
     }, [isDesktop]);
 
+    const toggleSidebar = useCallback(() => {
+        setIsOpen(prev => !prev);
+    }, []);
+
     return (
         <>
-            <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Navbar isOpen={isOpen} setIsOpen={toggleSidebar} />
             <div className='layout'>
-                <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+                <Sidebar isOpen={isOpen} setIsOpen={toggleSidebar} />
                 <main>
                     <Outlet />
                 </main>
@@ -31,7 +36,7 @@ export default function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Layout />}>
-                    {/* Falta realicar los demas componentes pages */}
+                    <Route index element={<LandingPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

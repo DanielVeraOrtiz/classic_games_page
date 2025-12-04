@@ -1,11 +1,12 @@
 import './sidebar.css';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
+import React from "react";
 // Iconos
 import { MdMenuOpen } from "react-icons/md";
 import IconYoutube from '../../iconComponents/iconYoutube';
 
-export default function Sidebar({isOpen, setIsOpen}) {
+function Sidebar({isOpen, setIsOpen}) {
   const juegos = [
     { to: "/gato", label: "Gato" },
     { to: "/memoria-cartas", label: "Memoria cartas" },
@@ -19,11 +20,12 @@ export default function Sidebar({isOpen, setIsOpen}) {
   ];
 
   return (
-      <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`} id='sidebar-menu' role='navigation' aria-label='Barra de navegacion lateral entre juegos'>
+      <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`} id='sidebar-menu' role='navigation' 
+      aria-label='Barra de navegacion lateral entre juegos' aria-hidden={!isOpen} aria-expanded={isOpen}>
         <div className='sidebar-logo'>
           <button 
             className='sidebar-toggle'
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={setIsOpen}
             aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={isOpen}
             aria-controls="sidebar-menu"
@@ -60,3 +62,5 @@ Sidebar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 }
+
+export default React.memo(Sidebar);

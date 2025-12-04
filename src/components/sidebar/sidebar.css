@@ -2,8 +2,12 @@
   display: none;
 }
 
+.sidebar[aria-hidden="true"] {
+  visibility: hidden;
+}
+
 .sidebar {
-  width: min(35%, 275px);
+  width: 275px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

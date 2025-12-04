@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: min(20%, 80px);
+  height: 80px;
   padding: 0 2rem;
   z-index: 100;
   background-color: rgba(var(--bg-body-color-rgb), 0.9);
@@ -173,11 +173,11 @@
 @media (max-width: 480px) {
   .header {
     padding: 0.5rem 1rem;
-    height: min(20%, 130px);
+    height: 130px;
   }
 
   .navbar-logo {
-    width: 70%;
+    width: 60%;
     order: 1;
   }
 
@@ -188,7 +188,7 @@
   }
 
   .navbar-user {
-    width: 25%;
+    width: 30%;
     order: 2;
   }
 
