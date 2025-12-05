@@ -15,7 +15,6 @@ import IconYoutube from '../../iconComponents/iconYoutube';
 // Ojo que de usar Context, puedo separar el boton en otro componente y hacer que solo ese se renderice
 // al cambiar el estado de isOpen solo en el.
 function Navbar({isOpen, setIsOpen}) {
-  console.log('Hola mundo');
   return (
     <header className={`header`}>
       <nav className='navbar' aria-label="Barra de navegación principal">
