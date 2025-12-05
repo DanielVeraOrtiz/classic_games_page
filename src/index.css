@@ -26,6 +26,7 @@
     --bg-body-color: #0f0f0f;
     --bg-body-color-rgb: 15, 15, 15;
 		--text-body-color: #f1f1f1;
+    --text-secondary-color: #aaaaaa;
 		--bg-anchor-hover-color: #272727;
 		--bg-anchor-active-color: #525252;
 		--bg-hr-color: #3f3f3f;
@@ -46,7 +47,7 @@ body {
   width: 100vw;
   overflow-x: hidden;
   min-height: 100vh;
-  background-color: #161616;
+  background-color: var(--bg-body-color);
   position: relative;
 }
 

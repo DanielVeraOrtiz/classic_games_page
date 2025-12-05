@@ -1,8 +1,24 @@
 .games-grid {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
+  display: grid;
+  column-gap: 1.25rem;
+  row-gap: 1.75rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1920px) {
+  .games-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1280px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
 }

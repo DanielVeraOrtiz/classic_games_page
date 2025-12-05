@@ -27,12 +27,12 @@
 
 .sidebar.open {
   transform: translateX(0);
-  transition: 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
 }
 
 .sidebar.closed {
   transform: translateX(-100%);
-  transition: 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
 }
 
 .sidebar-logo {
@@ -76,7 +76,7 @@ hr.separator {
 }
 
 .sidebar-title {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.25rem;
   padding-left: 10%;
   width: 100%;
