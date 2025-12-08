@@ -2,7 +2,7 @@ const games = [
     {
       title: "Legends of Eternia",
       content: "A classic fantasy adventure filled with magic, dungeons, and legendary creatures.",
-      imgSrc: "src/assets/jinx-de-arcane-y-league-of-legends-12893.webp",
+      imgSrc: "https://img.gamemonetize.com/jpvsnofjw5cqhov1a2sjeu3521tn1tc2/512x384.jpg",
       imgAlt: "Eternia fantasy cover art"
     },
     {

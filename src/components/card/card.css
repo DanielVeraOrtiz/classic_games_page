@@ -18,7 +18,7 @@
 .card-inner {
   position: absolute;
   inset: 0;
-  opacity: 0.8;
+  opacity: 0.25;
   transform: scale(0.975);
   border-radius: 15px;
   transition: background-color 0.3s ease, transform 0.3s ease;
