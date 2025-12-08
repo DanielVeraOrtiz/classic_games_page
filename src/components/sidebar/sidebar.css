@@ -76,7 +76,7 @@ hr.separator {
 }
 
 .sidebar-title {
-  font-weight: 600;
+  font-weight: 625;
   font-size: 1.25rem;
   padding-left: 10%;
   width: 100%;
@@ -92,7 +92,7 @@ hr.separator {
 .sidebar-links li {
   list-style: none;
   width: 100%;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 400;
 }
 

@@ -7,17 +7,18 @@
 
 :root {
   color-scheme: light;
-  --primary-color: #E379AF;
-  --secondary-color: #FF9060;
-  --success-color: #00bc8c;
-  --danger-color: #F1B7D5;
-  --warning-color: #F7B99E;
-  --info-color: #3498db;
-  --light-color: var(--bs-white);
-  --dark-color: var(--bs-black);
-  --bs-body-bg: #F8F8F8;
-  --bs-body-color: var(--bs-black);
-  --bs-body-color-rgb: 0, 0, 0;
+  --bg-body-color: #e4e4e4;
+  --bg-body-color-rgb: 228, 228, 228;
+  --text-body-color: #141414;          /* equivalente a #f1f1f1 pero invertido */
+  --text-secondary-color: #555555;     /* equivalente a #aaaaaa pero para claro */
+  --bg-anchor-hover-color: #e5e5e5;    /* equivalente claro a #272727 */
+  --bg-anchor-active-color: #cfcfcf;   /* equivalente claro a #525252 */
+  --bg-hr-color: #d3d3d3;              /* equivalente claro a #3f3f3f */
+  --border-bg-search-color: #cccccc;   /* equivalente claro a #222222 */
+  --border-focus-search-color: #888888;/* equivalente claro a gray */
+  --color-youtube: #000000;            /* invertido de white */
+  --color-white-focus-visible: #000000;/* invertido de white */
+  --main-bg-color: #f5f5f5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +35,7 @@
     --border-focus-search-color: gray;
     --color-youtube: white;
     --color-white-focus-visible: white;
+    --main-bg-color: #111111;
   }
 }
 

@@ -5,7 +5,7 @@
   top: 80px;
   left: 275px;
   transition: left 0.4s ease-in-out, width 0.4s ease-in-out;
-  background-color: #111111;
+  background-color: var(--main-bg-color);
   padding: 1rem;
 }
 

@@ -30,7 +30,7 @@
 .navbar-toggle {
   background-color: inherit;
   border: none;
-  color: white;
+  color: inherit;
   font-size: 2rem;
   padding: 0.4rem 0.2rem 0 0.2rem;
   transform: rotate(180deg);
