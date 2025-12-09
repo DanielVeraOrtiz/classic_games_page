@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
-export default function Card({ title, content, imgSrc, imgAlt}) {
+export default function Card({ id, title, content, imgSrc, imgAlt}) {
   const [hoverColor, setHoverColor] = useState(`#${Math.floor(Math.random()*16777215).toString(16)}`);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function Card({ title, content, imgSrc, imgAlt}) {
 
   return (
     <Link
-      to={`/game/${title}`}
+      to={`/game/${id}`}
       className="card-link"
       // onMouseEnter={handleMouseEnter}
       // onMouseLeave={handleMouseLeave}
@@ -65,6 +65,7 @@ export default function Card({ title, content, imgSrc, imgAlt}) {
 }
 
 Card.propTypes = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   imgSrc: PropTypes.string.isRequired,

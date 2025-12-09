@@ -10,7 +10,7 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchGameData = async () => {
       try {
-        const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=20&page=1');
+        const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
         setGameData(response.data);
         console.log(response.data);
         console.log('La obtencion de juegos fue exitosa');
@@ -25,6 +25,7 @@ export default function LandingPage() {
       {gameData.map((game, index) => (
         <Card
           key={game.id}
+          id={game.id}
           title={game.title}
           content={game.description}
           imgSrc={game.thumb}
