@@ -17,3 +17,9 @@
     font-size: 1.1rem;
     font-weight: 400;
 }
+
+@media (max-width: 480px) {
+    .game-information-container {
+        margin: 0 1rem;
+    }
+}

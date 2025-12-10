@@ -1,10 +1,11 @@
 import './otherGames.css';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import axios from 'axios';
 
-function OtherGames() {
+export default function OtherGames() {
+    const { id } = useParams();
     const [otherGames, setOtherGames] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -21,7 +22,7 @@ function OtherGames() {
             }
         }
         fetchOtherGames();
-    }, [])
+    }, [id])
 
     if (isLoading) {
         return (
@@ -30,11 +31,12 @@ function OtherGames() {
     }
 
     return (
-        <div className='other-games-container' aria-label='Otros juegos'>
+        <div className='other-games-container' aria-label='Otros juegos' role='list' >
+            <h2>Otros juegos</h2>
             {otherGames.map((game, index) => {
                 return (
-                    <Link to={`/game/${game.id}`}>
-                        <div className='other-game-container' key={index}>
+                    <Link to={`/game/${game.id}`} key={index} role='listitem'>
+                        <div className='other-game-container'>
                             <img className='other-game-img' src={game.thumb} alt={game.title} />
                             <div className='other-game-information'>
                                 <h4>{game.title}</h4>
@@ -48,5 +50,3 @@ function OtherGames() {
     );
 
 }
-
-export default React.memo(OtherGames);
