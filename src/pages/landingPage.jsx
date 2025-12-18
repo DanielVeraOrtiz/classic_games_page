@@ -4,7 +4,13 @@ import Card from '../components/card/card';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
+// Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
+// lo cual pasaria cada vez que cambia isOpen. Sin embargo no pasa, aunque vimos el ejemplo del logo que hace re render,
+// pasando por la navbar antes, por lo que se puede hacer una jerarquia de re renders. Sin embargo aqui no pasa.
+// Estimo que es por que no es un componente puesto directo en el return de layout, sino a traves de oulet que se cambia
+// en el router, que hace que el re render de layout no afecte a lo que cambie en outlet.
 export default function LandingPage() {
+  console.log('La landing page se renderiza nuevamente');
   const [gameData, setGameData] = useState([]);
 
   useEffect(() => {

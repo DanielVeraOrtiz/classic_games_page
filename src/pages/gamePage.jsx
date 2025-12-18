@@ -1,15 +1,23 @@
 import './gamePage.css'
 import { useParams } from 'react-router-dom';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import axios from 'axios';
 import Tag from '../components/tags/tags';
 import GameInformation from '../components/gameInformation/gameInformation';
 import OtherGames from '../components/otherGames/otherGames';
+import { OpenSidebarContext } from '../Layout';
 
 //Iconos
 import { IoIosResize } from "react-icons/io";
 
-export default function GamePage() {
+// Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
+// lo cual pasaria cada vez que cambia isOpen. Sin embargo no pasa, aunque vimos el ejemplo del logo que hace re render,
+// pasando por la navbar antes, por lo que se puede hacer una jerarquia de re renders. Sin embargo aqui no pasa.
+// Estimo que es por que no es un componente puesto directo en el return de layout, sino a traves de oulet que se cambia
+// en el router, que hace que el re render de layout no afecte a lo que cambie en outlet.
+function GamePage() {
+  console.log('GamePage se renderiza nuevamente');
+  const { setIsOpen } = useContext(OpenSidebarContext);
   const {id} = useParams();
   const [game, setGame] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -17,9 +25,13 @@ export default function GamePage() {
   const gameRef = useRef(null);
   const otherRef = useRef(null);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [setIsOpen]); // Con solo [] deberia funcionar por que se ejecuta una vez al montar
+
   const handleFullScreenButton = useCallback(() => {
     setIsFullScreen(prev => !prev);
-  }, [])
+  }, []);
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -42,7 +54,7 @@ export default function GamePage() {
     const otherEl = otherRef.current;
     if (!gameEl || !otherEl) return;
 
-      // función para ajustar altura
+    // función para ajustar altura
     const sync = () => {
       const h = gameEl.offsetHeight;
       otherEl.style.maxHeight = `${h}px`;
@@ -101,3 +113,6 @@ export default function GamePage() {
     );
   }
 }
+
+// No funciona porque uso el useContext y este React.memo no tiene nada que ver con que los demas funcionen.
+export default React.memo(GamePage);

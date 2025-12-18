@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import {Link, useParams} from 'react-router-dom';
 import axios from 'axios';
 
-export default function OtherGames() {
+function OtherGames() {
+    console.log('OtherGames se renderiza nuevamente');
     const { id } = useParams();
     const [otherGames, setOtherGames] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +23,7 @@ export default function OtherGames() {
             }
         }
         fetchOtherGames();
-    }, [id])
+    }, [id]);
 
     if (isLoading) {
         return (
@@ -48,5 +49,7 @@ export default function OtherGames() {
             })}
         </div>
     );
-
 }
+
+// Para evitar que el re render de GamePage haga rerender en esto tambien.
+export default React.memo(OtherGames);

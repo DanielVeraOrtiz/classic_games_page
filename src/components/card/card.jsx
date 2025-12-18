@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
 export default function Card({ id, title, content, imgSrc, imgAlt}) {
+  console.log('La card se renderiza nuevamente');
   const [hoverColor, setHoverColor] = useState(`#${Math.floor(Math.random()*16777215).toString(16)}`);
 
   useEffect(() => {

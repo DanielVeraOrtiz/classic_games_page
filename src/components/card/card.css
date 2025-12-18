@@ -1,5 +1,6 @@
 .card-link {
   text-decoration: none;
+  min-width: 0;
 }
 
 .card {
@@ -59,6 +60,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;

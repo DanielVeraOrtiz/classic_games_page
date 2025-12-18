@@ -1,6 +1,8 @@
 import './iconYoutube.css';
+import React from 'react';
 
-export default function IconYoutube() {
+function IconYoutube() {
+  console.log('Se renderiza nuevamente el logo de la aplicacion');
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className='logo' id="yt-ringo2-svg_yt11" viewBox="0 0 93 20" focusable="false" aria-hidden="true" style={{"pointerEvents": "none", display: "inherit"}}>
       <g>
@@ -19,3 +21,7 @@ export default function IconYoutube() {
     </svg>
   );
 }
+
+// Curiosamente si se re renderiza aunque Navbar ocupe el render anterior, entonces navbar no renderiza lo que lleva
+// pero si re renderiza a su hijos.
+export default React.memo(IconYoutube);
