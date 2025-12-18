@@ -2,11 +2,12 @@ import './sidebar.css';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import React from "react";
+import ButtonOpen from '../buttonOpen/buttonOpen';
 // Iconos
-import { MdMenuOpen } from "react-icons/md";
 import IconYoutube from '../../iconComponents/iconYoutube';
 
-function Sidebar({isOpen, setIsOpen}) {
+function Sidebar({isOpen}) {
+  console.log('La sidebar se renderiza nuevamente');
   const juegos = [
     { to: "/gato", label: "Gato" },
     { to: "/memoria-cartas", label: "Memoria cartas" },
@@ -23,15 +24,7 @@ function Sidebar({isOpen, setIsOpen}) {
       <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`} id='sidebar-menu' role='navigation' 
       aria-label='Barra de navegacion lateral entre juegos' aria-hidden={!isOpen} aria-expanded={isOpen}>
         <div className='sidebar-logo'>
-          <button 
-            className='sidebar-toggle'
-            onClick={setIsOpen}
-            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={isOpen}
-            aria-controls="sidebar-menu"
-          >
-            <MdMenuOpen aria-hidden="true" focusable="false"/>
-          </button>
+          <ButtonOpen />
           <Link to='/' className='logo-svg' aria-label='Inicio' title='Inicio' focusable="false">
             <IconYoutube />
           </Link>
@@ -63,4 +56,6 @@ Sidebar.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
 }
 
+// No funciona, por que isOpen cambia constantemente, y es usado por un componente y para agregar una clase
+// asi que no hay forma de que no se renderize nuevamente.
 export default React.memo(Sidebar);

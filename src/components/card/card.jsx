@@ -1,0 +1,74 @@
+import './card.css';
+import PropTypes from 'prop-types';
+import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+
+export default function Card({ id, title, content, imgSrc, imgAlt}) {
+  console.log('La card se renderiza nuevamente');
+  const [hoverColor, setHoverColor] = useState(`#${Math.floor(Math.random()*16777215).toString(16)}`);
+
+  useEffect(() => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = imgSrc;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      let r = 0, g = 0, b = 0, count = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
+        count++;
+      }
+      r = Math.floor(r / count);
+      g = Math.floor(g / count);
+      b = Math.floor(b / count);
+      setHoverColor(`rgb(${r},${g},${b})`);
+    };
+  }, [imgSrc]);
+
+  // const handleMouseEnter = useCallback(() => {
+  //   setIsHovered(true);
+  // }, []);
+
+  // const handleMouseLeave = useCallback(() => {
+  //   setIsHovered(false);
+  // }, []);
+
+  return (
+    <Link
+      to={`/game/${id}`}
+      className="card-link"
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
+      // onFocus={() => setIsHovered(true)}
+      // onBlur={() => setIsHovered(false)}
+    >
+      <article className="card">
+        <img src={imgSrc} alt={imgAlt} className='card-image' />
+        <div className="card-content">
+          <h2 className="card-title">{title}</h2>
+          <p className="card-text">{content}</p>
+        </div>
+        <div
+          className='card-inner'
+          style={{ "--hover-color": hoverColor }}
+        ></div>
+      </article>
+    </Link>
+  )
+}
+
+Card.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  imgSrc: PropTypes.string.isRequired,
+  imgAlt: PropTypes.string.isRequired,
+}

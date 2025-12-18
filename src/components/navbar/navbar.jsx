@@ -2,8 +2,8 @@ import './navbar.css';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import React from "react";
+import ButtonOpen from '../buttonOpen/buttonOpen';
 // Iconos
-import { MdMenuOpen } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import IconYoutube from '../../iconComponents/iconYoutube';
@@ -14,21 +14,15 @@ import IconYoutube from '../../iconComponents/iconYoutube';
 
 // Ojo que de usar Context, puedo separar el boton en otro componente y hacer que solo ese se renderice
 // al cambiar el estado de isOpen solo en el.
-function Navbar({isOpen, setIsOpen}) {
-  console.log('Hola mundo');
+
+// AL FINAL USE USECONTEXT PARA QUE NO SE RENDERIZARA MAS VECES. PARA PROBAR NO MAS.
+function Navbar() {
+  console.log('Navbar renderizada de nuevo'); // No aparece mas veces que cuando se monta gracias a react.memo
   return (
     <header className={`header`}>
       <nav className='navbar' aria-label="Barra de navegación principal">
         <div className='navbar-logo'>
-          <button 
-            className='navbar-toggle'
-            onClick={setIsOpen}
-            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={isOpen}
-            aria-controls="sidebar-menu"
-          >
-            <MdMenuOpen aria-hidden="true" focusable="false"/>
-          </button>
+          <ButtonOpen /> {/* Solo este se renderiza de nuevo */}
           <Link to='/' className='logo-svg' aria-label='Inicio' title='Inicio' focusable="false">
             <IconYoutube />
           </Link>
@@ -58,4 +52,19 @@ Navbar.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
 }
 
+
+// Si las props no cambian entonces la navbar usa el renderizado anterior. En este caso no tengo props.
+// Si uso useContext en lugar de props, como react.memo solo revisa props (shallow comparison), entonces
+// react.memo no evita que se re renderize si el valor del context cambia.
+
+// Error: React.memo hace la diferencia, porque ButtonOpen usaContext y se rerenderiza haciendo que la misma
+// navbar se rerenderice. Al usar react.memo evitamos el re render de la navbar y que solo pase en el boton.
+
+// Confusion por ChatGPT, aunque no este el boton renderiza de nuevo la navbar, es el React.memo quien
+// memoiza, nada de que cuando no cambian props no re renderiza, siempre lo hace para todo. A no ser
+// que se memoize, el cual solo funciona si no cambian las props, pero si no cambian ese comportamiento
+// no viene por defecto.
+
+// Ojo como si re renderiza el icono de la pagina, sin react.memo lo hace, o sea react.memo ocupa el render
+// anterior si no cambiaron los props, pero hace re render de sus hijos.
 export default React.memo(Navbar);

@@ -1,0 +1,25 @@
+.game-information-container {
+    background-color: #272727;
+    color: var(--text-body-color);
+    border-radius: 15px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.game-information-container > h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.game-information-container > p {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+@media (max-width: 480px) {
+    .game-information-container {
+        margin: 0 1rem;
+    }
+}
