@@ -35,12 +35,14 @@ function Navbar() {
           </button>
         </div>
         <div className='navbar-user'>
-          <div className='container-user' aria-label="Panel de usuario" title='Panel de usuario' tabIndex="0">
-            <div className='icon-container'>
-              <FaRegUserCircle aria-hidden="true" focusable="false"/>
+          <Link to='/login-register'>
+            <div className='container-user' aria-label="Panel de usuario" title='Panel de usuario' tabIndex="0">
+              <div className='icon-container'>
+                <FaRegUserCircle aria-hidden="true" focusable="false"/>
+              </div>
+              <p className='username'>Pyng Lesther Marcian</p>
             </div>
-            <p className='username'>Pyng Lesther Marcian</p>
-          </div>
+          </Link>
         </div>
       </nav>
     </header>

@@ -1,0 +1,75 @@
+.login-modal {
+    width: 75%;
+    margin: auto auto;
+    background-color: #1e1f20;
+    border: none;
+    border-radius: 15px;
+}
+
+.login-modal::backdrop {
+    backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.forms-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.forms-container h2 {
+    text-align: center;
+}
+
+.signup-container {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.login-container {
+    flex: 1;
+    background-color: gray;
+    padding: 1.5rem;
+}
+
+.signup-form, .login-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 1rem 2rem;
+}
+
+.signup-form label, .login-form label {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0 0 0 0.5rem;
+}
+
+.signup-form input, .login-form input {
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+.signup-form .submit-signup-form, .login-form .submit-login-form {
+    width: 50%;
+    margin: 0 auto;
+    background-color: red;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-top: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.signup-form .submit-signup-form:hover, .login-form .submit-login-form:hover {
+    background-color: aqua;
+}
+
+.signup-form .submit-signup-form:active, .login-form .submit-login-form:active {
+    background-color: rgb(255, 51, 0);
+}

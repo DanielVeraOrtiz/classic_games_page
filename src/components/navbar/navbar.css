@@ -109,6 +109,11 @@
   width: 30%;
 }
 
+.navbar-user > a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .container-user {
   display: flex;
   justify-content: center;
