@@ -1,8 +1,9 @@
 import './navbar.css';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
-import React from "react";
+import React, { useContext } from "react";
 import ButtonOpen from '../buttonOpen/buttonOpen';
+import { AuthContext } from '../../auth/authContext';
 // Iconos
 import { CiSearch } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -18,6 +19,7 @@ import IconYoutube from '../../iconComponents/iconYoutube';
 // AL FINAL USE USECONTEXT PARA QUE NO SE RENDERIZARA MAS VECES. PARA PROBAR NO MAS.
 function Navbar() {
   console.log('Navbar renderizada de nuevo'); // No aparece mas veces que cuando se monta gracias a react.memo
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <header className={`header`}>
       <nav className='navbar' aria-label="Barra de navegación principal">
@@ -40,7 +42,12 @@ function Navbar() {
               <div className='icon-container'>
                 <FaRegUserCircle aria-hidden="true" focusable="false"/>
               </div>
-              <p className='username'>Pyng Lesther Marcian</p>
+              {isAuthenticated ? (
+                <p className='username'>Pyng Lesther Marcian</p>
+              ) : (
+                <p>Iniciar sesión</p>
+              ) 
+              }
             </div>
           </Link>
         </div>

@@ -1,8 +1,10 @@
 import './modalLoginSignUp.css';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../../auth/authContext';
 
 function ModalLoginSignUp() {
+    const { setToken } = useContext(AuthContext)
     const [isVisible, setIsVisible] = useState(false);
     const modalRef = useRef(null);
     const [loginForm, setLoginForm] = useState({
@@ -41,12 +43,27 @@ function ModalLoginSignUp() {
             try {
                 const response = await axios.post('http://localhost:3000/signup', signupForm);
                 console.log(response);
+                setToken(response.data.access_token);
             } catch (err) {
                 console.error('Error: ', err);
             }
         }
 
         postSignup();
+    }
+
+    const handleSubmitLoginForm = () => {
+        const postLogin = async () => {
+            try {
+                const response = await axios.post('http://localhost:3000/login', loginForm);
+                console.log(response);
+                setToken(response.data.access_token);
+            } catch (err) {
+                console.error('Error: ', err);
+            }
+        }
+
+        postLogin();
     }
 
     return (
@@ -90,7 +107,7 @@ function ModalLoginSignUp() {
                     </div>
                     <div className='login-container'>
                         <h2>Iniciar sesión</h2>
-                        <form method='dialog' className='login-form'>
+                        <form method='dialog' className='login-form' onSubmit={handleSubmitLoginForm}>
                             <label htmlFor='email-login'>Email</label>
                             <input
                                 id='email-login'
