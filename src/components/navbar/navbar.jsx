@@ -1,13 +1,17 @@
 import './navbar.css';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import ButtonOpen from '../buttonOpen/buttonOpen';
 import { AuthContext } from '../../auth/authContext';
+import Spinner from '../spinner/spinner';
+import ModalLoginSignUp from '../modalLoginSignUp/modalLoginSignUp';
 // Iconos
 import { CiSearch } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import IconYoutube from '../../iconComponents/iconYoutube';
+import { MdFavorite } from "react-icons/md";
+import { PiSignOutLight } from "react-icons/pi";
 
 // El React.memo no funciona, por que isOpen cambia cada vez que se abre o cierra el sidebar,
 // pero si se saca eso el console log se muestra una sola vez al renderizar el componente, por lo 
@@ -19,7 +23,9 @@ import IconYoutube from '../../iconComponents/iconYoutube';
 // AL FINAL USE USECONTEXT PARA QUE NO SE RENDERIZARA MAS VECES. PARA PROBAR NO MAS.
 function Navbar() {
   console.log('Navbar renderizada de nuevo'); // No aparece mas veces que cuando se monta gracias a react.memo
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, isLoading, logout } = useContext(AuthContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <header className={`header`}>
       <nav className='navbar' aria-label="Barra de navegación principal">
@@ -37,19 +43,25 @@ function Navbar() {
           </button>
         </div>
         <div className='navbar-user'>
-          <Link to='/login-register'>
+          { !isLoading ? (isAuthenticated ? (
             <div className='container-user' aria-label="Panel de usuario" title='Panel de usuario' tabIndex="0">
               <div className='icon-container'>
                 <FaRegUserCircle aria-hidden="true" focusable="false"/>
               </div>
-              {isAuthenticated ? (
-                <p className='username'>Pyng Lesther Marcian</p>
-              ) : (
-                <p>Iniciar sesión</p>
-              ) 
-              }
+              <p className='username'>Pyng Lesther Marcian</p>
+              <div className='dropdown-user-menu'>
+                <Link to='/user/favoritesgames'><MdFavorite />Juegos favoritos</Link>
+                <button onClick={logout}>Cerrar sesión</button>
+              </div>
             </div>
-          </Link>
+          ) : (
+            <ModalLoginSignUp />
+          )) : (
+            <div className='container-user'>
+              <Spinner size='30px' />
+            </div>
+          )
+          }
         </div>
       </nav>
     </header>
@@ -60,7 +72,6 @@ Navbar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 }
-
 
 // Si las props no cambian entonces la navbar usa el renderizado anterior. En este caso no tengo props.
 // Si uso useContext en lugar de props, como react.memo solo revisa props (shallow comparison), entonces
@@ -76,4 +87,5 @@ Navbar.propTypes = {
 
 // Ojo como si re renderiza el icono de la pagina, sin react.memo lo hace, o sea react.memo ocupa el render
 // anterior si no cambiaron los props, pero hace re render de sus hijos.
+
 export default React.memo(Navbar);

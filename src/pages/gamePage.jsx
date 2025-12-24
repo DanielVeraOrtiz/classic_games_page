@@ -6,9 +6,12 @@ import Tag from '../components/tags/tags';
 import GameInformation from '../components/gameInformation/gameInformation';
 import OtherGames from '../components/otherGames/otherGames';
 import { OpenSidebarContext } from '../Layout';
+import { AuthContext } from '../auth/authContext';
 
 //Iconos
 import { IoIosResize } from "react-icons/io";
+import { MdFavorite } from "react-icons/md";
+import { MdFavoriteBorder } from "react-icons/md";
 
 // Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
 // lo cual pasaria cada vez que cambia isOpen. Sin embargo no pasa, aunque vimos el ejemplo del logo que hace re render,
@@ -18,12 +21,59 @@ import { IoIosResize } from "react-icons/io";
 function GamePage() {
   console.log('GamePage se renderiza nuevamente');
   const { setIsOpen } = useContext(OpenSidebarContext);
+  const { token, userId } = useContext(AuthContext);
   const {id} = useParams();
   const [game, setGame] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const gameRef = useRef(null);
   const otherRef = useRef(null);
+  const [isFavorite, setIsFavorite] = useState(null);
+
+    const handleFavButton = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const postFavorite = async () => {
+        try {
+          const response = await axios.post('http://localhost:3000/favorites', {
+            user_id: userId,
+            game_id: id
+          } ,{
+            headers: {
+              authorization: `Bearer ${token}`
+            }
+          })
+          console.log(response);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setIsFavorite(prev => !prev);
+        }
+      }
+  
+      postFavorite();
+    }
+  
+      const handleFavDeleteButton = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const postFavorite = async () => {
+        try {
+          const response = await axios.delete(`http://localhost:3000/favorites/${id}`, {
+            headers: {
+              authorization: `Bearer ${token}`
+            }
+          })
+          console.log(response);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setIsFavorite(prev => !prev);
+        }
+      }
+  
+      postFavorite();
+    }
 
   useEffect(() => {
     setIsOpen(false);
@@ -33,6 +83,23 @@ function GamePage() {
     setIsFullScreen(prev => !prev);
   }, []);
 
+  useEffect(() => {
+    const isFavoriteGame = async () => {
+      try {
+        const responseFavorite = await axios.get(`http://localhost:3000/favorites/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        console.log(responseFavorite);
+        setIsFavorite(true);
+      } catch (error) {
+        console.error(error);
+        setIsFavorite(false);
+      }
+    }
+  }, [id])
+  
   useEffect(() => {
     const fetchGameData = async () => {
       try {
@@ -92,6 +159,11 @@ function GamePage() {
           <div className='game-heading'>
             <img className='game-img' src={game.thumb} alt={`Miniatura del juego ${game.title}`} />
             <h1 className='game-title'>{game.title}</h1>
+            {!isFavorite ? (
+              <button className='btn-fav' onClick={handleFavButton} aria-label='Button for checked game as favorite'><MdFavoriteBorder /></button>
+            ) : (
+              <button className='btn-fav checked' onClick={handleFavDeleteButton} aria-label='Button for unchecked game from favorites'><MdFavorite /></button>
+            )}
             <button className='resize' aria-label='resize-button' onClick={handleFullScreenButton}>
               <IoIosResize aria-hidden='true' focusable='false' />
             </button>

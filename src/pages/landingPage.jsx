@@ -2,7 +2,8 @@ import './landingPage.css'
 import games from './gamesData'
 import Card from '../components/card/card';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../auth/authContext';
 
 // Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
 // lo cual pasaria cada vez que cambia isOpen. Sin embargo no pasa, aunque vimos el ejemplo del logo que hace re render,
@@ -12,10 +13,18 @@ import { useState, useEffect } from 'react';
 export default function LandingPage() {
   console.log('La landing page se renderiza nuevamente');
   const [gameData, setGameData] = useState([]);
+  const [favorites, setFavorites] = useState(new Set());
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchGameData = async () => {
       try {
+        const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setFavorites(new Set(responseFavorites.data.map((favorite) => `${favorite.game_id}`)));
         const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
         setGameData(response.data);
         console.log(response.data);
@@ -26,9 +35,11 @@ export default function LandingPage() {
     }
     fetchGameData();
   }, [])
+
   return (
     <section className='games-grid'>
-      {gameData.map((game, index) => (
+      {gameData.map((game, index) => {
+        return (
         <Card
           key={game.id}
           id={game.id}
@@ -36,8 +47,10 @@ export default function LandingPage() {
           content={game.description}
           imgSrc={game.thumb}
           imgAlt={game.title}
+          category={game.category}
+          favorite={favorites.has(game.id)}
         />
-      ))}
+      )})}
     </section>
   );
 }

@@ -41,6 +41,7 @@ function OtherGames() {
                             <img className='other-game-img' src={game.thumb} alt={game.title} />
                             <div className='other-game-information'>
                                 <h4>{game.title}</h4>
+                                <p>{game.category} Game</p>
                                 <p>{game.description}</p>
                             </div>
                         </div>
