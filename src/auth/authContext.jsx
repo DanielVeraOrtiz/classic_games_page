@@ -9,12 +9,14 @@ export default function AuthProvider({children}) {
     const [isLoading, setIsLoading] = useState(true);
     const [userId, setUserId] = useState(null);
     const [userScope, setUserScope] = useState(null);
+    const [username, setUsername] = useState(null);
 
     const logout = () => {
         setToken(null);
         setIsAuthenticated(false);
         setUserId(null);
         setUserScope(null);
+        setUsername(null);
         localStorage.removeItem('token');
     }
 
@@ -40,6 +42,7 @@ export default function AuthProvider({children}) {
                 setIsAuthenticated(true);
                 setUserId(response.data.id);
                 setUserScope(response.data.scope);
+                setUsername(response.data.user.username);
             } catch (err) {
                 logout();
                 console.error(err);
@@ -52,7 +55,7 @@ export default function AuthProvider({children}) {
     }, [token])
 
     return (
-        <AuthContext.Provider value={{token, setToken, logout, isAuthenticated, isLoading, userId, userScope}}>
+        <AuthContext.Provider value={{token, setToken, logout, isAuthenticated, isLoading, userId, userScope, username}}>
             {children}
         </AuthContext.Provider>
     );

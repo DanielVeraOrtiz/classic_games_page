@@ -67,24 +67,6 @@
   font-weight: 625;
 }
 
-.btn-fav {
-  position: relative;
-  background-color: transparent;
-  color: gray;
-  border: none;
-  font-size: 1.25rem;
-  transition: color 0.3s ease-in-out;
-  position: relative;
-  top: 3px;
-}
-
-.btn-fav.checked {
-  color: red;
-  transition: color 0.3s ease-in-out;
-  position: relative;
-  top: 3px;
-}
-
 .card-text {
   font-size: 1rem;
   color: var(--text-secondary-color);

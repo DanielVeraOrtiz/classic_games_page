@@ -1,19 +1,12 @@
 import './card.css';
 import PropTypes from 'prop-types';
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { AuthContext } from '../../auth/authContext';
-
-// Icons
-import { MdFavorite } from "react-icons/md";
-import { MdFavoriteBorder } from "react-icons/md";
+import FavButton from '../favButton/favButton';
 
 export default function Card({ id, title, content, imgSrc, imgAlt, category, favorite}) {
   // console.log('La card se renderiza nuevamente');
-  const [hoverColor, setHoverColor] = useState(`#${Math.floor(Math.random()*16777215).toString(16)}`);
-  const {token, userId} = useContext(AuthContext);
-  const [isFavorite, setIsFavorite] = useState(favorite);
+  const [hoverColor, setHoverColor] = useState(`gray`);
 
   useEffect(() => {
     const img = new Image();
@@ -41,51 +34,6 @@ export default function Card({ id, title, content, imgSrc, imgAlt, category, fav
     };
   }, [imgSrc]);
 
-  const handleFavButton = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const postFavorite = async () => {
-      try {
-        const response = await axios.post('http://localhost:3000/favorites', {
-          user_id: userId,
-          game_id: id
-        } ,{
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
-        console.log(response);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsFavorite(prev => !prev);
-      }
-    }
-
-    postFavorite();
-  }
-
-    const handleFavDeleteButton = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const postFavorite = async () => {
-      try {
-        const response = await axios.delete(`http://localhost:3000/favorites/${id}`, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
-        console.log(response);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsFavorite(prev => !prev);
-      }
-    }
-
-    postFavorite();
-  }
-
   // const handleMouseEnter = useCallback(() => {
   //   setIsHovered(true);
   // }, []);
@@ -108,11 +56,7 @@ export default function Card({ id, title, content, imgSrc, imgAlt, category, fav
         <div className="card-content">
           <div className='card-heading'>
             <h2 className="card-title">{title}</h2>
-            {!isFavorite ? (
-              <button className='btn-fav' onClick={handleFavButton} aria-label='Button for checked game as favorite'><MdFavoriteBorder /></button>
-            ) : (
-              <button className='btn-fav checked' onClick={handleFavDeleteButton} aria-label='Button for unchecked game from favorites'><MdFavorite /></button>
-            )}
+            <FavButton favorite={favorite} id={id} imgUrl={imgSrc} category={category} title={title}/>
           </div>
           <p className="card-text category">{category} Game</p>
           <p className="card-text">{content}</p>

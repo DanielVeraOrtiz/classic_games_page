@@ -1,17 +1,17 @@
 import './navbar.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ButtonOpen from '../buttonOpen/buttonOpen';
 import { AuthContext } from '../../auth/authContext';
 import Spinner from '../spinner/spinner';
 import ModalLoginSignUp from '../modalLoginSignUp/modalLoginSignUp';
+import axios from 'axios';
 // Iconos
 import { CiSearch } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import IconYoutube from '../../iconComponents/iconYoutube';
 import { MdFavorite } from "react-icons/md";
-import { PiSignOutLight } from "react-icons/pi";
 
 // El React.memo no funciona, por que isOpen cambia cada vez que se abre o cierra el sidebar,
 // pero si se saca eso el console log se muestra una sola vez al renderizar el componente, por lo 
@@ -23,8 +23,31 @@ import { PiSignOutLight } from "react-icons/pi";
 // AL FINAL USE USECONTEXT PARA QUE NO SE RENDERIZARA MAS VECES. PARA PROBAR NO MAS.
 function Navbar() {
   console.log('Navbar renderizada de nuevo'); // No aparece mas veces que cuando se monta gracias a react.memo
-  const { isAuthenticated, isLoading, logout } = useContext(AuthContext);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { isAuthenticated, isLoading, logout, username } = useContext(AuthContext);
+  const [gameData, setGameData] = useState([]);
+  const navigate = useNavigate();
+
+  const handleChangeSearchInput = (e) => {
+    const selected = e.target.value;
+
+    const game = gameData.find(g => g.title === selected);
+    if (game) {
+      navigate(`/game/${game.id}`);
+    }
+  };
+
+  useEffect(() => {
+    const fetchGameData = async () => {
+      try {
+        const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
+        setGameData(response.data);
+        console.log('La obtencion de juegos fue exitosa');
+      } catch (error) {
+        console.error(`Se obtuvo el siguiente error ${error}`);
+      }
+    }
+    fetchGameData();
+  }, [])
 
   return (
     <header className={`header`}>
@@ -37,7 +60,12 @@ function Navbar() {
         </div>
         <div className='search-bar'>
           <label htmlFor="search-input" className="visually-hidden">Buscar</label>
-          <input id="search-input" className='search-input' type='text' placeholder='Buscar' />
+          <input id="search-input" className='search-input' type='text' placeholder='Buscar' list='game-list' onChange={handleChangeSearchInput} />
+          <datalist id='game-list'>
+            {gameData.map(game => (
+              <option key={game.id} value={game.title} />
+            ))}
+          </datalist>
           <button className='search-button' aria-label='Buscar' title='Buscar'>
             <CiSearch aria-hidden="true" focusable="false"/>
           </button>
@@ -48,7 +76,7 @@ function Navbar() {
               <div className='icon-container'>
                 <FaRegUserCircle aria-hidden="true" focusable="false"/>
               </div>
-              <p className='username'>Pyng Lesther Marcian</p>
+              <p className='username'>{username}</p>
               <div className='dropdown-user-menu'>
                 <Link to='/user/favoritesgames'><MdFavorite />Juegos favoritos</Link>
                 <button onClick={logout}>Cerrar sesión</button>

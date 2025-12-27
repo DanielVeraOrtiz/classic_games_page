@@ -7,6 +7,7 @@ import GameInformation from '../components/gameInformation/gameInformation';
 import OtherGames from '../components/otherGames/otherGames';
 import { OpenSidebarContext } from '../Layout';
 import { AuthContext } from '../auth/authContext';
+import FavButton from '../components/favButton/favButton';
 
 //Iconos
 import { IoIosResize } from "react-icons/io";
@@ -22,58 +23,13 @@ function GamePage() {
   console.log('GamePage se renderiza nuevamente');
   const { setIsOpen } = useContext(OpenSidebarContext);
   const { token, userId } = useContext(AuthContext);
-  const {id} = useParams();
+  const { id } = useParams();
   const [game, setGame] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const gameRef = useRef(null);
   const otherRef = useRef(null);
   const [isFavorite, setIsFavorite] = useState(null);
-
-    const handleFavButton = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const postFavorite = async () => {
-        try {
-          const response = await axios.post('http://localhost:3000/favorites', {
-            user_id: userId,
-            game_id: id
-          } ,{
-            headers: {
-              authorization: `Bearer ${token}`
-            }
-          })
-          console.log(response);
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setIsFavorite(prev => !prev);
-        }
-      }
-  
-      postFavorite();
-    }
-  
-      const handleFavDeleteButton = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const postFavorite = async () => {
-        try {
-          const response = await axios.delete(`http://localhost:3000/favorites/${id}`, {
-            headers: {
-              authorization: `Bearer ${token}`
-            }
-          })
-          console.log(response);
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setIsFavorite(prev => !prev);
-        }
-      }
-  
-      postFavorite();
-    }
 
   useEffect(() => {
     setIsOpen(false);
@@ -98,6 +54,8 @@ function GamePage() {
         setIsFavorite(false);
       }
     }
+
+    isFavoriteGame();
   }, [id])
   
   useEffect(() => {
@@ -159,14 +117,12 @@ function GamePage() {
           <div className='game-heading'>
             <img className='game-img' src={game.thumb} alt={`Miniatura del juego ${game.title}`} />
             <h1 className='game-title'>{game.title}</h1>
-            {!isFavorite ? (
-              <button className='btn-fav' onClick={handleFavButton} aria-label='Button for checked game as favorite'><MdFavoriteBorder /></button>
-            ) : (
-              <button className='btn-fav checked' onClick={handleFavDeleteButton} aria-label='Button for unchecked game from favorites'><MdFavorite /></button>
-            )}
-            <button className='resize' aria-label='resize-button' onClick={handleFullScreenButton}>
-              <IoIosResize aria-hidden='true' focusable='false' />
-            </button>
+            <div className='resize-fav-container'>
+              <FavButton favorite={isFavorite} id={id} imgUrl={game.thumb} category={game.category} title={game.title} />
+              <button className='resize' aria-label='resize-button' onClick={handleFullScreenButton}>
+                <IoIosResize aria-hidden='true' focusable='false' />
+              </button>
+            </div>
           </div>
           <iframe className='game' src={game.url} title={`Juego: ${game.title}`}></iframe>
           <div className='game-information'>

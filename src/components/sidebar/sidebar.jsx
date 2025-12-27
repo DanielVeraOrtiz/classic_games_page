@@ -1,13 +1,35 @@
 import './sidebar.css';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ButtonOpen from '../buttonOpen/buttonOpen';
+import { AuthContext } from '../../auth/authContext';
+import axios from 'axios';
 // Iconos
 import IconYoutube from '../../iconComponents/iconYoutube';
 
 function Sidebar({isOpen}) {
   console.log('La sidebar se renderiza nuevamente');
+  const [favorites, setFavorites] = useState([]);
+  const { token } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchGameData = async () => {
+      try {
+        const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log(responseFavorites.data);
+        setFavorites(responseFavorites.data);
+      } catch (error) {
+        console.error(`Se obtuvo el siguiente error ${error}`);
+      }
+    }
+    fetchGameData();
+  }, [])
+
   const juegos = [
     { to: "/gato", label: "Gato" },
     { to: "/memoria-cartas", label: "Memoria cartas" },
@@ -30,11 +52,14 @@ function Sidebar({isOpen}) {
           </Link>
         </div>
         <hr className='separator'></hr>
-        <p className='sidebar-title'>Juegos Disponibles</p>
+        <p className='sidebar-title'>Juegos Favoritos</p>
         <ul className='sidebar-links'>
-          {juegos.map((juego) => (
-            <li key={juego.to}>
-              <Link to={juego.to}>{juego.label}</Link>
+          {favorites.map((juego) => (
+            <li key={juego.game_id}>
+              <Link to={`/game/${juego.game_id}`}>
+                <img className='sidebar-game-img' src={juego.game.imgUrl} />
+                {juego.game.title}
+              </Link>
             </li>
           ))}
         </ul>
