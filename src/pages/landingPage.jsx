@@ -35,7 +35,7 @@ const categories = [
 // Estimo que es por que no es un componente puesto directo en el return de layout, sino a traves de oulet que se cambia
 // en el router, que hace que el re render de layout no afecte a lo que cambie en outlet.
 export default function LandingPage() {
-  console.log('La landing page se renderiza nuevamente');
+  console.log('The landing page is rendered again');
   const [gameData, setGameData] = useState([]);
   const [games, setGames] = useState([]);
   const [favorites, setFavorites] = useState(new Set());
@@ -58,10 +58,10 @@ export default function LandingPage() {
         const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
         setGameData(response.data);
         setGames(response.data)
-        console.log('La obtencion de juegos fue exitosa');
+        console.log('The acquisition of games was successful');
       } catch (error) {
-        console.error(`Se obtuvo el siguiente error ${error}`);
-        setMessageError('El servidor de GameMonetize no esta funcionando vuelva en otro momento');
+        console.error(`The following error was obtained ${error}`);
+        setMessageError('The GameMonetize server is down, please try again later');
       } finally {
         setIsLoading(false);
       }

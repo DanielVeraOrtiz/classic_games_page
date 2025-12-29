@@ -22,7 +22,7 @@ export default function Layout() {
   // Puede ser que para que esto re renderice GamePage y LandingPage hace falta que tenga relacion directa
   // no a traves de outlet y router.
   return (
-      <OpenSidebarContext.Provider value={{isOpen, setIsOpen}}>
+      <OpenSidebarContext.Provider value={{isOpen, setIsOpen, isDesktop}}>
         {/* <Navbar isOpen={isOpen} setIsOpen={toggleSidebar} /> */}
         {/* Cambie a Context y pase directo al boton para probar si react.memo no renderiza la navbar
         cada vez que se apreta el boton */}

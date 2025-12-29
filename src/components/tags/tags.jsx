@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Tag({tag}) {
-    console.log('Este tag se esta renderizando nuevamente');
+    console.log('This tag is being rendered again');
     return(
         <div className='tag-container'>
             <p>{tag}</p>

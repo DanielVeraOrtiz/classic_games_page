@@ -8,9 +8,11 @@ import axios from 'axios';
 import Spinner from '../spinner/spinner';
 // Iconos
 import IconYoutube from '../../iconComponents/iconYoutube';
+import { FaRegUserCircle } from "react-icons/fa";
+import { MdOutlineSettings } from "react-icons/md";
 
 function Sidebar({isOpen}) {
-  console.log('La sidebar se renderiza nuevamente');
+  console.log('The sidebar is rendered again');
   const [favorites, setFavorites] = useState([]);
   const { token, isAuthenticated } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,8 +31,8 @@ function Sidebar({isOpen}) {
           setFavorites(responseFavorites.data);
         }
       } catch (error) {
-        console.error(`Se obtuvo el siguiente error ${error}`);
-        setMessageError('El servidor de la pagina esta fallando, vuelva mas tarde');
+        console.error(`The following error was obtained: ${error}`);
+        setMessageError('The page server is down, please try again later');
       } finally {
         setIsLoading(false);
       }
@@ -39,22 +41,21 @@ function Sidebar({isOpen}) {
   }, [isAuthenticated])
 
   const owner_path = [
-    { to: "/profile", label: "Perfil" },
-    { to: "/settings", label: "Configuración" },
-    { to: "/logout", label: "Cerrar sesión" },
+    { to: "/profile", label: "Go to my profile", icon: FaRegUserCircle },
+    { to: "/settings", label: "Open settings", icon: MdOutlineSettings },
   ];
 
   return (
       <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`} id='sidebar-menu' role='navigation' 
-      aria-label='Barra de navegacion lateral entre juegos' aria-hidden={!isOpen} aria-expanded={isOpen}>
+      aria-label='Side navigation bar between games' aria-hidden={!isOpen} aria-expanded={isOpen}>
         <div className='sidebar-logo'>
           <ButtonOpen />
-          <Link to='/' className='logo-svg' aria-label='Inicio' title='Inicio' focusable="false">
+          <Link to='/' className='logo-svg' aria-label='Back to Home' title='Back to Home' focusable="false">
             <IconYoutube />
           </Link>
         </div>
         <hr className='separator'></hr>
-        <p className='sidebar-title'>Juegos Favoritos</p>
+        <p className='sidebar-title'>Favorites games</p>
         <ul className='sidebar-links'>
           { isAuthenticated ? (!isLoading ? (
             !messageError ? (
@@ -73,18 +74,25 @@ function Sidebar({isOpen}) {
               <Spinner size='30px' />
             </div>
           )) : (
-            <li className='sidebar-message-login'>Debes iniciar sesión para agregar juegos a favoritos</li>
+            <li className='sidebar-message-login'>You must be logged in to add games to favorites</li>
           )}
         </ul>
-        <hr className='separator'></hr>
-        <p className='sidebar-title'>Tu</p>
-        <ul className='sidebar-links'>
-          {owner_path.map((path) => (
-            <li key={path.to}>
-              <Link to={path.to}>{path.label}</Link>
-            </li>
-          ))}
-        </ul>
+        { isAuthenticated && (
+          <>
+            <hr className='separator'></hr>
+            <p className='sidebar-title'>You</p>
+            <ul className='sidebar-links'>
+              {owner_path.map((path) => {
+                const Icon = path.icon;
+                return (
+                <li key={path.to}>
+                  <Link to={path.to}><Icon className='icons-sidebar' />{path.label}</Link>
+                </li>
+              )})}
+            </ul>
+          </>
+        )}
+
       </aside>
   )
 }

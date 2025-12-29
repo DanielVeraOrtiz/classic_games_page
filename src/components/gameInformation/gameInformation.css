@@ -1,5 +1,5 @@
 .game-information-container {
-    background-color: #272727;
+    background-color: var(--game-information-background-color);
     color: var(--text-body-color);
     border-radius: 15px;
     padding: 1rem;

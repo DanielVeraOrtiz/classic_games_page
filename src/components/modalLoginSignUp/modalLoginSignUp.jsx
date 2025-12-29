@@ -2,15 +2,18 @@ import './modalLoginSignUp.css';
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../auth/authContext';
+import { OpenSidebarContext } from '../../Layout'; 
 
 //Icons
 import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaRegUserCircle } from "react-icons/fa";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 function ModalLoginSignUp() {
     const { setToken } = useContext(AuthContext);
+    const { isDesktop } = useContext(OpenSidebarContext);
     const [isVisible, setIsVisible] = useState(false);
     const modalRef = useRef(null);
     const [loginForm, setLoginForm] = useState({
@@ -40,12 +43,15 @@ function ModalLoginSignUp() {
         }
     }
 
+    const handleModalBtnClose = (e) => {
+        modalRef.current.close();
+    }
+
     const handleSignupFormChange = (e) => {
         const {name, value} = e.target;
         setSignupForm(prev => (
             {...prev, [name]: value}
         ));
-        console.log(signupForm);
     }
 
     const handleLoginFormChange = (e) => {
@@ -53,13 +59,15 @@ function ModalLoginSignUp() {
         setLoginForm(prev => (
             {...prev, [name]: value}
         ));
-        console.log(loginForm);
     }
 
     const handleSubmitSignupForm = (e) => {
         e.preventDefault();
         const postSignup = async () => {
             try {
+                if (!signupForm['password'].match(/[a-z]/) || !signupForm['password'].match(/[0-9]/) || !signupForm['password'].match(/[@$!%*?&]/)) {
+                    throw new Error('The password need to have at least one letter, one number and one special symbol. Also, at least 8 characters')
+                }
                 const response = await axios.post('http://localhost:3000/signup', signupForm);
                 console.log(response);
                 setToken(response.data.access_token);
@@ -94,36 +102,47 @@ function ModalLoginSignUp() {
         setSwitchFormSignup(prev => !prev);
         if (hiddenLogin && !hiddenSignup) {
             setHiddenLogin(false);
-            setTimeout(() => setHiddenSignup(true), 500);
+            if (isDesktop) {
+                setTimeout(() => setHiddenSignup(true), 500);
+            } else {
+                setHiddenSignup(true)
+            }
         } else if (!hiddenLogin && hiddenSignup) {
             setHiddenSignup(false);
-            setTimeout(() => setHiddenLogin(true), 500);
+            if (isDesktop) {
+                setTimeout(() => setHiddenLogin(true), 500);
+            } else {
+                setHiddenLogin(true)
+            } 
         }
     }
 
     return (
         <>
-            <div className='container-user' aria-label="Panel de usuario" title='Panel de usuario' tabIndex="0" onClick={handleModalOpen}
+            <div className='container-user' aria-label="User panel" title='User panel' tabIndex="0" onClick={handleModalOpen}
             aria-controls='login-modal' >
                 <div className='icon-container'>
                     <FaRegUserCircle aria-hidden="true" focusable="false"/>
                 </div>
-                <p className='username'>Iniciar sesión</p>
+                <p className='username'>Login</p>
             </div>
             <dialog id='login-modal' ref={modalRef} className='login-modal' aria-hidden={!isVisible} 
             aria-expanded={isVisible} onClick={handleModalClose} >
                 <div className={`overlay-forms ${switchFormSignup ? 'switch' : ''}`}>
-                    <h2>Nos alegra tenerte de vuelta</h2>
-                    <p>Te estabamos esperando con miles de juegos</p>
-                    <p>{switchFormSignup ? 'Necesitas iniciar sesion?' : 'Necesitas crearte una cuenta?'}</p>
+                    <h2>We're glad to have you back</h2>
+                    <p>We were waiting for you with thousands of games</p>
+                    <p>{switchFormSignup ? 'Do you need to log in?' : 'Do you need to create an account?'}</p>
                     <button className='btn-switch-forms' onClick={handleSwitchForm}>
-                        {switchFormSignup ? 'Ir a iniciar sesion' : 'Ir a crear cuenta'}
+                        {switchFormSignup ? 'Login' : 'Create account'}
                     </button>
                 </div>
                 <div className='forms-container'>
-                    <div className='signup-container' aria-hidden={hiddenSignup ? 'true' : 'false'}>
+                    <div className={`signup-container ${hiddenSignup ? 'hidden-form' : ''}`} aria-hidden={hiddenSignup ? 'true' : 'false'}>
                         <div aria-hidden={hiddenSignup ? 'true' : 'false'} hidden={hiddenSignup ? 'true' : ''}>
-                            <h2>Crear cuenta</h2>
+                            <button className='btn-close-modal' onClick={handleModalBtnClose}>
+                                <IoIosCloseCircleOutline aria-hidden='true' focusable='false' />
+                            </button>
+                            <h2>Create account</h2>
                             <form className='signup-form' onSubmit={handleSubmitSignupForm}>
                                 <label htmlFor='username-signup'><FaUser />Username</label>
                                 <input 
@@ -132,6 +151,8 @@ function ModalLoginSignUp() {
                                     value={signupForm.username}
                                     onChange={handleSignupFormChange}
                                     required
+                                    minLength={5}
+                                    maxLength={15}
                                 />
                                 <label htmlFor='email-signup'><MdEmail />Email</label>
                                 <input
@@ -140,6 +161,7 @@ function ModalLoginSignUp() {
                                     value={signupForm.email}
                                     onChange={handleSignupFormChange}
                                     required
+                                    maxLength={100}
                                 />
                                 <label htmlFor='password-signup'><RiLockPasswordFill />Password</label>
                                 <input
@@ -149,15 +171,20 @@ function ModalLoginSignUp() {
                                     value={signupForm.password}
                                     onChange={handleSignupFormChange}
                                     required
+                                    minLength={5}
+                                    maxLength={60}
                                 />
-                                <button className='submit-signup-form' type='submit'>Crear cuenta</button>
+                                <button className='submit-signup-form' type='submit'>Create account</button>
                                 <p className='error-message'>{errorMessageSignup}</p>
                             </form>
                         </div>
                     </div>
                     <div className='login-container' aria-hidden={hiddenLogin ? 'true' : 'false'}>
                         <div aria-hidden={hiddenLogin ? 'true' : 'false'} hidden={hiddenLogin ? 'true' : ''}>
-                            <h2>Iniciar sesión</h2>
+                            <button className='btn-close-modal' onClick={handleModalBtnClose}>
+                                <IoIosCloseCircleOutline aria-hidden='true' focusable='false' />
+                            </button>
+                            <h2>Login</h2>
                             <form className='login-form' onSubmit={handleSubmitLoginForm}>
                                 <label htmlFor='email-login'><MdEmail />Email</label>
                                 <input
@@ -167,6 +194,7 @@ function ModalLoginSignUp() {
                                     value={loginForm.email}
                                     onChange={handleLoginFormChange}
                                     required
+                                    maxLength={100}
                                 />
                                 <label htmlFor='password-login'><RiLockPasswordFill />Password</label>
                                 <input
@@ -176,8 +204,10 @@ function ModalLoginSignUp() {
                                     value={loginForm.password}
                                     onChange={handleLoginFormChange}
                                     required
+                                    minLength={5}
+                                    maxLength={60}
                                 />
-                                <button className='submit-login-form' type='submit'>Iniciar sesión</button>
+                                <button className='submit-login-form' type='submit'>Login</button>
                                 <p className='error-message'>{errorMessageLogin}</p>
                             </form>
                         </div>

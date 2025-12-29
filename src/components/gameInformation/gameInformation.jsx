@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 
 function GameInformation({description, instructions}) {
-    console.log('Game Information se renderiza nuevamente');
+    console.log('Game Information is rendered again');
     return(
         <div className='game-information-container'>
             <h2>Description</h2>

@@ -22,7 +22,7 @@ import { MdFavorite } from "react-icons/md";
 
 // AL FINAL USE USECONTEXT PARA QUE NO SE RENDERIZARA MAS VECES. PARA PROBAR NO MAS.
 function Navbar() {
-  console.log('Navbar renderizada de nuevo'); // No aparece mas veces que cuando se monta gracias a react.memo
+  console.log('Navbar rendered again'); // No aparece mas veces que cuando se monta gracias a react.memo
   const { isAuthenticated, isLoading, logout, username } = useContext(AuthContext);
   const [gameData, setGameData] = useState([]);
   const navigate = useNavigate();
@@ -40,10 +40,9 @@ function Navbar() {
     const fetchGameData = async () => {
       try {
         const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
-        setGameData(response.data);
-        console.log('La obtencion de juegos fue exitosa');
+        console.log('The acquisition of games was successful');
       } catch (error) {
-        console.error(`Se obtuvo el siguiente error ${error}`);
+        console.error(`The following error was obtained: ${error}`);
       }
     }
     fetchGameData();
@@ -51,35 +50,35 @@ function Navbar() {
 
   return (
     <header className={`header`}>
-      <nav className='navbar' aria-label="Barra de navegación principal">
+      <nav className='navbar' aria-label="Main navigation bar">
         <div className='navbar-logo'>
           <ButtonOpen /> {/* Solo este se renderiza de nuevo */}
-          <Link to='/' className='logo-svg' aria-label='Inicio' title='Inicio' focusable="false">
+          <Link to='/' className='logo-svg' aria-label='Back to Home' title='Back to Home' focusable="false">
             <IconYoutube />
           </Link>
         </div>
         <div className='search-bar'>
-          <label htmlFor="search-input" className="visually-hidden">Buscar</label>
-          <input id="search-input" className='search-input' type='text' placeholder='Buscar' list='game-list' onChange={handleChangeSearchInput} />
+          <label htmlFor="search-input" className="visually-hidden">Search</label>
+          <input id="search-input" className='search-input' type='text' placeholder='Search...' list='game-list' onChange={handleChangeSearchInput} />
           <datalist id='game-list'>
             {gameData.map(game => (
               <option key={game.id} value={game.title} />
             ))}
           </datalist>
-          <button className='search-button' aria-label='Buscar' title='Buscar'>
+          <button className='search-button' aria-label='Search button' title='Search button'>
             <CiSearch aria-hidden="true" focusable="false"/>
           </button>
         </div>
         <div className='navbar-user'>
           { !isLoading ? (isAuthenticated ? (
-            <div className='container-user' aria-label="Panel de usuario" title='Panel de usuario' tabIndex="0">
+            <div className='container-user' aria-label="User panel" title='User panel' tabIndex="0">
               <div className='icon-container'>
                 <FaRegUserCircle aria-hidden="true" focusable="false"/>
               </div>
               <p className='username'>{username}</p>
               <div className='dropdown-user-menu'>
-                <Link to='/user/favoritesgames'><MdFavorite />Juegos favoritos</Link>
-                <button onClick={logout}>Cerrar sesión</button>
+                <Link to='/user/favoritesgames'><MdFavorite />Favorite games</Link>
+                <button onClick={logout}>Log out</button>
               </div>
             </div>
           ) : (

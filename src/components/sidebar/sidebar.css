@@ -8,7 +8,7 @@
 
 .sidebar {
   width: 275px;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -40,7 +40,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 0.5rem 0 0 10%;
+  padding: 0 0 0 10%;
   gap: 0.5rem;
 }
 
@@ -87,6 +87,9 @@ hr.separator {
   width: 100%;
   display: flex;
   flex-direction: column;
+  max-height: 315px;
+  overflow: scroll;
+  scrollbar-width: none;
 }
 
 .sidebar-game-img {
@@ -113,7 +116,7 @@ hr.separator {
 
 .sidebar-links > .sidebar-message-login {
   padding: 0.75rem 0 0.75rem 10%;
-  color: rgb(255, 151, 151);
+  color: var(--sidebar-login-required-message);
 }
 
 .sidebar-links li a {
@@ -147,6 +150,11 @@ hr.separator {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
+}
+
+.icons-sidebar {
+  font-size: 28px;
+  aspect-ratio: 1 / 1;
 }
 
 @media (max-width: 768px) {
