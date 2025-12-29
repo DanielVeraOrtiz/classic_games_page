@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    background-color: var(--other-games-bg-color);
+    border-radius: 10px;
 }
 
 .container.full .other-games-container {

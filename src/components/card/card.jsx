@@ -6,7 +6,7 @@ import FavButton from '../favButton/favButton';
 import { AuthContext } from '../../auth/authContext';
 
 export default function Card({ id, title, content, imgSrc, imgAlt, category, favorite}) {
-  // console.log('La card se renderiza nuevamente');
+  console.log('The card is rendered again');
   const [hoverColor, setHoverColor] = useState(`gray`);
   const { isAuthenticated } = useContext(AuthContext);
 

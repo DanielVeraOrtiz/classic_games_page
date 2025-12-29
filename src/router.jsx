@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import LandingPage from './pages/landingPage';
 import GamePage from './pages/gamePage';
-import SignUpLoginPage from './pages/signUpLoginPage';
 import ModalLoginSignUp from './components/modalLoginSignUp/modalLoginSignUp';
 
 export default function Router() {

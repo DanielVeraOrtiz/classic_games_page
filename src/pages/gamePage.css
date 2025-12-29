@@ -1,3 +1,11 @@
+.spinner-gamepage-container {
+    display: flex;
+    width: 100%;
+    height: 60vh;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
     display: flex;
     gap: 3rem;
@@ -62,17 +70,21 @@
     height: 42px;
     aspect-ratio: 1 / 1;
     cursor: pointer;
-    background-color: rgb(187, 4, 4);
-    border: 1px solid rgb(156, 3, 3);
+    background-color: var(--resize-btn-bg);
+    border: none;
     transition: background-color 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-text-body-color);
 }
 
 .resize:hover, .resize:focus {
-    background-color: rgb(126, 3, 3);
+    background-color: var(--resize-btn-bg-hover);
 }
 
 .resize:active {
-    background-color: rgb(87, 0, 0);
+    background-color: var(--resize-btn-bg-active);
 }
 
 .game {

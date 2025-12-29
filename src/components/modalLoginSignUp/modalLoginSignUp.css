@@ -16,7 +16,6 @@
     width: 50%;
     height: 100%;
     z-index: 1;
-    background-color: gray;
     border: none;
     transform: translateX(0%);
     transition: transform 0.5s ease-in-out;
@@ -28,14 +27,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1rem
+    gap: 1rem;
+    color: var(--secondary-text-body-color);
 }
 
 .overlay-forms::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(var(--overlay-forms), 0.8);
   z-index: 0;
 }
 
@@ -49,16 +49,33 @@
     font-weight: 600;
 }
 
+.btn-close-modal {
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    position: absolute;
+    top: 10px;
+}
+
 .overlay-forms button {
     width: 50%;
     margin: 0 auto;
     border: none;
     border-radius: 10px;
-    background-color: red;
+    background-color: var(--overlay-forms-btn-switch-bg);
     padding: 0.5rem;
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
+    color: var(--secondary-text-body-color);
+}
+
+.overlay-forms button:hover {
+    background-color: var(--overlay-forms-btn-switch-bg-hover);
+}
+
+.overlay-forms button:active {
+    background-color: var(--overlay-forms-btn-switch-bg-active);
 }
 
 .overlay-forms.switch {
@@ -112,7 +129,7 @@
 .signup-form .submit-signup-form, .login-form .submit-login-form {
     width: 50%;
     margin: 0 auto;
-    background-color: red;
+    background-color: var(--overlay-forms-btn-bg);
     border: none;
     padding: 0.5rem;
     border-radius: 10px;
@@ -121,19 +138,58 @@
     font-weight: bold;
     transition: background-color 0.3s ease-in-out;
     cursor: pointer;
+    color: var(--secondary-text-body-color);
 }
 
 .signup-form .submit-signup-form:hover, .login-form .submit-login-form:hover {
-    background-color: aqua;
+    background-color: var(--overlay-forms-btn-bg-hover);
 }
 
 .signup-form .submit-signup-form:active, .login-form .submit-login-form:active {
-    background-color: rgb(255, 51, 0);
+    background-color: var(--overlay-forms-btn-bg-active);
 }
 
 .error-message {
     text-align: center;
     font-size: 1.1rem;
     font-weight: 600;
-    color: rgb(241, 113, 113);
+    color: var(--error-message-color);
+}
+
+@media (max-width: 1024px) {
+    .login-modal{
+        width: 90%;
+    }
+
+    .forms-container {
+        min-height: 80vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .forms-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 95vh;
+    }
+
+    .overlay-forms {
+        width: 100%;
+        height: 15%;
+        left: 0;
+        bottom: 0%;
+        transform: translateX(0%);
+    }
+
+    .overlay-forms.switch {
+        transform: none;
+    }
+
+    .overlay-forms p, .overlay-forms h2 {
+        display: none;
+    }
+
+    .hidden-form {
+        display: none;
+    }
 }

@@ -5,10 +5,11 @@ import {Link, useParams} from 'react-router-dom';
 import axios from 'axios';
 
 function OtherGames() {
-    console.log('OtherGames se renderiza nuevamente');
+    console.log('OtherGames is being rendered again');
     const { id } = useParams();
     const [otherGames, setOtherGames] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [messageError, setMessageError] = useState('');
 
     useEffect(() => {
         const fetchOtherGames = async () => {
@@ -17,7 +18,8 @@ function OtherGames() {
                 const muestra = response.data.sort(() => Math.random() - 0.5).slice(0, 20);
                 setOtherGames(muestra);
             } catch (error) {
-                console.error('Ha sucedido un problema' + error);
+                console.error('A problem has occurred: ' + error);
+                setMessageError('The GameMonetize server is down, please try again later');
             } finally {
                 setIsLoading(false);
             }
@@ -29,11 +31,15 @@ function OtherGames() {
         return (
             <p>Cargando...</p>
         );
+    } else if (!isLoading && messageError) {
+        return (
+            <p className='error-message'>{messageError}</p>
+        )
     }
 
     return (
-        <div className='other-games-container' aria-label='Otros juegos' role='list' >
-            <h2>Otros juegos</h2>
+        <div className='other-games-container' aria-label='Other games' role='list' >
+            <h2>Others games</h2>
             {otherGames.map((game, index) => {
                 return (
                     <Link to={`/game/${game.id}`} key={index} role='listitem'>

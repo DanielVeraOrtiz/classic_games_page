@@ -1,6 +1,6 @@
 .tag-container {
     border-radius: 20px;
-    border: 1px solid white;
+    border: 1px solid var(--tag-border-color);
     font-size: 1.1rem;
     font-weight: 400;
     padding: 0.25rem 1rem;

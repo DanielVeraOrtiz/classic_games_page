@@ -8,6 +8,7 @@ import OtherGames from '../components/otherGames/otherGames';
 import { OpenSidebarContext } from '../Layout';
 import { AuthContext } from '../auth/authContext';
 import FavButton from '../components/favButton/favButton';
+import Spinner from '../components/spinner/spinner';
 
 //Iconos
 import { IoIosResize } from "react-icons/io";
@@ -18,7 +19,7 @@ import { IoIosResize } from "react-icons/io";
 // Estimo que es por que no es un componente puesto directo en el return de layout, sino a traves de oulet que se cambia
 // en el router, que hace que el re render de layout no afecte a lo que cambie en outlet.
 function GamePage() {
-  console.log('GamePage se renderiza nuevamente');
+  console.log('GamePage is rendered again');
   const { setIsOpen } = useContext(OpenSidebarContext);
   const { token, isAuthenticated } = useContext(AuthContext);
   const { id } = useParams();
@@ -62,10 +63,10 @@ function GamePage() {
       try {
         const response = await axios.get(`https://gamemonetize.com/feed.php?format=0&id=${id}`);
         setGame(response.data[0]);
-        console.log('Obtencion del juego sin problemas');
+        console.log('Obtaining the game without problems');
       } catch (error) {
-        console.error('Sucedió un error: ' + error);
-        setMessageError('El servidor de GameMonetize no esta funcionando vuelva en otro momento');
+        console.error('An error occurred: ' + error);
+        setMessageError('The GameMonetize server is down, please try again later');
       } finally {
         setIsLoading(false);
       }
@@ -108,8 +109,10 @@ function GamePage() {
 
   if (isLoading) {
     return (
-      <h1>Cargando</h1>
-    );
+      <div className='spinner-gamepage-container'>
+        <Spinner size='100px' />
+      </div>
+    )
   } else if (!isLoading && messageError) {
     return (
       <h1 className='error-message'>{messageError}</h1>
@@ -119,7 +122,7 @@ function GamePage() {
       <div className={`container ${isFullScreen ? 'full' : ''}`} role="main">
         <div className='game-container' ref={gameRef}>
           <div className='game-heading'>
-            <img className='game-img' src={game.thumb} alt={`Miniatura del juego ${game.title}`} />
+            <img className='game-img' src={game.thumb} alt={`Game thumbnail ${game.title}`} />
             <h1 className='game-title'>{game.title}</h1>
             <div className='resize-fav-container'>
               { isAuthenticated &&
@@ -130,7 +133,7 @@ function GamePage() {
               </button>
             </div>
           </div>
-          <iframe className='game' src={game.url} title={`Juego: ${game.title}`}></iframe>
+          <iframe className='game' src={game.url} title={`Game: ${game.title}`}></iframe>
           <div className='game-information'>
             <div className='tags-container' role="list">
               {game.tags.split(',').map((tag, index) => 
@@ -140,7 +143,7 @@ function GamePage() {
             <GameInformation description={game.description} instructions={game.instructions} />
           </div>
         </div>
-        <div className='other-games' aria-label='Juegos relacionados' ref={otherRef}>
+        <div className='other-games' aria-label='Related games' ref={otherRef}>
           <OtherGames />
         </div>
       </div>

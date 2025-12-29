@@ -38,7 +38,7 @@
     left: 0;
     width: 100vw;
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.45);
+    background-color: rgba(var(--overlay-sidebar-bg), 0.45);
     filter: blur(15px);
     z-index: 15;
   }
@@ -48,7 +48,7 @@
   .layout-content {
     width: 100vw;
     min-height: calc(100vh - 130px);
-    top: 130px;
+    top: 135px;
     left: 0;
     padding: 0;
   }

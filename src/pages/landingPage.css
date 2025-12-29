@@ -23,12 +23,12 @@
 }
 
 .filter-buttons-container::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: var(--scrollbar-thumb-bg);
   border-radius: 10px;
 }
 
 .filter-buttons-container::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: var(--scrollbar-thumb-bg-hover);
 }
 
 .filter-buttons-container:active {
@@ -39,8 +39,8 @@
   border-radius: 10px;
   font-size: 1.1rem;
   font-weight: 400;
-  background-color: var(--bg-body-color);
-  border: 1px solid gray;
+  background-color: transparent;
+  border: 1px solid var(--filter-games-btn-border);
   padding: 0.5rem 1rem;
   cursor: pointer;
   height: fit-content;
@@ -48,7 +48,11 @@
 }
 
 .filter-games-button:hover {
-  background-color: aqua;
+  background-color: var(--filter-games-btn-bg-hover);
+}
+
+.filter-games-button:active {
+  background-color: var(--filter-games-btn-bg-active);
 }
 
 .games-grid {
