@@ -89,6 +89,21 @@ hr.separator {
   flex-direction: column;
 }
 
+.sidebar-game-img {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    width: 2rem;
+    object-fit: cover;
+}
+
+.sidebar-spinner-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  align-items: center;
+}
+
 .sidebar-links li {
   list-style: none;
   width: 100%;
@@ -96,13 +111,20 @@ hr.separator {
   font-weight: 400;
 }
 
+.sidebar-links > .sidebar-message-login {
+  padding: 0.75rem 0 0.75rem 10%;
+  color: rgb(255, 151, 151);
+}
+
 .sidebar-links li a {
   text-decoration: none;
   color: inherit;
-  padding: 0.75rem 0 0.75rem 10%;
   width: 100%;
   height: 100%;
-  display: block;
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+  padding: 0.75rem 0 0.75rem 10%;
 }
 
 .sidebar-links li a:hover, .sidebar-links li a:focus {
@@ -115,6 +137,16 @@ hr.separator {
   background-color: var(--bg-anchor-active-color);
   border-radius: 10px;
   cursor: pointer;
+}
+
+.sidebar-game-title-favorite {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 @media (max-width: 768px) {

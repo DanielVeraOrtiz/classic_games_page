@@ -34,7 +34,7 @@ render y por ello están en un useEffect que con [] se ejecuta al montarse.
 
 Aquí esta el punto clave: 
 
-- Layout hace re-render cada vez que cambia isOpen, esto hace que todo lo que esta dentro haga re-render. Haciendo una jerarquía de re-renders. Por ejemplo cambnia isOpen y hay re-render de layout, lo cual renderiza de nuevo la navbar y esta a su vez a sus hijos que son el logo y el botón.
+- Layout hace re-render cada vez que cambia isOpen, esto hace que todo lo que esta dentro haga re-render, provocando una jerarquía de re-renders. Por ejemplo si cambia isOpen, entonces hay re-render de layout, lo cual renderiza de nuevo la navbar y esta a su vez a sus hijos que son el logo y el botón.
 
 - Lo anterior se puede evitar usando React.memo, que solo si no cambian las props entonces usando el render anterior en el rerender del layout. Sin embargo, a pesar de que React.memo memoize navbar, esta ocupara el render anterior, pero si hará re-render de sus hijos componentes. Por lo que de ser necesario estos deben llevar React.memo también. En caso contrario puede navbar no hacer re-render, pero el logo si (Comprobado por consoles.logs).
 

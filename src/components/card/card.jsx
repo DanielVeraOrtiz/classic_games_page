@@ -1,11 +1,14 @@
 import './card.css';
 import PropTypes from 'prop-types';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from 'react-router-dom';
+import FavButton from '../favButton/favButton';
+import { AuthContext } from '../../auth/authContext';
 
-export default function Card({ id, title, content, imgSrc, imgAlt}) {
-  console.log('La card se renderiza nuevamente');
-  const [hoverColor, setHoverColor] = useState(`#${Math.floor(Math.random()*16777215).toString(16)}`);
+export default function Card({ id, title, content, imgSrc, imgAlt, category, favorite}) {
+  // console.log('La card se renderiza nuevamente');
+  const [hoverColor, setHoverColor] = useState(`gray`);
+  const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const img = new Image();
@@ -53,7 +56,16 @@ export default function Card({ id, title, content, imgSrc, imgAlt}) {
       <article className="card">
         <img src={imgSrc} alt={imgAlt} className='card-image' />
         <div className="card-content">
-          <h2 className="card-title">{title}</h2>
+          <div className='card-heading'>
+            <h2 className="card-title">{title}</h2>
+            { isAuthenticated ? (
+            <FavButton favorite={favorite} id={id} imgUrl={imgSrc} category={category} title={title}/>
+            ) : (
+              <></>
+            )
+            } 
+          </div>
+          <p className="card-text category">{category} Game</p>
           <p className="card-text">{content}</p>
         </div>
         <div

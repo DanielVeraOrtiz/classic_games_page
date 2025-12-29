@@ -1,12 +1,17 @@
 import './navbar.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ButtonOpen from '../buttonOpen/buttonOpen';
+import { AuthContext } from '../../auth/authContext';
+import Spinner from '../spinner/spinner';
+import ModalLoginSignUp from '../modalLoginSignUp/modalLoginSignUp';
+import axios from 'axios';
 // Iconos
 import { CiSearch } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import IconYoutube from '../../iconComponents/iconYoutube';
+import { MdFavorite } from "react-icons/md";
 
 // El React.memo no funciona, por que isOpen cambia cada vez que se abre o cierra el sidebar,
 // pero si se saca eso el console log se muestra una sola vez al renderizar el componente, por lo 
@@ -18,6 +23,32 @@ import IconYoutube from '../../iconComponents/iconYoutube';
 // AL FINAL USE USECONTEXT PARA QUE NO SE RENDERIZARA MAS VECES. PARA PROBAR NO MAS.
 function Navbar() {
   console.log('Navbar renderizada de nuevo'); // No aparece mas veces que cuando se monta gracias a react.memo
+  const { isAuthenticated, isLoading, logout, username } = useContext(AuthContext);
+  const [gameData, setGameData] = useState([]);
+  const navigate = useNavigate();
+
+  const handleChangeSearchInput = (e) => {
+    const selected = e.target.value;
+
+    const game = gameData.find(g => g.title === selected);
+    if (game) {
+      navigate(`/game/${game.id}`);
+    }
+  };
+
+  useEffect(() => {
+    const fetchGameData = async () => {
+      try {
+        const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
+        setGameData(response.data);
+        console.log('La obtencion de juegos fue exitosa');
+      } catch (error) {
+        console.error(`Se obtuvo el siguiente error ${error}`);
+      }
+    }
+    fetchGameData();
+  }, [])
+
   return (
     <header className={`header`}>
       <nav className='navbar' aria-label="Barra de navegación principal">
@@ -29,18 +60,36 @@ function Navbar() {
         </div>
         <div className='search-bar'>
           <label htmlFor="search-input" className="visually-hidden">Buscar</label>
-          <input id="search-input" className='search-input' type='text' placeholder='Buscar' />
+          <input id="search-input" className='search-input' type='text' placeholder='Buscar' list='game-list' onChange={handleChangeSearchInput} />
+          <datalist id='game-list'>
+            {gameData.map(game => (
+              <option key={game.id} value={game.title} />
+            ))}
+          </datalist>
           <button className='search-button' aria-label='Buscar' title='Buscar'>
             <CiSearch aria-hidden="true" focusable="false"/>
           </button>
         </div>
         <div className='navbar-user'>
-          <div className='container-user' aria-label="Panel de usuario" title='Panel de usuario' tabIndex="0">
-            <div className='icon-container'>
-              <FaRegUserCircle aria-hidden="true" focusable="false"/>
+          { !isLoading ? (isAuthenticated ? (
+            <div className='container-user' aria-label="Panel de usuario" title='Panel de usuario' tabIndex="0">
+              <div className='icon-container'>
+                <FaRegUserCircle aria-hidden="true" focusable="false"/>
+              </div>
+              <p className='username'>{username}</p>
+              <div className='dropdown-user-menu'>
+                <Link to='/user/favoritesgames'><MdFavorite />Juegos favoritos</Link>
+                <button onClick={logout}>Cerrar sesión</button>
+              </div>
             </div>
-            <p className='username'>Pyng Lesther Marcian</p>
-          </div>
+          ) : (
+            <ModalLoginSignUp />
+          )) : (
+            <div className='container-user'>
+              <Spinner size='30px' />
+            </div>
+          )
+          }
         </div>
       </nav>
     </header>
@@ -51,7 +100,6 @@ Navbar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 }
-
 
 // Si las props no cambian entonces la navbar usa el renderizado anterior. En este caso no tengo props.
 // Si uso useContext en lugar de props, como react.memo solo revisa props (shallow comparison), entonces
@@ -67,4 +115,5 @@ Navbar.propTypes = {
 
 // Ojo como si re renderiza el icono de la pagina, sin react.memo lo hace, o sea react.memo ocupa el render
 // anterior si no cambiaron los props, pero hace re render de sus hijos.
+
 export default React.memo(Navbar);

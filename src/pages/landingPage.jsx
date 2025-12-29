@@ -2,7 +2,32 @@ import './landingPage.css'
 import games from './gamesData'
 import Card from '../components/card/card';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../auth/authContext';
+import Spinner from '../components/spinner/spinner';
+
+const categories = [
+  "All",
+  "Puzzle",
+  "Arcade",
+  "Action",
+  "Adventure",
+  "Hypercasual",
+  "Racing",
+  "Clicker",
+  "Shooting",
+  "Multiplayer",
+  "Sports",
+  "Girls",
+  "Stickman",
+  "Boys",
+  "3D",
+  "Soccer",
+  "Cooking",
+  ".IO",
+  "Baby Hazel"
+];
+
 
 // Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
 // lo cual pasaria cada vez que cambia isOpen. Sin embargo no pasa, aunque vimos el ejemplo del logo que hace re render,
@@ -12,32 +37,80 @@ import { useState, useEffect } from 'react';
 export default function LandingPage() {
   console.log('La landing page se renderiza nuevamente');
   const [gameData, setGameData] = useState([]);
+  const [games, setGames] = useState([]);
+  const [favorites, setFavorites] = useState(new Set());
+  const { token, isAuthenticated } = useContext(AuthContext);
+  const [ messageError, setMessageError ] = useState('');
+  const [ isLoading, setIsLoading ] = useState(true);
 
+  // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
   useEffect(() => {
     const fetchGameData = async () => {
       try {
+        if (isAuthenticated) {
+          const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setFavorites(new Set(responseFavorites.data.map((favorite) => `${favorite.game_id}`)));
+        }
         const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
         setGameData(response.data);
-        console.log(response.data);
+        setGames(response.data)
         console.log('La obtencion de juegos fue exitosa');
       } catch (error) {
         console.error(`Se obtuvo el siguiente error ${error}`);
+        setMessageError('El servidor de GameMonetize no esta funcionando vuelva en otro momento');
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchGameData();
-  }, [])
-  return (
-    <section className='games-grid'>
-      {gameData.map((game, index) => (
-        <Card
-          key={game.id}
-          id={game.id}
-          title={game.title}
-          content={game.description}
-          imgSrc={game.thumb}
-          imgAlt={game.title}
-        />
-      ))}
-    </section>
-  );
+  }, [isAuthenticated])
+
+  const handleFilterButton = (e) => {
+    const {value} = e.target;
+    if (value === 'All') {
+      setGames(gameData);
+      return;
+    }
+    setGames(gameData.filter(game => game.category === value));
+  }
+  if (isLoading) {
+    return (
+      <div className='landing-page-spinner-container'>
+        <Spinner size='50px' />
+      </div>
+    );
+  } else if (!isLoading && messageError) {
+    return (
+      <h1 className='error-message'>{messageError}</h1>
+    );
+  } else {
+    return (
+      <>
+        <div className='filter-buttons-container'>
+          {categories.map(category => (
+            <button className='filter-games-button' value={category} onClick={handleFilterButton}>{category}</button>
+          ))}
+        </div>
+        <section className='games-grid'>
+          {games.map((game, index) => {
+            return (
+            <Card
+              key={game.id}
+              id={game.id}
+              title={game.title}
+              content={game.description}
+              imgSrc={game.thumb}
+              imgAlt={game.title}
+              category={game.category}
+              favorite={isAuthenticated ? favorites.has(game.id) : false}
+            />
+          )})}
+        </section>
+      </>
+    );
+  }
 }

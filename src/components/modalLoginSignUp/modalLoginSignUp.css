@@ -1,0 +1,139 @@
+.login-modal {
+    width: 75%;
+    margin: auto auto;
+    background-color: var(--bg-body-color);
+    border: none;
+    border-radius: 15px;
+}
+
+.login-modal::backdrop {
+    backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay-forms {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    z-index: 1;
+    background-color: gray;
+    border: none;
+    transform: translateX(0%);
+    transition: transform 0.5s ease-in-out;
+    background: url('../../assets/FondoGamerx2.jpg');
+    background-size: 150%;
+    background-position: center;
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem
+}
+
+.overlay-forms::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 0;
+}
+
+.overlay-forms > * {
+  position: relative;
+  z-index: 1;
+}
+
+.overlay-forms p {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.overlay-forms button {
+    width: 50%;
+    margin: 0 auto;
+    border: none;
+    border-radius: 10px;
+    background-color: red;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.overlay-forms.switch {
+    transform: translateX(100%);
+}
+
+.forms-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 60vh;
+}
+
+.forms-container h2 {
+    text-align: center;
+}
+
+.signup-container {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.login-container {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.signup-form, .login-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 1rem 2rem;
+}
+
+.signup-form label, .login-form label {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0 0 0 0.5rem;
+}
+
+.signup-form input, .login-form input {
+    border-radius: 10px;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.signup-form .submit-signup-form, .login-form .submit-login-form {
+    width: 50%;
+    margin: 0 auto;
+    background-color: red;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.signup-form .submit-signup-form:hover, .login-form .submit-login-form:hover {
+    background-color: aqua;
+}
+
+.signup-form .submit-signup-form:active, .login-form .submit-login-form:active {
+    background-color: rgb(255, 51, 0);
+}
+
+.error-message {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgb(241, 113, 113);
+}

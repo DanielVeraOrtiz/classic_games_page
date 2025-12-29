@@ -6,6 +6,8 @@ import Tag from '../components/tags/tags';
 import GameInformation from '../components/gameInformation/gameInformation';
 import OtherGames from '../components/otherGames/otherGames';
 import { OpenSidebarContext } from '../Layout';
+import { AuthContext } from '../auth/authContext';
+import FavButton from '../components/favButton/favButton';
 
 //Iconos
 import { IoIosResize } from "react-icons/io";
@@ -18,12 +20,15 @@ import { IoIosResize } from "react-icons/io";
 function GamePage() {
   console.log('GamePage se renderiza nuevamente');
   const { setIsOpen } = useContext(OpenSidebarContext);
-  const {id} = useParams();
+  const { token, isAuthenticated } = useContext(AuthContext);
+  const { id } = useParams();
   const [game, setGame] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const gameRef = useRef(null);
   const otherRef = useRef(null);
+  const [isFavorite, setIsFavorite] = useState(null);
+  const [messageError, setMessageError] = useState('');
 
   useEffect(() => {
     setIsOpen(false);
@@ -34,6 +39,25 @@ function GamePage() {
   }, []);
 
   useEffect(() => {
+    const isFavoriteGame = async () => {
+      try {
+        const responseFavorite = await axios.get(`http://localhost:3000/favorites/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        console.log(responseFavorite);
+        setIsFavorite(true);
+      } catch (error) {
+        console.error(error);
+        setIsFavorite(false);
+      }
+    }
+
+    isFavoriteGame();
+  }, [id])
+  
+  useEffect(() => {
     const fetchGameData = async () => {
       try {
         const response = await axios.get(`https://gamemonetize.com/feed.php?format=0&id=${id}`);
@@ -41,6 +65,7 @@ function GamePage() {
         console.log('Obtencion del juego sin problemas');
       } catch (error) {
         console.error('Sucedió un error: ' + error);
+        setMessageError('El servidor de GameMonetize no esta funcionando vuelva en otro momento');
       } finally {
         setIsLoading(false);
       }
@@ -85,6 +110,10 @@ function GamePage() {
     return (
       <h1>Cargando</h1>
     );
+  } else if (!isLoading && messageError) {
+    return (
+      <h1 className='error-message'>{messageError}</h1>
+    );
   } else {
     return (
       <div className={`container ${isFullScreen ? 'full' : ''}`} role="main">
@@ -92,9 +121,14 @@ function GamePage() {
           <div className='game-heading'>
             <img className='game-img' src={game.thumb} alt={`Miniatura del juego ${game.title}`} />
             <h1 className='game-title'>{game.title}</h1>
-            <button className='resize' aria-label='resize-button' onClick={handleFullScreenButton}>
-              <IoIosResize aria-hidden='true' focusable='false' />
-            </button>
+            <div className='resize-fav-container'>
+              { isAuthenticated &&
+                <FavButton favorite={isFavorite} id={id} imgUrl={game.thumb} category={game.category} title={game.title} />
+              }
+              <button className='resize' aria-label='resize-button' onClick={handleFullScreenButton}>
+                <IoIosResize aria-hidden='true' focusable='false' />
+              </button>
+            </div>
           </div>
           <iframe className='game' src={game.url} title={`Juego: ${game.title}`}></iframe>
           <div className='game-information'>

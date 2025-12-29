@@ -83,7 +83,7 @@
     font-weight: 400;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     color: var(--text-secondary-color);
     overflow: hidden;
     text-overflow: ellipsis;
