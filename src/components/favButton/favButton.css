@@ -1,0 +1,17 @@
+.btn-fav {
+  position: relative;
+  background-color: transparent;
+  color: var(--btn-favorite-color);
+  border: none;
+  font-size: 1.5rem;
+  transition: color 0.3s ease-in-out;
+  position: relative;
+  top: 3px;
+}
+
+.btn-fav.checked {
+  color: var(--btn-favorite-color-checked);
+  transition: color 0.3s ease-in-out;
+  position: relative;
+  top: 3px;
+}

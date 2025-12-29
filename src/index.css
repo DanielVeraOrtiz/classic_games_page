@@ -7,17 +7,55 @@
 
 :root {
   color-scheme: light;
-  --primary-color: #E379AF;
-  --secondary-color: #FF9060;
-  --success-color: #00bc8c;
-  --danger-color: #F1B7D5;
-  --warning-color: #F7B99E;
-  --info-color: #3498db;
-  --light-color: var(--bs-white);
-  --dark-color: var(--bs-black);
-  --bs-body-bg: #F8F8F8;
-  --bs-body-color: var(--bs-black);
-  --bs-body-color-rgb: 0, 0, 0;
+  --bg-body-color: #e4e4e4;
+  --bg-body-color-rgb: 228, 228, 228;
+  --text-body-color: #141414;
+  --secondary-text-body-color: white;    /* equivalente a #f1f1f1 pero invertido */
+  --text-secondary-color: #555555;     /* equivalente a #aaaaaa pero para claro */
+  --bg-anchor-hover-color: #d6d5d5;    /* equivalente claro a #272727 */
+  --bg-anchor-active-color: #cfcfcf;   /* equivalente claro a #525252 */
+  --bg-hr-color: #d3d3d3;              /* equivalente claro a #3f3f3f */
+  --border-bg-search-color: #cccccc;   /* equivalente claro a #222222 */
+  --border-focus-search-color: #888888;/* equivalente claro a gray */
+  --color-youtube: #000000;            /* invertido de white */
+  --color-white-focus-visible: #000000;/* invertido de white */
+  --main-bg-color: #f5f5f5;
+  --btn-favorite-color: gray;
+  --btn-favorite-color-checked: red;
+  --game-information-background-color: rgb(233, 233, 233);
+  --overlay-forms: 0, 0, 0;
+  --overlay-forms-btn-bg: red;
+  --overlay-forms-btn-bg-hover: rgb(155, 4, 4);
+  --overlay-forms-btn-bg-active: rgb(161, 32, 0);
+  --error-message-color: rgb(241, 113, 113);
+  --dropdown-bg-color: #dfd9d9;
+  --dropdown-btn-bg-color: red;
+  --dropdown-btn-bg-color-hover: rgb(155, 4, 4);
+  --dropdown-btn-bg-color-active: rgb(161, 32, 0);
+  --sidebar-login-required-message: rgb(46, 28, 28);
+  --spinner-bg: transparent;
+  --spinner-border-color: gray;
+  --spinner-border-top-color: red;
+  --tag-border-color: #b9b5b5;
+  --resize-btn-bg: rgb(187, 4, 4);
+  --resize-btn-bg-hover: rgb(126, 3, 3);
+  --resize-btn-bg-active: rgb(87, 0, 0);
+  --scrollbar-thumb-bg: rgba(180, 180, 180, 0.6);
+  --scrollbar-thumb-bg-hover: rgba(180, 180, 180, 0.8);
+  --filter-games-btn-border: gray;
+  --filter-games-btn-bg-hover: #d6d5d5;
+  --filter-games-btn-bg-active: #cfcfcf;
+  --overlay-sidebar-bg: 0, 0, 0;
+  --bg-anchor-active-color-secundary: #b9b5b5;
+  --other-games-bg-color: rgb(233, 233, 233);
+}
+
+.logo-page {
+  content: url('assets/logo-light.png');
+  width: 150px;
+  height: auto;
+  padding: 0.5rem;
+  border-radius: 15px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,6 +64,8 @@
     --bg-body-color: #0f0f0f;
     --bg-body-color-rgb: 15, 15, 15;
 		--text-body-color: #f1f1f1;
+    --secondary-text-body-color: white;
+    --text-secondary-color: #aaaaaa;
 		--bg-anchor-hover-color: #272727;
 		--bg-anchor-active-color: #525252;
 		--bg-hr-color: #3f3f3f;
@@ -33,11 +73,51 @@
     --border-focus-search-color: gray;
     --color-youtube: white;
     --color-white-focus-visible: white;
+    --main-bg-color: #111111;
+    --btn-favorite-color: gray;
+    --btn-favorite-color-checked: red;
+    --game-information-background-color: #272727;
+    --overlay-forms: 0, 0, 0;
+    --overlay-forms-btn-bg: red;
+    --overlay-forms-btn-bg-hover: rgb(155, 4, 4);
+    --overlay-forms-btn-bg-active: rgb(161, 32, 0);
+    --error-message-color: rgb(241, 113, 113);
+    --dropdown-bg-color: #282828;
+    --dropdown-btn-bg-color: red;
+    --dropdown-btn-bg-color-hover: rgb(155, 4, 4);
+    --dropdown-btn-bg-color-active: rgb(161, 32, 0);
+    --sidebar-login-required-message: rgb(245, 200, 200);
+    --spinner-bg: transparent;
+    --spinner-border-color: gray;
+    --spinner-border-top-color: red;
+    --tag-border-color: white;
+    --resize-btn-bg: rgb(187, 4, 4);
+    --resize-btn-bg-hover: rgb(126, 3, 3);
+    --resize-btn-bg-active: rgb(87, 0, 0);
+    --scrollbar-thumb-bg: rgba(255, 255, 255, 0.25);
+    --scrollbar-thumb-bg-hover: rgba(255, 255, 255, 0.4);
+    --filter-games-btn-border: gray;
+    --filter-games-btn-bg-hover: #272727;
+    --filter-games-btn-bg-active: #525252;
+    --overlay-sidebar-bg: 0, 0, 0;
+    --bg-anchor-active-color-secundary: #1b1b1b;
+    --other-games-bg-color: transparent;
+    --overlay-forms-btn-switch-bg: rgb(78, 78, 78);
+    --overlay-forms-btn-switch-bg-hover: rgb(63, 63, 63);
+    --overlay-forms-btn-switch-bg-active: rgb(92, 92, 92);
+  }
+
+  .logo-page {
+    content: url('assets/logo-dark.png');
+    width: 150px;
+    height: auto;
+    padding: 0.5rem;
+    border-radius: 15px;
   }
 }
 
 :focus-visible {
-  outline: 1.5px solid var(--color-white-focus-visible);
+  outline: 2px solid var(--color-white-focus-visible);
   border-radius: 10px;
 }
 
@@ -46,11 +126,10 @@ body {
   width: 100vw;
   overflow-x: hidden;
   min-height: 100vh;
-  background-color: #161616;
+  background-color: var(--bg-body-color);
+  position: relative;
 }
 
 #root {
   width: 100%;
-  position: relative;
-  min-height: 100vh;
 }

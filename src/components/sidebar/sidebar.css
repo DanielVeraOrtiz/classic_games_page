@@ -8,7 +8,7 @@
 
 .sidebar {
   width: 275px;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -18,7 +18,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 200;
+  z-index: 20;
   background-color: var(--bg-body-color);
   color: var(--text-body-color);
   padding: 0.5rem 1rem;
@@ -27,12 +27,12 @@
 
 .sidebar.open {
   transform: translateX(0);
-  transition: 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
 }
 
 .sidebar.closed {
   transform: translateX(-100%);
-  transition: 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
 }
 
 .sidebar-logo {
@@ -40,7 +40,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 0.5rem 0 0 10%;
+  padding: 0 0 0 10%;
   gap: 0.5rem;
 }
 
@@ -76,7 +76,7 @@ hr.separator {
 }
 
 .sidebar-title {
-  font-weight: 700;
+  font-weight: 625;
   font-size: 1.25rem;
   padding-left: 10%;
   width: 100%;
@@ -87,22 +87,47 @@ hr.separator {
   width: 100%;
   display: flex;
   flex-direction: column;
+  max-height: 315px;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.sidebar-game-img {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    width: 2rem;
+    object-fit: cover;
+}
+
+.sidebar-spinner-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  align-items: center;
 }
 
 .sidebar-links li {
   list-style: none;
   width: 100%;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.sidebar-links > .sidebar-message-login {
+  padding: 0.75rem 0 0.75rem 10%;
+  color: var(--sidebar-login-required-message);
 }
 
 .sidebar-links li a {
   text-decoration: none;
   color: inherit;
-  padding: 0.75rem 0 0.75rem 10%;
   width: 100%;
   height: 100%;
-  display: block;
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+  padding: 0.75rem 0 0.75rem 10%;
 }
 
 .sidebar-links li a:hover, .sidebar-links li a:focus {
@@ -115,6 +140,21 @@ hr.separator {
   background-color: var(--bg-anchor-active-color);
   border-radius: 10px;
   cursor: pointer;
+}
+
+.sidebar-game-title-favorite {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.icons-sidebar {
+  font-size: 28px;
+  aspect-ratio: 1 / 1;
 }
 
 @media (max-width: 768px) {

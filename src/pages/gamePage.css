@@ -1,0 +1,142 @@
+.spinner-gamepage-container {
+    display: flex;
+    width: 100%;
+    height: 60vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.container.full {
+    flex-direction: column;
+}
+
+.game-container {
+    width: 70%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.container.full .game-container{
+    width: 100%;
+}
+
+.game-heading {
+    display: flex;
+    flex-direction: row;
+    column-gap: 1rem;
+    order: 2;
+    padding: 0 1rem;
+    align-items: center;
+    width: 100%;
+}
+
+.game-img {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    width: 3rem;
+    object-fit: cover;
+}
+
+.game-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-body-color);
+}
+
+.resize-fav-container {
+    margin-left: auto;
+    display: flex;
+    column-gap: 1rem;;
+    align-items: center;
+}
+
+.resize-fav-container .btn-fav {
+    font-size: 2rem;
+}
+
+.resize {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    background-color: var(--resize-btn-bg);
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-text-body-color);
+}
+
+.resize:hover, .resize:focus {
+    background-color: var(--resize-btn-bg-hover);
+}
+
+.resize:active {
+    background-color: var(--resize-btn-bg-active);
+}
+
+.game {
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    order: 1;
+    aspect-ratio: 16 / 9;
+}
+
+.container.full .game {
+    width: 100%;
+    height: calc(100vh - 80px - 3rem)
+}
+
+.game-information {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    flex: 1;
+    order: 3;
+    gap: 1rem;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-left: 1rem;
+}
+
+.other-games {
+    width: calc(30% - 2rem);
+    overflow-y: scroll;
+}
+
+.container.full .other-games {
+    width: 100%;
+    overflow-y: hidden;
+}
+
+@media (max-width: 1280px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .game-container {
+        width: 100%;
+    }
+
+    .other-games {
+        width: 100%;
+        overflow-y: hidden;
+    }
+}
