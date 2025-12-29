@@ -33,16 +33,15 @@ export default function AuthProvider({children}) {
                 setIsLoading(false);
                 return;
             }
-
             try {
                 const response = await axios.get('http://localhost:3000/users/auth/me', {
                     headers: {
                         Authorization: `Bearer ${token}`
                 }});
-                setIsAuthenticated(true);
                 setUserId(response.data.id);
                 setUserScope(response.data.scope);
                 setUsername(response.data.user.username);
+                setIsAuthenticated(true);
             } catch (err) {
                 logout();
                 console.error(err);

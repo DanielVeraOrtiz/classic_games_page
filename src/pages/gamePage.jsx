@@ -11,8 +11,6 @@ import FavButton from '../components/favButton/favButton';
 
 //Iconos
 import { IoIosResize } from "react-icons/io";
-import { MdFavorite } from "react-icons/md";
-import { MdFavoriteBorder } from "react-icons/md";
 
 // Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
 // lo cual pasaria cada vez que cambia isOpen. Sin embargo no pasa, aunque vimos el ejemplo del logo que hace re render,
@@ -22,7 +20,7 @@ import { MdFavoriteBorder } from "react-icons/md";
 function GamePage() {
   console.log('GamePage se renderiza nuevamente');
   const { setIsOpen } = useContext(OpenSidebarContext);
-  const { token, userId } = useContext(AuthContext);
+  const { token, isAuthenticated } = useContext(AuthContext);
   const { id } = useParams();
   const [game, setGame] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +28,7 @@ function GamePage() {
   const gameRef = useRef(null);
   const otherRef = useRef(null);
   const [isFavorite, setIsFavorite] = useState(null);
+  const [messageError, setMessageError] = useState('');
 
   useEffect(() => {
     setIsOpen(false);
@@ -66,6 +65,7 @@ function GamePage() {
         console.log('Obtencion del juego sin problemas');
       } catch (error) {
         console.error('Sucedió un error: ' + error);
+        setMessageError('El servidor de GameMonetize no esta funcionando vuelva en otro momento');
       } finally {
         setIsLoading(false);
       }
@@ -110,6 +110,10 @@ function GamePage() {
     return (
       <h1>Cargando</h1>
     );
+  } else if (!isLoading && messageError) {
+    return (
+      <h1 className='error-message'>{messageError}</h1>
+    );
   } else {
     return (
       <div className={`container ${isFullScreen ? 'full' : ''}`} role="main">
@@ -118,7 +122,9 @@ function GamePage() {
             <img className='game-img' src={game.thumb} alt={`Miniatura del juego ${game.title}`} />
             <h1 className='game-title'>{game.title}</h1>
             <div className='resize-fav-container'>
-              <FavButton favorite={isFavorite} id={id} imgUrl={game.thumb} category={game.category} title={game.title} />
+              { isAuthenticated &&
+                <FavButton favorite={isFavorite} id={id} imgUrl={game.thumb} category={game.category} title={game.title} />
+              }
               <button className='resize' aria-label='resize-button' onClick={handleFullScreenButton}>
                 <IoIosResize aria-hidden='true' focusable='false' />
               </button>

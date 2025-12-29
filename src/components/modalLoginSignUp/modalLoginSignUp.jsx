@@ -66,7 +66,7 @@ function ModalLoginSignUp() {
                 modalRef.current.close();
             } catch (err) {
                 console.error('Error: ', err);
-                setErrorMessageSignup(err.response.data);
+                setErrorMessageSignup(err.response?.data ? err.response.data : err.message);
             }
         }
 
@@ -83,7 +83,7 @@ function ModalLoginSignUp() {
                 modalRef.current.close();
             } catch (err) {
                 console.error('Error: ', err);
-                setErrorMessageLogin(err.response.data);
+                setErrorMessageLogin(err.response?.data ? err.response.data : err.message);
             }
         }
 

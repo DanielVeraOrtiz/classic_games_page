@@ -5,36 +5,38 @@ import React, { useState, useContext, useEffect } from "react";
 import ButtonOpen from '../buttonOpen/buttonOpen';
 import { AuthContext } from '../../auth/authContext';
 import axios from 'axios';
+import Spinner from '../spinner/spinner';
 // Iconos
 import IconYoutube from '../../iconComponents/iconYoutube';
 
 function Sidebar({isOpen}) {
   console.log('La sidebar se renderiza nuevamente');
   const [favorites, setFavorites] = useState([]);
-  const { token } = useContext(AuthContext);
+  const { token, isAuthenticated } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [messageError, setMessageError] = useState('');
 
   useEffect(() => {
     const fetchGameData = async () => {
       try {
-        const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        console.log(responseFavorites.data);
-        setFavorites(responseFavorites.data);
+        if (isAuthenticated) {
+          const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          console.log(responseFavorites.data);
+          setFavorites(responseFavorites.data);
+        }
       } catch (error) {
         console.error(`Se obtuvo el siguiente error ${error}`);
+        setMessageError('El servidor de la pagina esta fallando, vuelva mas tarde');
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchGameData();
-  }, [])
-
-  const juegos = [
-    { to: "/gato", label: "Gato" },
-    { to: "/memoria-cartas", label: "Memoria cartas" },
-    { to: "/precision", label: "Presición" },
-  ];
+  }, [isAuthenticated])
 
   const owner_path = [
     { to: "/profile", label: "Perfil" },
@@ -54,14 +56,25 @@ function Sidebar({isOpen}) {
         <hr className='separator'></hr>
         <p className='sidebar-title'>Juegos Favoritos</p>
         <ul className='sidebar-links'>
-          {favorites.map((juego) => (
+          { isAuthenticated ? (!isLoading ? (
+            !messageError ? (
+            favorites.map((juego) => (
             <li key={juego.game_id}>
               <Link to={`/game/${juego.game_id}`}>
                 <img className='sidebar-game-img' src={juego.game.imgUrl} />
-                {juego.game.title}
+                <p className='sidebar-game-title-favorite'>{juego.game.title}</p>
               </Link>
             </li>
-          ))}
+            ))) : (
+              <p className='error-message'>{messageError}</p>
+            )
+          ) : (
+            <div className='sidebar-spinner-container'>
+              <Spinner size='30px' />
+            </div>
+          )) : (
+            <li className='sidebar-message-login'>Debes iniciar sesión para agregar juegos a favoritos</li>
+          )}
         </ul>
         <hr className='separator'></hr>
         <p className='sidebar-title'>Tu</p>

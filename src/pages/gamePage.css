@@ -50,14 +50,16 @@
     align-items: center;
 }
 
-.btn-fav {
+.resize-fav-container .btn-fav {
     font-size: 2rem;
 }
 
 .resize {
     font-size: 1.5rem;
-    padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+    padding: 0.5rem;
     border-radius: 50%;
+    width: 42px;
+    height: 42px;
     aspect-ratio: 1 / 1;
     cursor: pointer;
     background-color: rgb(187, 4, 4);
