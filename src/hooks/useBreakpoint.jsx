@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 // export function useBreakpoint(breakpoint = 768) {
 //   const [matches, setMatches] = useState(window.innerWidth >= breakpoint);
@@ -21,10 +21,10 @@ export function useMediaQuery(query) {
   useEffect(() => {
     const media = window.matchMedia(query);
 
-    const listener = event => setMatches(event.matches);
-    media.addEventListener("change", listener);
+    const listener = (event) => setMatches(event.matches);
+    media.addEventListener('change', listener);
 
-    return () => media.removeEventListener("change", listener);
+    return () => media.removeEventListener('change', listener);
   }, [query]);
 
   return matches;

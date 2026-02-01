@@ -36,7 +36,8 @@
   transform: rotate(180deg);
 }
 
-.navbar-toggle:hover, .navbar-toggle:focus {
+.navbar-toggle:hover,
+.navbar-toggle:focus {
   cursor: pointer;
   background-color: var(--bg-anchor-hover-color);
   border-radius: 10px;
@@ -85,7 +86,8 @@
   align-items: center;
 }
 
-.search-button:hover, .search-button:focus {
+.search-button:hover,
+.search-button:focus {
   cursor: pointer;
   background-color: var(--bg-anchor-hover-color);
   border: 2px solid var(--bg-anchor-hover-color);
@@ -96,7 +98,8 @@
   border: 2px solid var(--bg-anchor-active-color);
 }
 
-.search-input::placeholder, .search-input:focus::placeholder {
+.search-input::placeholder,
+.search-input:focus::placeholder {
   color: var(--text-body-color);
   opacity: 0.85;
 }
@@ -125,7 +128,8 @@
   position: relative;
 }
 
-.container-user:hover, .container-user:focus {
+.container-user:hover,
+.container-user:focus {
   cursor: pointer;
   background-color: var(--bg-anchor-hover-color);
 }
@@ -144,7 +148,7 @@
 
 .username {
   color: inherit;
-  font-size: 1.1rem;    
+  font-size: 1.1rem;
   font-weight: 500;
 }
 
@@ -174,7 +178,9 @@
   opacity: 0;
   transform: translateY(-6px);
   pointer-events: none;
-  transition: opacity .2s ease, transform .2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .container-user:focus-within .dropdown-user-menu {
@@ -214,7 +220,7 @@
   font-weight: 500;
   cursor: pointer;
   width: 100%;
-  color: var(--secondary-text-body-color)
+  color: var(--secondary-text-body-color);
 }
 
 .dropdown-user-menu > button:hover {
