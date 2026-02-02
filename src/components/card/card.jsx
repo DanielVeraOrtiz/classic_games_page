@@ -1,28 +1,31 @@
 import './card.css';
 import PropTypes from 'prop-types';
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import FavButton from '../favButton/favButton';
 import { AuthContext } from '../../auth/authContext';
 
-export default function Card({ id, title, content, imgSrc, imgAlt, category, favorite}) {
+export default function Card({ id, title, content, imgSrc, imgAlt, category, favorite }) {
   console.log('The card is rendered again');
   const [hoverColor, setHoverColor] = useState(`gray`);
   const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = 'anonymous';
     img.src = imgSrc;
     img.onload = () => {
-      const canvas = document.createElement("canvas");
+      const canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
-      let r = 0, g = 0, b = 0, count = 0;
+      let r = 0,
+        g = 0,
+        b = 0,
+        count = 0;
       for (let i = 0; i < data.length; i += 4) {
         r += data[i];
         g += data[i + 1];
@@ -54,27 +57,29 @@ export default function Card({ id, title, content, imgSrc, imgAlt, category, fav
       // onBlur={() => setIsHovered(false)}
     >
       <article className="card">
-        <img src={imgSrc} alt={imgAlt} className='card-image' />
+        <img src={imgSrc} alt={imgAlt} className="card-image" />
         <div className="card-content">
-          <div className='card-heading'>
+          <div className="card-heading">
             <h2 className="card-title">{title}</h2>
-            { isAuthenticated ? (
-            <FavButton favorite={favorite} id={id} imgUrl={imgSrc} category={category} title={title}/>
+            {isAuthenticated ? (
+              <FavButton
+                favorite={favorite}
+                id={id}
+                imgUrl={imgSrc}
+                category={category}
+                title={title}
+              />
             ) : (
               <></>
-            )
-            } 
+            )}
           </div>
           <p className="card-text category">{category} Game</p>
           <p className="card-text">{content}</p>
         </div>
-        <div
-          className='card-inner'
-          style={{ "--hover-color": hoverColor }}
-        ></div>
+        <div className="card-inner" style={{ '--hover-color': hoverColor }}></div>
       </article>
     </Link>
-  )
+  );
 }
 
 Card.propTypes = {
@@ -83,4 +88,4 @@ Card.propTypes = {
   content: PropTypes.string.isRequired,
   imgSrc: PropTypes.string.isRequired,
   imgAlt: PropTypes.string.isRequired,
-}
+};

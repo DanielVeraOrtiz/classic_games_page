@@ -1,4 +1,6 @@
-*, ::after, ::before {
+*,
+::after,
+::before {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -10,15 +12,15 @@
   --bg-body-color: #e4e4e4;
   --bg-body-color-rgb: 228, 228, 228;
   --text-body-color: #141414;
-  --secondary-text-body-color: white;    /* equivalente a #f1f1f1 pero invertido */
-  --text-secondary-color: #555555;     /* equivalente a #aaaaaa pero para claro */
-  --bg-anchor-hover-color: #d6d5d5;    /* equivalente claro a #272727 */
-  --bg-anchor-active-color: #cfcfcf;   /* equivalente claro a #525252 */
-  --bg-hr-color: #d3d3d3;              /* equivalente claro a #3f3f3f */
-  --border-bg-search-color: #cccccc;   /* equivalente claro a #222222 */
-  --border-focus-search-color: #888888;/* equivalente claro a gray */
-  --color-youtube: #000000;            /* invertido de white */
-  --color-white-focus-visible: #000000;/* invertido de white */
+  --secondary-text-body-color: white; /* equivalente a #f1f1f1 pero invertido */
+  --text-secondary-color: #555555; /* equivalente a #aaaaaa pero para claro */
+  --bg-anchor-hover-color: #d6d5d5; /* equivalente claro a #272727 */
+  --bg-anchor-active-color: #cfcfcf; /* equivalente claro a #525252 */
+  --bg-hr-color: #d3d3d3; /* equivalente claro a #3f3f3f */
+  --border-bg-search-color: #cccccc; /* equivalente claro a #222222 */
+  --border-focus-search-color: #888888; /* equivalente claro a gray */
+  --color-youtube: #000000; /* invertido de white */
+  --color-white-focus-visible: #000000; /* invertido de white */
   --main-bg-color: #f5f5f5;
   --btn-favorite-color: gray;
   --btn-favorite-color-checked: red;
@@ -63,12 +65,12 @@
     color-scheme: dark;
     --bg-body-color: #0f0f0f;
     --bg-body-color-rgb: 15, 15, 15;
-		--text-body-color: #f1f1f1;
+    --text-body-color: #f1f1f1;
     --secondary-text-body-color: white;
     --text-secondary-color: #aaaaaa;
-		--bg-anchor-hover-color: #272727;
-		--bg-anchor-active-color: #525252;
-		--bg-hr-color: #3f3f3f;
+    --bg-anchor-hover-color: #272727;
+    --bg-anchor-active-color: #525252;
+    --bg-hr-color: #3f3f3f;
     --border-bg-search-color: #222222;
     --border-focus-search-color: gray;
     --color-youtube: white;

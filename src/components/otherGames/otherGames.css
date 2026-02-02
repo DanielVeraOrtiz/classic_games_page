@@ -1,126 +1,126 @@
 .other-games-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    background-color: var(--other-games-bg-color);
-    border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background-color: var(--other-games-bg-color);
+  border-radius: 10px;
 }
 
 .container.full .other-games-container {
-    flex-direction: row;
-    width: 100%;
+  flex-direction: row;
+  width: 100%;
 }
 
 .other-games-container > h2 {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .container.full .other-games-container > h2 {
-    display: none;
+  display: none;
 }
 
 .other-games-container > a {
-    text-decoration: none;
-    transition: background-color 0.3s ease-in-out;
-    border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 10px;
 }
 
 .other-games-container > a:hover,
 .other-games-container > a:focus {
-    background-color: var(--bg-anchor-hover-color);
+  background-color: var(--bg-anchor-hover-color);
 }
 
 .other-games-container > a:active {
-    background-color: var(--bg-anchor-active-color);
+  background-color: var(--bg-anchor-active-color);
 }
 
 .other-game-container {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 1rem;
-    padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  padding: 0.75rem 0.5rem;
 }
 
 .container.full .other-game-container {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .other-game-img {
-    width: 35%;
-    object-fit: cover;
-    border-radius: 10px;
-    aspect-ratio: 16 / 9;
+  width: 35%;
+  object-fit: cover;
+  border-radius: 10px;
+  aspect-ratio: 16 / 9;
 }
 
 .container.full .other-game-img {
-    width: 15rem;
+  width: 15rem;
 }
 
 .other-game-information {
-    width: calc(65% - 1rem);
+  width: calc(65% - 1rem);
 }
 
 .container.full .other-game-information {
-    width: 15rem;
+  width: 15rem;
 }
 
 .other-game-information > h4 {
-    color: var(--text-body-color);
-    font-size: 1.1rem;
-    font-weight: 600;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    margin-bottom: 0.25rem;
+  color: var(--text-body-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  margin-bottom: 0.25rem;
 }
 
 .other-game-information > p {
-    font-size: 1rem;
-    font-weight: 400;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    color: var(--text-secondary-color);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
+  font-size: 1rem;
+  font-weight: 400;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: var(--text-secondary-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 @media (max-width: 1280px) {
-    .other-games-container {
-        flex-direction: row;
-        width: 100%;
-    }
+  .other-games-container {
+    flex-direction: row;
+    width: 100%;
+  }
 
-    .other-games-container > h2 {
-        display: none;
-    }
+  .other-games-container > h2 {
+    display: none;
+  }
 
-    .other-game-container {
-        flex-direction: column;
-    }
+  .other-game-container {
+    flex-direction: column;
+  }
 
-    .other-game-img {
-        width: 15rem;
-    }
+  .other-game-img {
+    width: 15rem;
+  }
 
-    .other-game-information {
-        width: 15rem;
-    }
+  .other-game-information {
+    width: 15rem;
+  }
 }
 
 @media (max-width: 768px) {
-    .other-game-img {
-        width: 10rem;
-    }
+  .other-game-img {
+    width: 10rem;
+  }
 
-    .other-game-information {
-        width: 10rem;
-    }
+  .other-game-information {
+    width: 10rem;
+  }
 }

@@ -5,16 +5,15 @@ import GamePage from './pages/gamePage';
 import ModalLoginSignUp from './components/modalLoginSignUp/modalLoginSignUp';
 
 export default function Router() {
-
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path='/' element={<Layout />}>
-                    <Route index element={<LandingPage />} />
-                    <Route path='game/:id' element={<GamePage />} />
-                    <Route path='login-register' element={<ModalLoginSignUp/>} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<LandingPage />} />
+          <Route path="game/:id" element={<GamePage />} />
+          <Route path="login-register" element={<ModalLoginSignUp />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
