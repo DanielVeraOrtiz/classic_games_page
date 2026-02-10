@@ -1,5 +1,4 @@
 import './landingPage.css';
-import games from './gamesData';
 import Card from '../components/card/card';
 import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
