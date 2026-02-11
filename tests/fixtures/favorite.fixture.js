@@ -1,23 +1,17 @@
 import { test as base } from './game.fixture.js';
 
-async function createFavorite(userId, gameId) {
-  return {
-    id: crypto.randomUUID(),
-    userId,
-    gameId,
-  };
-}
-
-// async function deleteFavorite(id) {
-//   // eliminar favorite en DB
-// }
-
 export const test = base.extend({
-  favorite: async ({ user, game }, run) => {
-    const favorite = await createFavorite(user.id, game.id);
+  favorite: async ({ request, user, game }, run) => {
+    const data = { userId: user.id, gameId: game.id };
+    const headers = { 'x-test-token': 'TEST' };
+    const response = await request.post('http://localhost:3000/api/test/favorites', {
+      headers,
+      data,
+    });
+    const favorite = await response.json();
 
     await run(favorite);
 
-    // await deleteFavorite(favorite.id);
+    await request.delete(`http://localhost:3000/api/test/favorites/${favorite.id}`, { headers });
   },
 });

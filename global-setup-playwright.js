@@ -11,16 +11,5 @@ export default async () => {
     },
   });
 
-  await api.post('/api/test/users', {
-    headers: {
-      'x-test-token': 'TEST',
-    },
-    data: {
-      email: 'conny123@email.com',
-      password: 'Password12$',
-      username: 'conny',
-    },
-  });
-
   await api.dispose();
 };

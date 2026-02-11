@@ -1,5 +1,5 @@
 // @ts-check
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/index';
 import { LandingPage } from '../pages/LandingPage';
 
 // Esto usa workers que dan un comportamiento paralelo, por lo que beforeEach o beforeAll para resetear
@@ -17,10 +17,11 @@ test.describe('test auth operation. example: signin, login, logout', () => {
     await expect(userProfile).toBeVisible();
   });
 
-  test('Con los datos correctos se inicia sesion bien', async ({ page }) => {
+  test('Con los datos correctos se inicia sesion bien', async ({ page, user }) => {
+    console.log(favorite);
     const landingPage = new LandingPage(page);
     await landingPage.goto();
-    await landingPage.login('conny123@email.com', 'Password12$');
+    await landingPage.login(user.email, user.password);
     const userProfile = page.getByRole('link', { name: 'Go to my profile' });
     await expect(userProfile).toBeVisible();
   });

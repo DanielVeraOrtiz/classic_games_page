@@ -1,22 +1,14 @@
 import { test as base } from './user.fixture.js';
 
-async function createGame() {
-  return {
-    id: crypto.randomUUID(),
-    title: `Game-${Date.now()}`,
-  };
-}
-
-// async function deleteGame(id) {
-//   // eliminar game en DB
-// }
-
 export const test = base.extend({
-  game: async (_, run) => {
-    const game = await createGame();
+  game: async ({ request }, run, testInfo) => {
+    const data = { workId: testInfo.workerIndex };
+    const headers = { 'x-test-token': 'TEST' };
+    const response = await request.post('http://localhost:3000/api/test/games', { headers, data });
+    const game = await response.json();
 
     await run(game);
 
-    // await deleteGame(game.id);
+    await request.delete(`http://localhost:3000/api/test/games/${game.id}`, { headers });
   },
 });

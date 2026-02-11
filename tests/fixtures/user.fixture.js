@@ -1,20 +1,14 @@
 import { test as base } from '@playwright/test';
 
-// Simulación de funciones backend
-async function createUser(email) {
-  return { id: crypto.randomUUID(), email };
-}
-
 // Se cambia nombre, de use a run, para que no tenga problema el ESLint creyendo que es hook de React
 export const test = base.extend({
-  user: [
-    async (_, run, testInfo) => {
-      const email = `user-${testInfo.workerIndex}-${Date.now()}@test.com`;
+  user: async ({ request }, run) => {
+    const headers = { 'x-test-token': 'TEST' };
+    const response = await request.post('http://localhost:3000/api/test/users', { headers });
+    const user = await response.json();
 
-      const user = await createUser(email);
+    await run(user);
 
-      await run(user);
-    },
-    { scope: 'worker' },
-  ],
+    await request.delete(`http://localhost:3000/api/test/users/${user.id}`, { headers });
+  },
 });
