@@ -205,7 +205,9 @@ function ModalLoginSignUp() {
                 <button className="submit-signup-form" type="submit">
                   Create account
                 </button>
-                <p className="error-message">{errorMessageSignup}</p>
+                <p className="error-message" data-testid="error-signup">
+                  {errorMessageSignup}
+                </p>
               </form>
             </div>
           </div>
@@ -249,7 +251,9 @@ function ModalLoginSignUp() {
                 <button className="submit-login-form" type="submit">
                   Login
                 </button>
-                <p className="error-message">{errorMessageLogin}</p>
+                <p className="error-message" data-testid="error-login">
+                  {errorMessageLogin}
+                </p>
               </form>
             </div>
           </div>

@@ -41,7 +41,7 @@ function Sidebar({ isOpen }) {
   }, [isAuthenticated]);
 
   const owner_path = [
-    { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle },
+    { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle, testId: 'profile-link' },
     { to: '/settings', label: 'Open settings', icon: MdOutlineSettings },
   ];
 
@@ -101,7 +101,7 @@ function Sidebar({ isOpen }) {
               const Icon = path.icon;
               return (
                 <li key={path.to}>
-                  <Link to={path.to}>
+                  <Link to={path.to} data-testid={path.testId}>
                     <Icon className="icons-sidebar" />
                     {path.label}
                   </Link>

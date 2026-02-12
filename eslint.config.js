@@ -4,6 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import playwright from 'eslint-plugin-playwright';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -13,6 +14,7 @@ export default defineConfig([
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
+      playwright.configs['flat/recommended'],
     ],
     languageOptions: {
       ecmaVersion: 2020,
