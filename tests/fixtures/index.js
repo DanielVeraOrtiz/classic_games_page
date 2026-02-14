@@ -1,4 +1,4 @@
-export { test } from './favorite.fixture.js';
+export { test } from './favoriteSeed.fixture.js';
 export { expect } from '@playwright/test';
 
 // Esto importan los test y tienen aacceso a todas las fixtures. De hecho, en los tests solo las que

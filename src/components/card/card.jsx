@@ -9,6 +9,7 @@ export default function Card({ id, title, content, imgSrc, imgAlt, category, fav
   console.log('The card is rendered again');
   const [hoverColor, setHoverColor] = useState(`gray`);
   const { isAuthenticated } = useContext(AuthContext);
+  console.log('POR AQUI PUTITO DE MRD', favorite);
 
   useEffect(() => {
     const img = new Image();

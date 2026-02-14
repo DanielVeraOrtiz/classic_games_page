@@ -10,6 +10,7 @@ import { MdFavoriteBorder } from 'react-icons/md';
 function FavButton({ favorite, id, imgUrl, category, title }) {
   const [isFavorite, setIsFavorite] = useState(favorite);
   const { token, userId } = useContext(AuthContext);
+  console.log('POR AQUI PUTITO DE MRD v2', favorite);
 
   const handleFavButton = (e) => {
     e.preventDefault();

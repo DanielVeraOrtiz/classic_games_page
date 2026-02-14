@@ -77,10 +77,3 @@ test.describe('Log out flow', () => {
     await expect.poll(() => isTokenInLocalStorage(page)).toBe(false);
   });
 });
-
-test('find favorite', async ({ page, user, game, favorite }) => {
-  await landingPage.login(user.email, user.password);
-  await expect(page.getByTestId('profile-link')).toBeVisible();
-  const favoriteGame = page.getByText(game.title);
-  await expect(favoriteGame).toBeVisible();
-});

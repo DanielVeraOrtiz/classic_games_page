@@ -39,20 +39,38 @@ export default function LandingPage() {
   const [favorites, setFavorites] = useState(new Set());
   const { token, isAuthenticated } = useContext(AuthContext);
   const [messageError, setMessageError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingGames, setIsLoadingGames] = useState(true);
+  const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
+
+  useEffect(() => {
+    console.log('AUTH STATUS:', isAuthenticated);
+      const fetchFavoritesUser = async () => {
+        try {
+          if (isAuthenticated) {
+            const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            console.log(
+              'AQUI FAVORITES',
+              JSON.stringify(responseFavorites.data, null, 2)
+            );
+            setFavorites(new Set(responseFavorites.data.map((favorite) => String(favorite.game_id))));
+          }
+        } catch (error) {
+          console.error(`The following error was obtained ${error}`);
+        } finally {
+          setIsLoadingFavorites(false);
+        }
+      }
+      fetchFavoritesUser();
+  }, [isAuthenticated, token])
 
   // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
   useEffect(() => {
     const fetchGameData = async () => {
       try {
-        if (isAuthenticated) {
-          const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setFavorites(new Set(responseFavorites.data.map((favorite) => `${favorite.game_id}`)));
-        }
         const response = await axios.get(
           'https://gamemonetize.com/feed.php?format=0&num=50&page=1',
         );
@@ -63,11 +81,11 @@ export default function LandingPage() {
         console.error(`The following error was obtained ${error}`);
         setMessageError('The GameMonetize server is down, please try again later');
       } finally {
-        setIsLoading(false);
+        setIsLoadingGames(false);
       }
     };
     fetchGameData();
-  }, [isAuthenticated]);
+  }, []);
 
   const handleFilterButton = (e) => {
     const { value } = e.target;
@@ -77,13 +95,13 @@ export default function LandingPage() {
     }
     setGames(gameData.filter((game) => game.category === value));
   };
-  if (isLoading) {
+  if (isLoadingGames || isLoadingFavorites) {
     return (
       <div className="landing-page-spinner-container">
         <Spinner size="50px" />
       </div>
     );
-  } else if (!isLoading && messageError) {
+  } else if (!isLoadingGames && !isLoadingFavorites && messageError) {
     return <h1 className="error-message">{messageError}</h1>;
   } else {
     return (
@@ -106,7 +124,7 @@ export default function LandingPage() {
                 imgSrc={game.thumb}
                 imgAlt={game.title}
                 category={game.category}
-                favorite={isAuthenticated ? favorites.has(game.id) : false}
+                favorite={isAuthenticated ? favorites.has(String(game.id)) : false}
               />
             );
           })}
