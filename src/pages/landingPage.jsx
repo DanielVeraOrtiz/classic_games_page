@@ -44,28 +44,25 @@ export default function LandingPage() {
 
   useEffect(() => {
     console.log('AUTH STATUS:', isAuthenticated);
-      const fetchFavoritesUser = async () => {
-        try {
-          if (isAuthenticated) {
-            const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-            console.log(
-              'AQUI FAVORITES',
-              JSON.stringify(responseFavorites.data, null, 2)
-            );
-            setFavorites(new Set(responseFavorites.data.map((favorite) => String(favorite.game_id))));
-          }
-        } catch (error) {
-          console.error(`The following error was obtained ${error}`);
-        } finally {
-          setIsLoadingFavorites(false);
+    const fetchFavoritesUser = async () => {
+      try {
+        if (isAuthenticated) {
+          const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          console.log('AQUI FAVORITES', JSON.stringify(responseFavorites.data, null, 2));
+          setFavorites(new Set(responseFavorites.data.map((favorite) => String(favorite.game_id))));
         }
+      } catch (error) {
+        console.error(`The following error was obtained ${error}`);
+      } finally {
+        setIsLoadingFavorites(false);
       }
-      fetchFavoritesUser();
-  }, [isAuthenticated, token])
+    };
+    fetchFavoritesUser();
+  }, [isAuthenticated, token]);
 
   // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
   useEffect(() => {
