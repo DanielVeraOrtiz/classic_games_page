@@ -35,6 +35,7 @@ test.describe('User can access gamePage fron his favorites or catalog', () => {
     await landingPage.login(user.email, user.password);
     await page.getByTestId('profile-link').waitFor();
     await page.getByTitle('Agregar a favoritos').first().click();
+    await page.getByTitle('Eliminar de favoritos').waitFor();
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('link', { name: gamesMockApi[0].title }).click();
     await expect(
@@ -72,6 +73,7 @@ test.describe('User can add to his favorite games from the gamePage', () => {
     await landingPage.login(user.email, user.password);
     await expect(page.getByTitle('Agregar a favoritos')).toBeVisible();
     await page.getByTitle('Agregar a favoritos').click();
+    await page.getByTitle('Eliminar de favoritos').waitFor();
     await page.reload({ waitUntil: 'networkidle' });
     await expect(page.locator('[data-testid="favorites-list"] li')).toHaveCount(1);
     await expect(page.getByRole('link', { name: gamesMockApi[0].title })).toBeVisible();
@@ -80,8 +82,10 @@ test.describe('User can add to his favorite games from the gamePage', () => {
   test('User logged in can add to his favorite a game from gamePage', async ({ page, user }) => {
     await landingPage.login(user.email, user.password);
     await page.locator('a.card-link').filter({ hasText: gamesMockApi[0].title }).click();
+    await page.getByRole('button', { name: 'Open menu' }).waitFor();
     await expect(page.getByTitle('Agregar a favoritos')).toBeVisible();
     await page.getByTitle('Agregar a favoritos').click();
+    await page.getByTitle('Eliminar de favoritos').waitFor();
     await page.reload({ waitUntil: 'networkidle' });
     await expect(page.locator('[data-testid="favorites-list"] li')).toHaveCount(1);
     await expect(page.getByRole('link', { name: gamesMockApi[0].title })).toBeVisible();
@@ -90,9 +94,11 @@ test.describe('User can add to his favorite games from the gamePage', () => {
   test('User logged in can delete favorite game from gamePage', async ({ page, user }) => {
     await landingPage.login(user.email, user.password);
     await page.getByTitle('Agregar a favoritos').nth(0).click();
+    await page.getByTitle('Eliminar de favoritos').waitFor();
     await page.locator('a.card-link').filter({ hasText: gamesMockApi[0].title }).click();
     await expect(page.getByTitle('Eliminar de favoritos')).toBeVisible();
     await page.getByTitle('Eliminar de favoritos').click();
+    await page.getByTitle('Agregar a favoritos').waitFor();
     await page.reload({ waitUntil: 'networkidle' });
     await expect(page.locator('[data-testid="favorites-list"] li')).toHaveCount(0);
     await expect(page.getByRole('link', { name: gamesMockApi[0].title })).toBeHidden();
@@ -103,8 +109,12 @@ test.describe('User can change games from his favorite games section in sidebar'
   test('User can change games in sidebar', async ({ page, user }) => {
     await landingPage.login(user.email, user.password);
     await page.getByTestId('profile-link').waitFor();
-    await page.getByTitle('Agregar a favoritos').nth(0).click();
-    await page.getByTitle('Agregar a favoritos').nth(1).click();
+    const firstGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[0].title });
+    const secondGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[1].title });
+    await firstGameCard.getByTitle('Agregar a favoritos').click();
+    await secondGameCard.getByTitle('Agregar a favoritos').click();
+    await firstGameCard.getByTitle('Eliminar de favoritos').waitFor();
+    await secondGameCard.getByTitle('Eliminar de favoritos').waitFor();
     await page.reload({ waitUntil: 'networkidle' });
     await page.locator('a.card-link').filter({ hasText: gamesMockApi[0].title }).click();
     await page.getByRole('button', { name: 'Open menu' }).click();

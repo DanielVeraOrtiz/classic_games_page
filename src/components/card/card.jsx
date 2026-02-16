@@ -51,6 +51,7 @@ export default function Card({ id, title, content, imgSrc, imgAlt, category, fav
     <Link
       to={`/game/${id}`}
       className="card-link"
+      data-testid="game-card"
       // onMouseEnter={handleMouseEnter}
       // onMouseLeave={handleMouseLeave}
       // onFocus={() => setIsHovered(true)}

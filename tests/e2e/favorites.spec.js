@@ -43,8 +43,12 @@ test.describe('User can add and see his favorites games in sidebar', () => {
   }) => {
     await landingPage.login(user.email, user.password);
     await page.getByTestId('profile-link').waitFor();
-    await page.getByTitle('Agregar a favoritos').nth(0).click();
-    await page.getByTitle('Agregar a favoritos').nth(1).click();
+    const firstGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[0].title });
+    const secondGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[1].title });
+    await firstGameCard.getByTitle('Agregar a favoritos').click();
+    await secondGameCard.getByTitle('Agregar a favoritos').click();
+    await expect(firstGameCard.getByTitle('Eliminar de favoritos')).toBeVisible();
+    await expect(secondGameCard.getByTitle('Eliminar de favoritos')).toBeVisible();
     await page.reload({ waitUntil: 'networkidle' });
     await expect(page.getByRole('link', { name: game.title })).toBeVisible();
     await expect(page.getByRole('link', { name: gamesMockApi[0].title })).toBeVisible();
@@ -54,19 +58,25 @@ test.describe('User can add and see his favorites games in sidebar', () => {
 });
 
 test.describe('User can delete games from his favorite games', () => {
-  test('User can have favorites and add 2 new favorites, then user can delete his new favorite', async ({
+  test('User can have favorites and add 2 new favorites, then user can delete his new favorites', async ({
     page,
     user,
     favoriteSeed,
   }) => {
     await landingPage.login(user.email, user.password);
     await page.getByTestId('profile-link').waitFor();
-    await page.getByTitle('Agregar a favoritos').nth(0).click();
-    await page.getByTitle('Agregar a favoritos').nth(1).click();
+    const firstGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[0].title });
+    const secondGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[1].title });
+    await firstGameCard.getByTitle('Agregar a favoritos').click();
+    await secondGameCard.getByTitle('Agregar a favoritos').click();
+    await firstGameCard.getByTitle('Eliminar de favoritos').waitFor();
+    await secondGameCard.getByTitle('Eliminar de favoritos').waitFor();
     await page.reload({ waitUntil: 'networkidle' });
     await expect(page.locator('[data-testid="favorites-list"] li')).toHaveCount(3);
-    await page.getByTitle('Eliminar de favoritos').nth(0).click();
-    await page.getByTitle('Eliminar de favoritos').nth(1).click();
+    await firstGameCard.getByTitle('Eliminar de favoritos').click();
+    await secondGameCard.getByTitle('Eliminar de favoritos').click();
+    await expect(firstGameCard.getByTitle('Agregar a favoritos')).toBeVisible();
+    await expect(secondGameCard.getByTitle('Agregar a favoritos')).toBeVisible();
     await page.reload({ waitUntil: 'networkidle' });
     await expect(page.getByRole('link', { name: gamesMockApi[0].title })).toBeHidden();
     await expect(page.getByRole('link', { name: gamesMockApi[1].title })).toBeHidden();
@@ -76,7 +86,9 @@ test.describe('User can delete games from his favorite games', () => {
 
 test.describe('User not authorized can`t see and click de favorite button', () => {
   test('User unauthorized can`t click favorite button', async ({ page }) => {
-    await expect(page.getByTitle('Agregar a favoritos').first()).toBeHidden();
-    await expect(page.getByTitle('Agregar a favoritos').last()).toBeHidden();
+    const firstGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[0].title });
+    const secondGameCard = page.getByTestId('game-card').filter({ hasText: gamesMockApi[1].title });
+    await expect(firstGameCard.getByTitle('Agregar a favoritos')).toBeHidden();
+    await expect(secondGameCard.getByTitle('Agregar a favoritos')).toBeHidden();
   });
 });
