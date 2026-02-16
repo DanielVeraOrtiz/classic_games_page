@@ -32,7 +32,7 @@ render y por ello están en un useEffect que con [] se ejecuta al montarse.
 
 ## Aclaración usando React.memo
 
-Aquí esta el punto clave: 
+Aquí esta el punto clave:
 
 - Layout hace re-render cada vez que cambia isOpen, esto hace que todo lo que esta dentro haga re-render, provocando una jerarquía de re-renders. Por ejemplo si cambia isOpen, entonces hay re-render de layout, lo cual renderiza de nuevo la navbar y esta a su vez a sus hijos que son el logo y el botón.
 

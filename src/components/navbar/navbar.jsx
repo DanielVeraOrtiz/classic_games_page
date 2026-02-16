@@ -1,20 +1,20 @@
 import './navbar.css';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from 'react';
 import ButtonOpen from '../buttonOpen/buttonOpen';
 import { AuthContext } from '../../auth/authContext';
 import Spinner from '../spinner/spinner';
 import ModalLoginSignUp from '../modalLoginSignUp/modalLoginSignUp';
 import axios from 'axios';
 // Iconos
-import { CiSearch } from "react-icons/ci";
-import { FaRegUserCircle } from "react-icons/fa";
+import { CiSearch } from 'react-icons/ci';
+import { FaRegUserCircle } from 'react-icons/fa';
 import IconYoutube from '../../iconComponents/iconYoutube';
-import { MdFavorite } from "react-icons/md";
+import { MdFavorite } from 'react-icons/md';
 
 // El React.memo no funciona, por que isOpen cambia cada vez que se abre o cierra el sidebar,
-// pero si se saca eso el console log se muestra una sola vez al renderizar el componente, por lo 
+// pero si se saca eso el console log se muestra una sola vez al renderizar el componente, por lo
 // cual deja de renderizarse innecesariamente.
 
 // Ojo que de usar Context, puedo separar el boton en otro componente y hacer que solo ese se renderice
@@ -30,7 +30,7 @@ function Navbar() {
   const handleChangeSearchInput = (e) => {
     const selected = e.target.value;
 
-    const game = gameData.find(g => g.title === selected);
+    const game = gameData.find((g) => g.title === selected);
     if (game) {
       navigate(`/game/${game.id}`);
     }
@@ -39,66 +39,92 @@ function Navbar() {
   useEffect(() => {
     const fetchGameData = async () => {
       try {
-        const response = await axios.get('https://gamemonetize.com/feed.php?format=0&num=50&page=1');
+        const response = await axios.get(
+          'https://gamemonetize.com/feed.php?format=0&num=50&page=1',
+        );
         console.log('The acquisition of games was successful');
       } catch (error) {
         console.error(`The following error was obtained: ${error}`);
       }
-    }
+    };
     fetchGameData();
-  }, [])
+  }, []);
 
   return (
     <header className={`header`}>
-      <nav className='navbar' aria-label="Main navigation bar">
-        <div className='navbar-logo'>
+      <nav className="navbar" aria-label="Main navigation bar">
+        <div className="navbar-logo">
           <ButtonOpen /> {/* Solo este se renderiza de nuevo */}
-          <Link to='/' className='logo-svg' aria-label='Back to Home' title='Back to Home' focusable="false">
+          <Link
+            to="/"
+            className="logo-svg"
+            aria-label="Back to Home"
+            title="Back to Home"
+            focusable="false"
+          >
             <IconYoutube />
           </Link>
         </div>
-        <div className='search-bar'>
-          <label htmlFor="search-input" className="visually-hidden">Search</label>
-          <input id="search-input" className='search-input' type='text' placeholder='Search...' list='game-list' onChange={handleChangeSearchInput} />
-          <datalist id='game-list'>
-            {gameData.map(game => (
+        <div className="search-bar">
+          <label htmlFor="search-input" className="visually-hidden">
+            Search
+          </label>
+          <input
+            id="search-input"
+            className="search-input"
+            type="text"
+            placeholder="Search..."
+            list="game-list"
+            onChange={handleChangeSearchInput}
+          />
+          <datalist id="game-list">
+            {gameData.map((game) => (
               <option key={game.id} value={game.title} />
             ))}
           </datalist>
-          <button className='search-button' aria-label='Search button' title='Search button'>
-            <CiSearch aria-hidden="true" focusable="false"/>
+          <button className="search-button" aria-label="Search button" title="Search button">
+            <CiSearch aria-hidden="true" focusable="false" />
           </button>
         </div>
-        <div className='navbar-user'>
-          { !isLoading ? (isAuthenticated ? (
-            <div className='container-user' aria-label="User panel" title='User panel' tabIndex="0">
-              <div className='icon-container'>
-                <FaRegUserCircle aria-hidden="true" focusable="false"/>
+        <div className="navbar-user">
+          {!isLoading ? (
+            isAuthenticated ? (
+              <div
+                className="container-user"
+                aria-label="User panel"
+                title="User panel"
+                tabIndex="0"
+              >
+                <div className="icon-container">
+                  <FaRegUserCircle aria-hidden="true" focusable="false" />
+                </div>
+                <p className="username">{username}</p>
+                <div className="dropdown-user-menu">
+                  <Link to="/user/favoritesgames">
+                    <MdFavorite />
+                    Favorite games
+                  </Link>
+                  <button onClick={logout}>Log out</button>
+                </div>
               </div>
-              <p className='username'>{username}</p>
-              <div className='dropdown-user-menu'>
-                <Link to='/user/favoritesgames'><MdFavorite />Favorite games</Link>
-                <button onClick={logout}>Log out</button>
-              </div>
-            </div>
+            ) : (
+              <ModalLoginSignUp />
+            )
           ) : (
-            <ModalLoginSignUp />
-          )) : (
-            <div className='container-user'>
-              <Spinner size='30px' />
+            <div className="container-user">
+              <Spinner size="30px" />
             </div>
-          )
-          }
+          )}
         </div>
       </nav>
     </header>
-  )
+  );
 }
 
 Navbar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-}
+};
 
 // Si las props no cambian entonces la navbar usa el renderizado anterior. En este caso no tengo props.
 // Si uso useContext en lugar de props, como react.memo solo revisa props (shallow comparison), entonces

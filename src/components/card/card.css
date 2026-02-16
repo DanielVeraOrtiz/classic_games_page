@@ -22,11 +22,13 @@
   opacity: 0.25;
   transform: scale(0.975);
   border-radius: 15px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
   z-index: -1;
 }
 
-.card:hover .card-inner{
+.card:hover .card-inner {
   transform: scale(1.05);
   background-color: var(--hover-color);
 }
@@ -72,7 +74,8 @@
   color: var(--text-secondary-color);
 }
 
-.card-title, .card-text {
+.card-title,
+.card-text {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -92,7 +95,8 @@
 }
 
 @media (max-width: 480px) {
-  .card-content, .card-image {
+  .card-content,
+  .card-image {
     border-radius: 0px;
   }
 }

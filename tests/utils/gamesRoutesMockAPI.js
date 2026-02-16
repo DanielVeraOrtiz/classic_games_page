@@ -1,0 +1,26 @@
+export const gamesMockApi = [
+  {
+    id: '88124',
+    title: 'Cyber City Drift Racing',
+    description: '...',
+    instructions: '...',
+    url: 'https://html5.gamemonetize.com/cybercitydrift/index.html',
+    category: 'Racing',
+    tags: '...',
+    thumb: 'https://img.gamemonetize.com/cybercitydrift/512x384.jpg',
+    width: '800',
+    height: '600',
+  },
+  {
+    id: '99231',
+    title: 'Jungle Survival Expedition',
+    description: '...',
+    instructions: '...',
+    url: 'https://html5.gamemonetize.com/junglesurvival/index.html',
+    category: 'Adventure',
+    tags: '...',
+    thumb: 'https://img.gamemonetize.com/junglesurvival/512x384.jpg',
+    width: '800',
+    height: '600',
+  },
+];

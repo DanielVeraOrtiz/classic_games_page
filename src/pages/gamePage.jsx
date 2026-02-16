@@ -1,4 +1,4 @@
-import './gamePage.css'
+import './gamePage.css';
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import axios from 'axios';
@@ -11,7 +11,7 @@ import FavButton from '../components/favButton/favButton';
 import Spinner from '../components/spinner/spinner';
 
 //Iconos
-import { IoIosResize } from "react-icons/io";
+import { IoIosResize } from 'react-icons/io';
 
 // Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
 // lo cual pasaria cada vez que cambia isOpen. Sin embargo no pasa, aunque vimos el ejemplo del logo que hace re render,
@@ -36,7 +36,7 @@ function GamePage() {
   }, [setIsOpen]); // Con solo [] deberia funcionar por que se ejecuta una vez al montar
 
   const handleFullScreenButton = useCallback(() => {
-    setIsFullScreen(prev => !prev);
+    setIsFullScreen((prev) => !prev);
   }, []);
 
   useEffect(() => {
@@ -44,20 +44,20 @@ function GamePage() {
       try {
         const responseFavorite = await axios.get(`http://localhost:3000/favorites/${id}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log(responseFavorite);
         setIsFavorite(true);
       } catch (error) {
         console.error(error);
         setIsFavorite(false);
       }
-    }
+    };
 
     isFavoriteGame();
-  }, [id])
-  
+  }, [id, token]);
+
   useEffect(() => {
     const fetchGameData = async () => {
       try {
@@ -98,52 +98,60 @@ function GamePage() {
       ro.observe(otherEl);
     } else {
       // fallback: recalcula en resize de ventana
-      window.addEventListener("resize", sync);
+      window.addEventListener('resize', sync);
     }
 
     return () => {
       if (ro) ro.disconnect();
-      else window.removeEventListener("resize", sync);
+      else window.removeEventListener('resize', sync);
     };
-  },[isLoading])
+  }, [isLoading]);
 
   if (isLoading) {
     return (
-      <div className='spinner-gamepage-container'>
-        <Spinner size='100px' />
+      <div className="spinner-gamepage-container">
+        <Spinner size="100px" />
       </div>
-    )
-  } else if (!isLoading && messageError) {
-    return (
-      <h1 className='error-message'>{messageError}</h1>
     );
+  } else if (!isLoading && messageError) {
+    return <h1 className="error-message">{messageError}</h1>;
   } else {
     return (
       <div className={`container ${isFullScreen ? 'full' : ''}`} role="main">
-        <div className='game-container' ref={gameRef}>
-          <div className='game-heading'>
-            <img className='game-img' src={game.thumb} alt={`Game thumbnail ${game.title}`} />
-            <h1 className='game-title'>{game.title}</h1>
-            <div className='resize-fav-container'>
-              { isAuthenticated &&
-                <FavButton favorite={isFavorite} id={id} imgUrl={game.thumb} category={game.category} title={game.title} />
-              }
-              <button className='resize' aria-label='resize-button' onClick={handleFullScreenButton}>
-                <IoIosResize aria-hidden='true' focusable='false' />
+        <div className="game-container" ref={gameRef}>
+          <div className="game-heading">
+            <img className="game-img" src={game.thumb} alt={`Game thumbnail ${game.title}`} />
+            <h1 className="game-title">{game.title}</h1>
+            <div className="resize-fav-container">
+              {isAuthenticated && (
+                <FavButton
+                  favorite={isFavorite}
+                  id={id}
+                  imgUrl={game.thumb}
+                  category={game.category}
+                  title={game.title}
+                />
+              )}
+              <button
+                className="resize"
+                aria-label="resize-button"
+                onClick={handleFullScreenButton}
+              >
+                <IoIosResize aria-hidden="true" focusable="false" />
               </button>
             </div>
           </div>
-          <iframe className='game' src={game.url} title={`Game: ${game.title}`}></iframe>
-          <div className='game-information'>
-            <div className='tags-container' role="list">
-              {game.tags.split(',').map((tag, index) => 
-                <Tag key={index} tag={tag} role='listitem' />
-              )}
+          <iframe className="game" src={game.url} title={`Game: ${game.title}`}></iframe>
+          <div className="game-information">
+            <div className="tags-container" role="list">
+              {game.tags.split(',').map((tag, index) => (
+                <Tag key={index} tag={tag} role="listitem" />
+              ))}
             </div>
             <GameInformation description={game.description} instructions={game.instructions} />
           </div>
         </div>
-        <div className='other-games' aria-label='Related games' ref={otherRef}>
+        <div className="other-games" aria-label="Related games" ref={otherRef}>
           <OtherGames />
         </div>
       </div>

@@ -8,7 +8,7 @@ import './Layout.css';
 export const OpenSidebarContext = createContext(null);
 
 export default function Layout() {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery('(min-width: 768px)');
   const [isOpen, setIsOpen] = useState(isDesktop);
 
   useEffect(() => {
@@ -16,31 +16,26 @@ export default function Layout() {
   }, [isDesktop]);
 
   const toggleSidebar = useCallback(() => {
-    setIsOpen(prev => !prev);
+    setIsOpen((prev) => !prev);
   }, []);
 
   // Puede ser que para que esto re renderice GamePage y LandingPage hace falta que tenga relacion directa
   // no a traves de outlet y router.
   return (
-      <OpenSidebarContext.Provider value={{isOpen, setIsOpen, isDesktop}}>
-        {/* <Navbar isOpen={isOpen} setIsOpen={toggleSidebar} /> */}
-        {/* Cambie a Context y pase directo al boton para probar si react.memo no renderiza la navbar
+    <OpenSidebarContext.Provider value={{ isOpen, setIsOpen, isDesktop }}>
+      {/* <Navbar isOpen={isOpen} setIsOpen={toggleSidebar} /> */}
+      {/* Cambie a Context y pase directo al boton para probar si react.memo no renderiza la navbar
         cada vez que se apreta el boton */}
-        <Navbar />
-        <div className='layout'>
-          <Sidebar isOpen={isOpen} />
-          {isOpen && (
-            <div 
-                className='overlay' 
-                aria-hidden="true" 
-                focusable='false' 
-                onClick={toggleSidebar}
-            />
-          )}
-          <main className={`layout-content ${!isOpen ? 'sidebar-closed' : ''}`}>
-            <Outlet />
-          </main>
-        </div>
-      </OpenSidebarContext.Provider>
+      <Navbar />
+      <div className="layout">
+        <Sidebar isOpen={isOpen} />
+        {isOpen && (
+          <div className="overlay" aria-hidden="true" focusable="false" onClick={toggleSidebar} />
+        )}
+        <main className={`layout-content ${!isOpen ? 'sidebar-closed' : ''}`}>
+          <Outlet />
+        </main>
+      </div>
+    </OpenSidebarContext.Provider>
   );
 }
