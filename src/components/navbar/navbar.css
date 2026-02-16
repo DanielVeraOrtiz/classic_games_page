@@ -258,6 +258,7 @@
 
   .logo-page {
     width: 130px;
+    object-fit: cover;
   }
 }
 

@@ -205,11 +205,16 @@ function ModalLoginSignUp() {
                 <button className="submit-signup-form" type="submit">
                   Create account
                 </button>
-                <p className="error-message">{errorMessageSignup}</p>
+                <p className="error-message" data-testid="error-signup">
+                  {errorMessageSignup}
+                </p>
               </form>
             </div>
           </div>
-          <div className="login-container" aria-hidden={hiddenLogin ? 'true' : 'false'}>
+          <div
+            className={`login-container ${hiddenLogin ? 'hidden-form' : ''}`}
+            aria-hidden={hiddenLogin ? 'true' : 'false'}
+          >
             <div aria-hidden={hiddenLogin ? 'true' : 'false'} hidden={hiddenLogin ? 'true' : ''}>
               <button className="btn-close-modal" onClick={handleModalBtnClose}>
                 <IoIosCloseCircleOutline aria-hidden="true" focusable="false" />
@@ -246,7 +251,9 @@ function ModalLoginSignUp() {
                 <button className="submit-login-form" type="submit">
                   Login
                 </button>
-                <p className="error-message">{errorMessageLogin}</p>
+                <p className="error-message" data-testid="error-login">
+                  {errorMessageLogin}
+                </p>
               </form>
             </div>
           </div>

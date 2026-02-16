@@ -1,5 +1,5 @@
 import './favButton.css';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../auth/authContext';
 
@@ -10,6 +10,10 @@ import { MdFavoriteBorder } from 'react-icons/md';
 function FavButton({ favorite, id, imgUrl, category, title }) {
   const [isFavorite, setIsFavorite] = useState(favorite);
   const { token, userId } = useContext(AuthContext);
+
+  useEffect(() => {
+    setIsFavorite(favorite);
+  }, [favorite]);
 
   const handleFavButton = (e) => {
     e.preventDefault();

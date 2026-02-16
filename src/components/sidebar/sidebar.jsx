@@ -32,7 +32,7 @@ function Sidebar({ isOpen }) {
         }
       } catch (error) {
         console.error(`The following error was obtained: ${error}`);
-        setMessageError('The page server is down, please try again later');
+        setMessageError('Add your first favorite game');
       } finally {
         setIsLoading(false);
       }
@@ -41,7 +41,7 @@ function Sidebar({ isOpen }) {
   }, [isAuthenticated]);
 
   const owner_path = [
-    { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle },
+    { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle, testId: 'profile-link' },
     { to: '/settings', label: 'Open settings', icon: MdOutlineSettings },
   ];
 
@@ -68,7 +68,7 @@ function Sidebar({ isOpen }) {
       </div>
       <hr className="separator"></hr>
       <p className="sidebar-title">Favorites games</p>
-      <ul className="sidebar-links">
+      <ul className="sidebar-links" data-testid="favorites-list">
         {isAuthenticated ? (
           !isLoading ? (
             !messageError ? (
@@ -101,7 +101,7 @@ function Sidebar({ isOpen }) {
               const Icon = path.icon;
               return (
                 <li key={path.to}>
-                  <Link to={path.to}>
+                  <Link to={path.to} data-testid={path.testId}>
                     <Icon className="icons-sidebar" />
                     {path.label}
                   </Link>

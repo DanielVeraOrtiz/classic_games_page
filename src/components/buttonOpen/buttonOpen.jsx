@@ -10,7 +10,7 @@ function ButtonOpen() {
   // de la primera funcion, evitando reconstruirla en cada re render
   const toggleSidebar = useCallback(() => {
     setIsOpen((prev) => !prev);
-  }, []);
+  }, [setIsOpen]);
 
   return (
     <button
