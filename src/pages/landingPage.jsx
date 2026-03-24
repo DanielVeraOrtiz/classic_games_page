@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../auth/authContext';
 import Spinner from '../components/spinner/spinner';
-import gameDataJSON from './gamesDataFallback.json';
+import { GamesContext } from '../context/GamesContext';
 
 const categories = [
   'All',
@@ -35,12 +35,12 @@ const categories = [
 // en el router, que hace que el re render de layout no afecte a lo que cambie en outlet.
 export default function LandingPage() {
   console.log('The landing page is rendered again');
-  const [gameData, setGameData] = useState([]);
-  const [games, setGames] = useState([]);
+  const { games, isLoadingGames } = useContext(GamesContext);
+  console.log('HOLAAAAAAAAAAAAA', games);
+  const [gameData, setGameData] = useState(games);
   const [favorites, setFavorites] = useState(new Set());
   const { token, isAuthenticated } = useContext(AuthContext);
   // const [messageError, setMessageError] = useState('');
-  const [isLoadingGames, setIsLoadingGames] = useState(true);
   const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
 
   useEffect(() => {
@@ -66,34 +66,14 @@ export default function LandingPage() {
   }, [isAuthenticated, token]);
 
   // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
-  useEffect(() => {
-    const fetchGameData = async () => {
-      try {
-        const response = await axios.get(
-          'https://gamemonetize.com/feed.php?format=0&num=50&page=1',
-        );
-        setGameData(response.data);
-        setGames(response.data);
-        console.log('The acquisition of games was successful');
-      } catch (error) {
-        console.error(`The following error was obtained ${error}`);
-        setGameData(gameDataJSON);
-        setGames(gameDataJSON);
-        // setMessageError('The GameMonetize server is down, please try again later');
-      } finally {
-        setIsLoadingGames(false);
-      }
-    };
-    fetchGameData();
-  }, []);
 
   const handleFilterButton = (e) => {
     const { value } = e.target;
     if (value === 'All') {
-      setGames(gameData);
+      setGameData(games);
       return;
     }
-    setGames(gameData.filter((game) => game.category === value));
+    setGameData(games.filter((game) => game.category === value));
   };
   if (isLoadingGames || isLoadingFavorites) {
     return (
@@ -101,8 +81,10 @@ export default function LandingPage() {
         <Spinner size="50px" />
       </div>
     );
-  } else if (!isLoadingGames && !isLoadingFavorites && messageError) {
-    return <h1 className="error-message">{messageError}</h1>;
+  } else if (games.length === 0 && !isLoadingGames) {
+    return <h1 className="error-message">No games found</h1>;
+    // } else if (!isLoadingGames && !isLoadingFavorites && messageError) {
+    //   return <h1 className="error-message">{'Hola'}</h1>;
   } else {
     return (
       <>
@@ -117,7 +99,7 @@ export default function LandingPage() {
           {games.map((game, index) => {
             return (
               <Card
-                key={game.id}
+                key={`${game.id}-${index}`}
                 id={game.id}
                 title={game.title}
                 content={game.description}
