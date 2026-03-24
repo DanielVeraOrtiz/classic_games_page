@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../auth/authContext';
 import Spinner from '../components/spinner/spinner';
+import gameDataJSON from './gamesDataFallback.json';
 
 const categories = [
   'All',
@@ -38,7 +39,7 @@ export default function LandingPage() {
   const [games, setGames] = useState([]);
   const [favorites, setFavorites] = useState(new Set());
   const { token, isAuthenticated } = useContext(AuthContext);
-  const [messageError, setMessageError] = useState('');
+  // const [messageError, setMessageError] = useState('');
   const [isLoadingGames, setIsLoadingGames] = useState(true);
   const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
 
@@ -76,7 +77,9 @@ export default function LandingPage() {
         console.log('The acquisition of games was successful');
       } catch (error) {
         console.error(`The following error was obtained ${error}`);
-        setMessageError('The GameMonetize server is down, please try again later');
+        setGameData(gameDataJSON);
+        setGames(gameDataJSON);
+        // setMessageError('The GameMonetize server is down, please try again later');
       } finally {
         setIsLoadingGames(false);
       }
