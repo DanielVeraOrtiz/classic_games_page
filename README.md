@@ -102,6 +102,10 @@ npm install
 npm run dev
 ```
 
+## 🧪 Test Imagen
+
+![Test Image](public/images/test2e2.png)
+
 ## 🖼️ Imágenes
 
 ### 🖥️ Computador
@@ -126,6 +130,6 @@ npm run dev
 
 La página es completamente responsiva; se muestra solo una imagen por dispositivo como ejemplo para mantener el README conciso.
 
-![Hero Sectin on mobile](public/images/mobil/hero.png)
+![Hero Sectin on mobile](public/images/mobil/landing.png)
 
-![Hero Sectin on tablet](public/images/tablet/hero.png)
+![Hero Sectin on tablet](public/images/tablet/landing.png)

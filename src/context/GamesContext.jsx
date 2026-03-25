@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
 import FALLBACK_GAMES from './gamesDataFallback.json';
-import axios from 'axios';
 
 export const GamesContext = createContext();
 
@@ -12,8 +11,8 @@ export const GamesProvider = ({ children }) => {
   useEffect(() => {
     const getGames = async () => {
       try {
-        const response = await axios.get(`${gamemonetizeUrl}?format=0&num=200&page=1`);
-        setGames(response.data);
+        // Antes estaba el axios apuntando a la API de Gamemonetize
+        setGames(FALLBACK_GAMES);
       } catch (error) {
         console.error('Error: ', error);
         console.warn('Using fallback data');
