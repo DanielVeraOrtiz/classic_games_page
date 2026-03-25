@@ -6,7 +6,7 @@ Aplicación web de juegos desarrollada con arquitectura fullstack, que permite e
 
 ## 🚀 Demo
 
-🔗 https://TU-DEPLOY-AQUI
+🔗 https://classic-games-page.vercel.app
 
 ---
 
@@ -69,6 +69,17 @@ En un entorno productivo real, se recomienda:
 - normalización de datos
 - persistencia en base de datos
 - evitar dependencia directa de APIs no confiables
+
+---
+
+## 🚧 Limitaciones actuales
+
+Debido al alcance del proyecto y su enfoque como portafolio, existen algunas funcionalidades que no fueron completamente desarrolladas:
+
+- Algunas botones de navegación (como "Favorite Games", "Go to my profile" o "Open settings") están planteadas a nivel de UI pero no cuentan aún con implementación completa en el frontend.
+- Ciertos estados de carga en acciones secundarias (como interacción con favoritos desde la sidebar) podrían ser refinados para mejorar la experiencia de usuario.
+
+Estas decisiones se tomaron priorizando las funcionalidades principales del sistema, como la autenticación, integración de juegos y persistencia de favoritos.
 
 ---
 
