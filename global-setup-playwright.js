@@ -1,8 +1,15 @@
 import { request } from '@playwright/test';
+import dotenv from 'dotenv';
+
+dotenv.config({
+  path: '.env.development',
+});
 
 export default async () => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const testToken = import.meta.env.VITE_TEST_TOKEN;
+  // eslint-disable-next-line no-undef
+  const backendUrl = process.env.VITE_BACKEND_URL;
+  // eslint-disable-next-line no-undef
+  const testToken = process.env.VITE_TEST_TOKEN;
   const api = await request.newContext({
     baseURL: backendUrl,
   });

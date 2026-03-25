@@ -1,10 +1,17 @@
+import dotenv from 'dotenv';
+
+dotenv.config({
+  path: '.env.development',
+});
+
 export class LandingPage {
   constructor(page) {
     this.page = page;
   }
 
   async goto() {
-    await this.page.goto(import.meta.env.VITE_TEST_URL);
+    // eslint-disable-next-line no-undef
+    await this.page.goto(process.env.VITE_TEST_URL);
   }
 
   async signup(username, email, password) {
