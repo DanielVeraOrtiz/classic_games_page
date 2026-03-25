@@ -32,6 +32,7 @@ function GamePage() {
   const otherRef = useRef(null);
   const [isFavorite, setIsFavorite] = useState(null);
   const [messageError, setMessageError] = useState('');
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     setIsOpen(false);
@@ -44,7 +45,7 @@ function GamePage() {
   useEffect(() => {
     const isFavoriteGame = async () => {
       try {
-        const responseFavorite = await axios.get(`http://localhost:3000/favorites/${id}`, {
+        const responseFavorite = await axios.get(`${backendUrl}/favorites/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -58,7 +59,7 @@ function GamePage() {
     };
 
     isFavoriteGame();
-  }, [id, token]);
+  }, [id, token, backendUrl]);
 
   useEffect(() => {
     const fetchGameData = async () => {
