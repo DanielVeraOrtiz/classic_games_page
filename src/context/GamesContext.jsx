@@ -6,7 +6,6 @@ export const GamesContext = createContext();
 export const GamesProvider = ({ children }) => {
   const [games, setGames] = useState([]);
   const [isLoadingGames, setIsLoadingGames] = useState(true);
-  const gamemonetizeUrl = import.meta.env.VITE_GAMEMONETIZE_URL;
 
   useEffect(() => {
     const getGames = async () => {
@@ -23,7 +22,7 @@ export const GamesProvider = ({ children }) => {
     };
 
     getGames();
-  }, [gamemonetizeUrl]);
+  }, []);
 
   return (
     <GamesContext.Provider value={{ games, isLoadingGames }}>{children}</GamesContext.Provider>

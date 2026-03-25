@@ -37,13 +37,14 @@ export default function LandingPage() {
   const { token, isAuthenticated } = useContext(AuthContext);
   // const [messageError, setMessageError] = useState('');
   const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     console.log('AUTH STATUS:', isAuthenticated);
     const fetchFavoritesUser = async () => {
       try {
         if (isAuthenticated) {
-          const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+          const responseFavorites = await axios.get(`${backendUrl}/favorites/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
