@@ -10,6 +10,7 @@ import { MdFavoriteBorder } from 'react-icons/md';
 function FavButton({ favorite, id, imgUrl, category, title }) {
   const [isFavorite, setIsFavorite] = useState(favorite);
   const { token, userId } = useContext(AuthContext);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     setIsFavorite(favorite);
@@ -21,7 +22,7 @@ function FavButton({ favorite, id, imgUrl, category, title }) {
     const postFavorite = async () => {
       try {
         const response = await axios.post(
-          'http://localhost:3000/favorites',
+          `${backendUrl}/favorites`,
           {
             user_id: userId,
             game_id: id,
@@ -51,7 +52,7 @@ function FavButton({ favorite, id, imgUrl, category, title }) {
     e.stopPropagation();
     const deleteFavorite = async () => {
       try {
-        const response = await axios.delete(`http://localhost:3000/favorites/${id}`, {
+        const response = await axios.delete(`${backendUrl}/favorites/${id}`, {
           headers: {
             authorization: `Bearer ${token}`,
           },

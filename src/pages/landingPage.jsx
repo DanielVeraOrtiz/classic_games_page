@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../auth/authContext';
 import Spinner from '../components/spinner/spinner';
+import { GamesContext } from '../context/GamesContext';
 
 const categories = [
   'All',
@@ -15,16 +16,12 @@ const categories = [
   'Racing',
   'Clicker',
   'Shooting',
-  'Multiplayer',
   'Sports',
   'Girls',
   'Stickman',
   'Boys',
   '3D',
   'Soccer',
-  'Cooking',
-  '.IO',
-  'Baby Hazel',
 ];
 
 // Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
@@ -34,12 +31,11 @@ const categories = [
 // en el router, que hace que el re render de layout no afecte a lo que cambie en outlet.
 export default function LandingPage() {
   console.log('The landing page is rendered again');
-  const [gameData, setGameData] = useState([]);
-  const [games, setGames] = useState([]);
+  const { games, isLoadingGames } = useContext(GamesContext);
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [favorites, setFavorites] = useState(new Set());
   const { token, isAuthenticated } = useContext(AuthContext);
-  const [messageError, setMessageError] = useState('');
-  const [isLoadingGames, setIsLoadingGames] = useState(true);
+  // const [messageError, setMessageError] = useState('');
   const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
 
   useEffect(() => {
@@ -65,41 +61,24 @@ export default function LandingPage() {
   }, [isAuthenticated, token]);
 
   // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
-  useEffect(() => {
-    const fetchGameData = async () => {
-      try {
-        const response = await axios.get(
-          'https://gamemonetize.com/feed.php?format=0&num=50&page=1',
-        );
-        setGameData(response.data);
-        setGames(response.data);
-        console.log('The acquisition of games was successful');
-      } catch (error) {
-        console.error(`The following error was obtained ${error}`);
-        setMessageError('The GameMonetize server is down, please try again later');
-      } finally {
-        setIsLoadingGames(false);
-      }
-    };
-    fetchGameData();
-  }, []);
 
   const handleFilterButton = (e) => {
-    const { value } = e.target;
-    if (value === 'All') {
-      setGames(gameData);
-      return;
-    }
-    setGames(gameData.filter((game) => game.category === value));
+    setSelectedCategory(e.target.value);
   };
+
+  const filteredGames =
+    selectedCategory === 'All' ? games : games.filter((game) => game.category === selectedCategory);
+
   if (isLoadingGames || isLoadingFavorites) {
     return (
       <div className="landing-page-spinner-container">
         <Spinner size="50px" />
       </div>
     );
-  } else if (!isLoadingGames && !isLoadingFavorites && messageError) {
-    return <h1 className="error-message">{messageError}</h1>;
+  } else if (games.length === 0 && !isLoadingGames) {
+    return <h1 className="error-message">No games found</h1>;
+    // } else if (!isLoadingGames && !isLoadingFavorites && messageError) {
+    //   return <h1 className="error-message">{'Hola'}</h1>;
   } else {
     return (
       <>
@@ -111,10 +90,10 @@ export default function LandingPage() {
           ))}
         </div>
         <section className="games-grid">
-          {games.map((game, index) => {
+          {filteredGames.map((game, index) => {
             return (
               <Card
-                key={game.id}
+                key={`${game.id}-${index}`}
                 id={game.id}
                 title={game.title}
                 content={game.description}

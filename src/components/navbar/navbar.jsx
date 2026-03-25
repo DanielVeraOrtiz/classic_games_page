@@ -1,12 +1,12 @@
 import './navbar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import ButtonOpen from '../buttonOpen/buttonOpen';
 import { AuthContext } from '../../auth/authContext';
 import Spinner from '../spinner/spinner';
 import ModalLoginSignUp from '../modalLoginSignUp/modalLoginSignUp';
-import axios from 'axios';
+import { GamesContext } from '../../context/GamesContext';
 // Iconos
 import { CiSearch } from 'react-icons/ci';
 import { FaRegUserCircle } from 'react-icons/fa';
@@ -24,31 +24,17 @@ import { MdFavorite } from 'react-icons/md';
 function Navbar() {
   console.log('Navbar rendered again'); // No aparece mas veces que cuando se monta gracias a react.memo
   const { isAuthenticated, isLoading, logout, username } = useContext(AuthContext);
-  const [gameData, setGameData] = useState([]);
+  const { games } = useContext(GamesContext);
   const navigate = useNavigate();
 
   const handleChangeSearchInput = (e) => {
     const selected = e.target.value;
 
-    const game = gameData.find((g) => g.title === selected);
+    const game = games.find((g) => g.title === selected);
     if (game) {
       navigate(`/game/${game.id}`);
     }
   };
-
-  useEffect(() => {
-    const fetchGameData = async () => {
-      try {
-        const response = await axios.get(
-          'https://gamemonetize.com/feed.php?format=0&num=50&page=1',
-        );
-        console.log('The acquisition of games was successful');
-      } catch (error) {
-        console.error(`The following error was obtained: ${error}`);
-      }
-    };
-    fetchGameData();
-  }, []);
 
   return (
     <header className={`header`}>
@@ -78,7 +64,7 @@ function Navbar() {
             onChange={handleChangeSearchInput}
           />
           <datalist id="game-list">
-            {gameData.map((game) => (
+            {games.map((game) => (
               <option key={game.id} value={game.title} />
             ))}
           </datalist>

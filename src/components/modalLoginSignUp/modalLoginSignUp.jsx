@@ -30,6 +30,7 @@ function ModalLoginSignUp() {
   const [hiddenLogin, setHiddenLogin] = useState(false);
   const [errorMessageLogin, setErrorMessageLogin] = useState('');
   const [errorMessageSignup, setErrorMessageSignup] = useState('');
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleModalOpen = () => {
     const modal = modalRef.current;
@@ -70,7 +71,7 @@ function ModalLoginSignUp() {
             'The password need to have at least one letter, one number and one special symbol. Also, at least 8 characters',
           );
         }
-        const response = await axios.post('http://localhost:3000/signup', signupForm);
+        const response = await axios.post(`${backendUrl}/signup`, signupForm);
         console.log(response);
         setToken(response.data.access_token);
         modalRef.current.close();
@@ -87,7 +88,7 @@ function ModalLoginSignUp() {
     e.preventDefault();
     const postLogin = async () => {
       try {
-        const response = await axios.post('http://localhost:3000/login', loginForm);
+        const response = await axios.post(`${backendUrl}/login`, loginForm);
         console.log(response);
         setToken(response.data.access_token);
         modalRef.current.close();
