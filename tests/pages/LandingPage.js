@@ -4,7 +4,7 @@ export class LandingPage {
   }
 
   async goto() {
-    await this.page.goto('http://localhost:5173');
+    await this.page.goto(import.meta.env.VITE_TEST_URL);
   }
 
   async signup(username, email, password) {
