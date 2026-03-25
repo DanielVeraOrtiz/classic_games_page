@@ -2,6 +2,7 @@ import { test, expect } from '../fixtures/index';
 import { LandingPage } from '../pages/LandingPage';
 import buildUser from '../utils/buildUser';
 import isTokenInLocalStorage from '../utils/isTokenInLocalStorage';
+import { gamesMockApi } from '../utils/gamesRoutesMockAPI';
 
 // Esto usa workers que dan un comportamiento paralelo, por lo que beforeEach o beforeAll para resetear
 // la base de datos da problemas, debido a que estan concurriendo operaciones a la bdd. Por lo tanto,
@@ -12,6 +13,14 @@ import isTokenInLocalStorage from '../utils/isTokenInLocalStorage';
 let landingPage;
 
 test.beforeEach(async ({ page }) => {
+  await page.route('**/feed.php?**', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(gamesMockApi),
+    });
+  });
+
   landingPage = new LandingPage(page);
   await landingPage.goto();
 });

@@ -17,12 +17,13 @@ function Sidebar({ isOpen }) {
   const { token, isAuthenticated } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [messageError, setMessageError] = useState('');
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchGameData = async () => {
       try {
         if (isAuthenticated) {
-          const responseFavorites = await axios.get('http://localhost:3000/favorites/me', {
+          const responseFavorites = await axios.get(`${backendUrl}/favorites/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -38,7 +39,7 @@ function Sidebar({ isOpen }) {
       }
     };
     fetchGameData();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, backendUrl]);
 
   const owner_path = [
     { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle, testId: 'profile-link' },

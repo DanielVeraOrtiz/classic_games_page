@@ -1,8 +1,8 @@
 import './otherGames.css';
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { GamesContext } from '../../context/GamesContext';
 
 function OtherGames() {
   console.log('OtherGames is being rendered again');
@@ -10,24 +10,24 @@ function OtherGames() {
   const [otherGames, setOtherGames] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [messageError, setMessageError] = useState('');
+  const { games } = useContext(GamesContext);
 
   useEffect(() => {
     const fetchOtherGames = async () => {
-      try {
-        const response = await axios.get(
-          'https://gamemonetize.com/feed.php?format=0&num=500&page=1',
-        );
-        const muestra = response.data.sort(() => Math.random() - 0.5).slice(0, 20);
-        setOtherGames(muestra);
-      } catch (error) {
-        console.error('A problem has occurred: ' + error);
-        setMessageError('The GameMonetize server is down, please try again later');
-      } finally {
-        setIsLoading(false);
+      if (games.length) {
+        try {
+          const muestra = games.sort(() => Math.random() - 0.5).slice(0, 20);
+          setOtherGames(muestra);
+        } catch (error) {
+          console.error('A problem has occurred: ' + error);
+          setMessageError('The GameMonetize server is down, please try again later');
+        } finally {
+          setIsLoading(false);
+        }
       }
     };
     fetchOtherGames();
-  }, [id]);
+  }, [id, games]);
 
   if (isLoading) {
     return <p>Cargando...</p>;

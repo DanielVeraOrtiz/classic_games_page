@@ -34,7 +34,8 @@ export default function AuthProvider({ children }) {
         return;
       }
       try {
-        const response = await axios.get('http://localhost:3000/users/auth/me', {
+        const backendUrl = import.meta.env.VITE_BACKEND_URL;
+        const response = await axios.get(`${backendUrl}/users/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

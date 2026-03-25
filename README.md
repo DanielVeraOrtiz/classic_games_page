@@ -1,43 +1,135 @@
-# React + Vite
+# 🎮 Classic Games Platform - Daniel Vera
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web de juegos desarrollada con arquitectura fullstack, que permite explorar, jugar y guardar juegos como favoritos. Integra una API externa junto con un sistema de fallback para garantizar disponibilidad y estabilidad.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Demo
 
-## React Compiler
+🔗 https://TU-DEPLOY-AQUI
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologías utilizadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Frontend
 
-# Memoization
+- ⚛️ React
+- ⚡ Vite
+- 🎨 CSS / Responsive Design
 
-Este apartado es por si necesito recordar como se usan estas herramientas provistas por React.
+### Backend
 
-## Aclaración useCallback y useMemo
+- 🟢 Node.js
+- 🚂 Koa
+- 🗄️ Sequelize
+- 🔐 JWT Authentication
 
-- **useCallback**: Para funciones que se pasan a hijos memoizados.
-- **useMemo**: Para cálculos costosos que dependen de props/estado y quieres evitar recalcular cada render.
+### Testing
 
-En la práctica useCallback evita que se rehaga una función y usa todo el rato la dirección a memoria de la
-función antes creada, a no ser que cambien las dependencias.
+- 🧪 Jest
+- 🔗 Supertest
+- 🎭 Playwright
 
-Por otro lado, cabe destacar que en general useMemo no se usa si cálculos costosos son necesitados en el primer
-render y por ello están en un useEffect que con [] se ejecuta al montarse.
+---
 
-## Aclaración usando React.memo
+## ✨ Características
 
-Aquí esta el punto clave:
+- 🎮 Catálogo dinámico de juegos desde API externa
+- ❤️ Sistema de favoritos persistente
+- 🔐 Autenticación con JWT y rutas protegidas
+- ⚡ Manejo de estados de carga (spinners)
+- 🚨 Manejo de errores de API sin romper la UI
+- 📱 Diseño completamente responsive
+- 🌙 Modo oscuro / claro
 
-- Layout hace re-render cada vez que cambia isOpen, esto hace que todo lo que esta dentro haga re-render, provocando una jerarquía de re-renders. Por ejemplo si cambia isOpen, entonces hay re-render de layout, lo cual renderiza de nuevo la navbar y esta a su vez a sus hijos que son el logo y el botón.
+---
 
-- Lo anterior se puede evitar usando React.memo, que solo si no cambian las props entonces usando el render anterior en el rerender del layout. Sin embargo, a pesar de que React.memo memoize navbar, esta ocupara el render anterior, pero si hará re-render de sus hijos componentes. Por lo que de ser necesario estos deben llevar React.memo también. En caso contrario puede navbar no hacer re-render, pero el logo si (Comprobado por consoles.logs).
+## ⚠️ Consideraciones técnicas
 
-- También es importante que React.memo verifica en teoría props, pero si se pasan con context, estos cambios tambien implican re-renders no evitables por React.memo.
+La aplicación originalmente consumía datos desde la API de Gamemonetize. Sin embargo, debido a limitaciones de rate limiting y respuestas inconsistentes, se optó por mockear un conjunto de aproximadamente 200 juegos para garantizar estabilidad en la experiencia.
 
-- Por último, este comportamiento descrito dista de las páginas puestas en el layout por outlet, se estima que es por este último que evita que sea igual a colocar los componentes como hijos directos, por lo que un re-render de layout no hace re-render de la página colocada en outlet, de ninguna en particular.
+Actualmente, la aplicación funciona completamente sobre este dataset mockeado, lo que permite:
+
+- ✔ Evitar bloqueos por límite de requests
+- ✔ Mantener una experiencia de usuario consistente
+- ✔ Reducir tiempos de carga y errores externos
+
+Se evaluó el uso de un sistema híbrido (API + fallback), pero este enfoque introduce casos borde, por ejemplo:
+
+- 🔄 Desincronización al recargar una página de juego
+- ❌ IDs de juegos presentes en el mock pero no en la API (o viceversa)
+- ⚠️ Posibles errores de navegación que pueden percibirse como fallos de la aplicación
+
+Dado que estos problemas afectan la confiabilidad de mi trabajo, se priorizó una solución estable basada en datos mockeados.
+
+En un entorno productivo real, se recomienda:
+
+- caching en backend
+- normalización de datos
+- persistencia en base de datos
+- evitar dependencia directa de APIs no confiables
+
+---
+
+## 🧩 Funcionalidades destacadas
+
+- 🔎 Navegación y renderizado dinámico de juegos
+- 🕹️ Integración con iframes para jugar directamente
+- ❤️ Gestión de favoritos por usuario autenticado
+- 🛑 Manejo de estados vacíos (empty states UX)
+- 🔄 Control de errores y resiliencia ante fallos de API
+
+---
+
+## ⚙️ Instalación
+
+1. Clonar el repositorio:
+
+```bash
+git clone https://github.com/tuusuario/tu-repo.git
+```
+
+2. Instalar dependencias:
+
+```bash
+npm install
+```
+
+3. Ejecutar el proyecto:
+
+```bash
+npm run dev
+```
+
+## 🧪 Test Imagen
+
+![Test Image](public/images/test2e2.png)
+
+## 🖼️ Imágenes
+
+### 🖥️ Computador
+
+![Hero Section](public/images/computer/landing.png)
+
+![About Section](public/images/computer/landinglogin.png)
+
+![Skill Section](public/images/computer/landinglogueado.png)
+
+![Skill Section broken down by tool](public/images/computer/gamepage.png)
+
+![Project Section](public/images/computer/gamepagesidebar.png)
+
+![Project Modal](public/images/computer/gamepageexpandedv2.png)
+
+![Contact section](public/images/computer/landinglight.png)
+
+![Hero Section light theme](public/images/computer/gamepagelight.png)
+
+### 📱 Móbil
+
+La página es completamente responsiva; se muestra solo una imagen por dispositivo como ejemplo para mantener el README conciso.
+
+![Hero Sectin on mobile](public/images/mobil/landing.png)
+
+![Hero Sectin on tablet](public/images/tablet/landing.png)

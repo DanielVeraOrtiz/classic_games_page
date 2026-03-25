@@ -9,6 +9,7 @@ import { OpenSidebarContext } from '../Layout';
 import { AuthContext } from '../auth/authContext';
 import FavButton from '../components/favButton/favButton';
 import Spinner from '../components/spinner/spinner';
+import { GamesContext } from '../context/GamesContext';
 
 //Iconos
 import { IoIosResize } from 'react-icons/io';
@@ -22,8 +23,9 @@ function GamePage() {
   console.log('GamePage is rendered again');
   const { setIsOpen } = useContext(OpenSidebarContext);
   const { token, isAuthenticated } = useContext(AuthContext);
-  const { id } = useParams();
+  const { games, isLoadingGames } = useContext(GamesContext);
   const [game, setGame] = useState({});
+  const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const gameRef = useRef(null);
@@ -60,20 +62,21 @@ function GamePage() {
 
   useEffect(() => {
     const fetchGameData = async () => {
-      try {
-        const response = await axios.get(`https://gamemonetize.com/feed.php?format=0&id=${id}`);
-        setGame(response.data[0]);
-        console.log('Obtaining the game without problems');
-      } catch (error) {
-        console.error('An error occurred: ' + error);
-        setMessageError('The GameMonetize server is down, please try again later');
-      } finally {
-        setIsLoading(false);
+      if (games.length) {
+        try {
+          const game = games.find((g) => String(g.id) === id);
+          setGame(game);
+        } catch (error) {
+          console.error('An error occurred: ' + error);
+          setMessageError('The GameMonetize server is down, please try again later');
+        } finally {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchGameData();
-  }, [id]);
+  }, [id, games]);
 
   useEffect(() => {
     const gameEl = gameRef.current;
@@ -107,7 +110,7 @@ function GamePage() {
     };
   }, [isLoading]);
 
-  if (isLoading) {
+  if (isLoading || isLoadingGames) {
     return (
       <div className="spinner-gamepage-container">
         <Spinner size="100px" />
