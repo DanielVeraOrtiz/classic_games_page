@@ -12,7 +12,7 @@ export const GamesProvider = ({ children }) => {
     const getGames = async () => {
       try {
         const response = await axios.get(
-          'https://gamemonetize.com/feed.php?format=0&num=50&page=1',
+          'https://gamemonetize.com/feed.php?format=0&num=200&page=1',
         );
         setGames(response.data);
       } catch (error) {

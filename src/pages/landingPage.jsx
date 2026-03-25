@@ -16,16 +16,12 @@ const categories = [
   'Racing',
   'Clicker',
   'Shooting',
-  'Multiplayer',
   'Sports',
   'Girls',
   'Stickman',
   'Boys',
   '3D',
   'Soccer',
-  'Cooking',
-  '.IO',
-  'Baby Hazel',
 ];
 
 // Aqui esta lo raro, donde GPT me confundio. Al parecer los rerenders de layout deberian hacer rerender de esto
@@ -36,8 +32,7 @@ const categories = [
 export default function LandingPage() {
   console.log('The landing page is rendered again');
   const { games, isLoadingGames } = useContext(GamesContext);
-  console.log('HOLAAAAAAAAAAAAA', games);
-  const [gameData, setGameData] = useState(games);
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [favorites, setFavorites] = useState(new Set());
   const { token, isAuthenticated } = useContext(AuthContext);
   // const [messageError, setMessageError] = useState('');
@@ -68,13 +63,12 @@ export default function LandingPage() {
   // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
 
   const handleFilterButton = (e) => {
-    const { value } = e.target;
-    if (value === 'All') {
-      setGameData(games);
-      return;
-    }
-    setGameData(games.filter((game) => game.category === value));
+    setSelectedCategory(e.target.value);
   };
+
+  const filteredGames =
+    selectedCategory === 'All' ? games : games.filter((game) => game.category === selectedCategory);
+
   if (isLoadingGames || isLoadingFavorites) {
     return (
       <div className="landing-page-spinner-container">
@@ -96,7 +90,7 @@ export default function LandingPage() {
           ))}
         </div>
         <section className="games-grid">
-          {games.map((game, index) => {
+          {filteredGames.map((game, index) => {
             return (
               <Card
                 key={`${game.id}-${index}`}
