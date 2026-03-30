@@ -14,15 +14,15 @@ import { MdOutlineSettings } from 'react-icons/md';
 function Sidebar({ isOpen }) {
   console.log('The sidebar is rendered again');
   const [favorites, setFavorites] = useState([]);
-  const { token, isAuthenticated } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(true);
+  const { token, isAuthenticated, isLoading } = useContext(AuthContext);
+  const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
   const [messageError, setMessageError] = useState('');
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchGameData = async () => {
-      try {
-        if (isAuthenticated) {
+      if (isAuthenticated) {
+        try {
           const responseFavorites = await axios.get(`${backendUrl}/favorites/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -30,16 +30,16 @@ function Sidebar({ isOpen }) {
           });
           console.log(responseFavorites.data);
           setFavorites(responseFavorites.data);
+        } catch (error) {
+          console.error(`The following error was obtained: ${error}`);
+          setMessageError('Add your first favorite game');
+        } finally {
+          setIsLoadingFavorites(false);
         }
-      } catch (error) {
-        console.error(`The following error was obtained: ${error}`);
-        setMessageError('Add your first favorite game');
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchGameData();
-  }, [isAuthenticated, backendUrl]);
+  }, [isAuthenticated, backendUrl, token]);
 
   const owner_path = [
     { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle, testId: 'profile-link' },
@@ -70,8 +70,8 @@ function Sidebar({ isOpen }) {
       <hr className="separator"></hr>
       <p className="sidebar-title">Favorites games</p>
       <ul className="sidebar-links" data-testid="favorites-list">
-        {isAuthenticated ? (
-          !isLoading ? (
+        {!isLoadingFavorites && !isLoading ? (
+          isAuthenticated ? (
             !messageError ? (
               favorites.map((juego) => (
                 <li key={juego.game_id}>
@@ -85,15 +85,17 @@ function Sidebar({ isOpen }) {
               <p className="error-message">{messageError}</p>
             )
           ) : (
-            <div className="sidebar-spinner-container">
-              <Spinner size="30px" />
-            </div>
+            <li className="sidebar-message-login">
+              You must be logged in to add games to favorites
+            </li>
           )
         ) : (
-          <li className="sidebar-message-login">You must be logged in to add games to favorites</li>
+          <div className="sidebar-spinner-container">
+            <Spinner size="30px" />
+          </div>
         )}
       </ul>
-      {isAuthenticated && (
+      {isAuthenticated && !isLoading ? (
         <>
           <hr className="separator"></hr>
           <p className="sidebar-title">You</p>
@@ -111,6 +113,10 @@ function Sidebar({ isOpen }) {
             })}
           </ul>
         </>
+      ) : (
+        <div className="sidebar-spinner-container">
+          <Spinner size="30px" />
+        </div>
       )}
     </aside>
   );
