@@ -4,11 +4,14 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import FavButton from '../favButton/favButton';
 import { AuthContext } from '../../auth/authContext';
+import { FavoritesContext } from '../../context/FavoritesContext';
+import Spinner from '../spinner/spinner';
 
 export default function Card({ id, title, content, imgSrc, imgAlt, category, favorite }) {
-  console.log('The card is rendered again');
+  // console.log('The card is rendered again');
   const [hoverColor, setHoverColor] = useState(`gray`);
   const { isAuthenticated } = useContext(AuthContext);
+  const { isLoadingFavorites } = useContext(FavoritesContext);
 
   useEffect(() => {
     const img = new Image();
@@ -63,13 +66,19 @@ export default function Card({ id, title, content, imgSrc, imgAlt, category, fav
           <div className="card-heading">
             <h2 className="card-title">{title}</h2>
             {isAuthenticated ? (
-              <FavButton
-                favorite={favorite}
-                id={id}
-                imgUrl={imgSrc}
-                category={category}
-                title={title}
-              />
+              isLoadingFavorites ? (
+                <div>
+                  <Spinner size="30px" />
+                </div>
+              ) : (
+                <FavButton
+                  favorite={favorite}
+                  id={id}
+                  imgUrl={imgSrc}
+                  category={category}
+                  title={title}
+                />
+              )
             ) : (
               <></>
             )}

@@ -1,10 +1,10 @@
 import './sidebar.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import ButtonOpen from '../buttonOpen/buttonOpen';
 import { AuthContext } from '../../auth/authContext';
-import axios from 'axios';
+import { FavoritesContext } from '../../context/FavoritesContext';
 import Spinner from '../spinner/spinner';
 // Iconos
 import IconYoutube from '../../iconComponents/iconYoutube';
@@ -13,33 +13,8 @@ import { MdOutlineSettings } from 'react-icons/md';
 
 function Sidebar({ isOpen }) {
   console.log('The sidebar is rendered again');
-  const [favorites, setFavorites] = useState([]);
-  const { token, isAuthenticated, isLoading } = useContext(AuthContext);
-  const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
-  const [messageError, setMessageError] = useState('');
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  useEffect(() => {
-    const fetchGameData = async () => {
-      if (isAuthenticated) {
-        try {
-          const responseFavorites = await axios.get(`${backendUrl}/favorites/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log(responseFavorites.data);
-          setFavorites(responseFavorites.data);
-        } catch (error) {
-          console.error(`The following error was obtained: ${error}`);
-          setMessageError('Add your first favorite game');
-        } finally {
-          setIsLoadingFavorites(false);
-        }
-      }
-    };
-    fetchGameData();
-  }, [isAuthenticated, backendUrl, token]);
+  const { favorites, isLoadingFavorites, messageError } = useContext(FavoritesContext);
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
 
   const owner_path = [
     { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle, testId: 'profile-link' },
