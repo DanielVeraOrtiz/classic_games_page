@@ -93,6 +93,27 @@ hr.separator {
   scrollbar-width: none;
 }
 
+@keyframes sidebarFavoriteIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sidebar-links--favorites .sidebar-favorite-item {
+  animation: sidebarFavoriteIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-links--favorites .sidebar-favorite-item {
+    animation: none;
+  }
+}
+
 .sidebar-game-img {
   aspect-ratio: 1 / 1;
   border-radius: 50%;

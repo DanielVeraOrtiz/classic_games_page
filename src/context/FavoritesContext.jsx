@@ -6,15 +6,21 @@ export const FavoritesContext = createContext();
 
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
-  const [favoritesSet, setFavoritesSet] = useState([]);
-  const { token, isAuthenticated } = useContext(AuthContext);
+  const [favoritesSet, setFavoritesSet] = useState(new Set());
+  const { token, isAuthenticated, isLoading } = useContext(AuthContext);
   const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
   const [messageError, setMessageError] = useState('');
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
+    if (favorites.length > 0) {
+      setMessageError('');
+    }
+  }, [favorites.length]);
+
+  useEffect(() => {
     const fetchGameData = async () => {
-      if (isAuthenticated) {
+      if (isAuthenticated && !isLoading) {
         try {
           const responseFavorites = await axios.get(`${backendUrl}/favorites/me`, {
             headers: {
@@ -32,6 +38,8 @@ export const FavoritesProvider = ({ children }) => {
         } finally {
           setIsLoadingFavorites(false);
         }
+      } else if (!isAuthenticated && !isLoading) {
+        setIsLoadingFavorites(false);
       }
     };
     fetchGameData();

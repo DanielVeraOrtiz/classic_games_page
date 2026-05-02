@@ -5,7 +5,7 @@ import Navbar from './components/navbar/navbar';
 import Sidebar from './components/sidebar/sidebar';
 import './Layout.css';
 
-export const OpenSidebarContext = createContext(null);
+export const OpenSidebarContext = createContext();
 
 export default function Layout() {
   const isDesktop = useMediaQuery('(min-width: 768px)');

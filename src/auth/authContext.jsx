@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState(null);
   const [userScope, setUserScope] = useState(null);
@@ -30,6 +30,7 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) {
+        setIsAuthenticated(false);
         setIsLoading(false);
         return;
       }

@@ -44,20 +44,22 @@ function Sidebar({ isOpen }) {
       </div>
       <hr className="separator"></hr>
       <p className="sidebar-title">Favorites games</p>
-      <ul className="sidebar-links" data-testid="favorites-list">
+      <ul className="sidebar-links sidebar-links--favorites" data-testid="favorites-list">
         {!isLoadingFavorites && !isLoading ? (
           isAuthenticated ? (
-            !messageError ? (
+            messageError ? (
+              <p className="error-message">{messageError}</p>
+            ) : favorites.length === 0 ? (
+              <p className="error-message">Add your first favorite game</p>
+            ) : (
               favorites.map((juego) => (
-                <li key={juego.game_id}>
+                <li key={juego.game_id} className="sidebar-favorite-item">
                   <Link to={`/game/${juego.game_id}`}>
                     <img className="sidebar-game-img" src={juego.game.imgUrl} />
                     <p className="sidebar-game-title-favorite">{juego.game.title}</p>
                   </Link>
                 </li>
               ))
-            ) : (
-              <p className="error-message">{messageError}</p>
             )
           ) : (
             <li className="sidebar-message-login">
@@ -70,29 +72,31 @@ function Sidebar({ isOpen }) {
           </div>
         )}
       </ul>
-      {isAuthenticated && !isLoading ? (
-        <>
-          <hr className="separator"></hr>
-          <p className="sidebar-title">You</p>
-          <ul className="sidebar-links">
-            {owner_path.map((path) => {
-              const Icon = path.icon;
-              return (
-                <li key={path.to}>
-                  <Link to={path.to} data-testid={path.testId}>
-                    <Icon className="icons-sidebar" />
-                    {path.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </>
-      ) : (
-        <div className="sidebar-spinner-container">
-          <Spinner size="30px" />
-        </div>
-      )}
+      {isAuthenticated ? (
+        !isLoading ? (
+          <>
+            <hr className="separator" />
+            <p className="sidebar-title">You</p>
+            <ul className="sidebar-links">
+              {owner_path.map((path) => {
+                const Icon = path.icon;
+                return (
+                  <li key={path.to}>
+                    <Link to={path.to} data-testid={path.testId}>
+                      <Icon className="icons-sidebar" />
+                      {path.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        ) : (
+          <div className="sidebar-spinner-container">
+            <Spinner size="30px" />
+          </div>
+        )
+      ) : null}
     </aside>
   );
 }

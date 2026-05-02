@@ -34,7 +34,7 @@ export default function LandingPage() {
   const { games, isLoadingGames } = useContext(GamesContext);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const { favoritesSet, isLoadingFavorites } = useContext(FavoritesContext);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
   // const [messageError, setMessageError] = useState('');
 
   // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
@@ -86,7 +86,8 @@ export default function LandingPage() {
                 imgSrc={game.thumb}
                 imgAlt={game.title}
                 category={game.category}
-                favorite={isAuthenticated ? favoritesSet.has(String(game.id)) : false}
+                isLoadingFavorites={isLoadingFavorites}
+                favorite={isAuthenticated && !isLoading && !isLoadingFavorites ? favoritesSet.has(String(game.id)) : false}
               />
             ),
           )}
