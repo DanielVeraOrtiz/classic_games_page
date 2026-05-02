@@ -2,6 +2,7 @@ import './favButton.css';
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../auth/authContext';
+import { FavoritesContext } from '../../context/FavoritesContext';
 
 // Icons
 import { MdFavorite } from 'react-icons/md';
@@ -9,6 +10,7 @@ import { MdFavoriteBorder } from 'react-icons/md';
 
 function FavButton({ favorite, id, imgUrl, category, title }) {
   const [isFavorite, setIsFavorite] = useState(favorite);
+  const { setFavorites } = useContext(FavoritesContext);
   const { token, userId } = useContext(AuthContext);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -21,22 +23,32 @@ function FavButton({ favorite, id, imgUrl, category, title }) {
     e.stopPropagation();
     const postFavorite = async () => {
       try {
-        const response = await axios.post(
-          `${backendUrl}/favorites`,
+        const game = {
+          user_id: userId,
+          game_id: id,
+          imgUrl: imgUrl,
+          category: category,
+          title: title,
+        };
+        const response = await axios.post(`${backendUrl}/favorites`, game, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response);
+        setFavorites((prev) => [
+          ...prev,
           {
             user_id: userId,
             game_id: id,
-            imgUrl: imgUrl,
-            category: category,
-            title: title,
-          },
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
+            game: {
+              id: id,
+              title: title,
+              imgUrl: imgUrl,
+              category: category,
             },
           },
-        );
-        console.log(response);
+        ]);
       } catch (err) {
         console.error(err);
       } finally {
@@ -52,6 +64,7 @@ function FavButton({ favorite, id, imgUrl, category, title }) {
     e.stopPropagation();
     const deleteFavorite = async () => {
       try {
+        setFavorites((prev) => prev.filter((game) => String(game.game_id) !== String(id)));
         const response = await axios.delete(`${backendUrl}/favorites/${id}`, {
           headers: {
             authorization: `Bearer ${token}`,

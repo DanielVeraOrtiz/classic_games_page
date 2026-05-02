@@ -1,10 +1,10 @@
 import './landingPage.css';
 import Card from '../components/card/card';
-import axios from 'axios';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { AuthContext } from '../auth/authContext';
 import Spinner from '../components/spinner/spinner';
 import { GamesContext } from '../context/GamesContext';
+import { FavoritesContext } from '../context/FavoritesContext';
 
 const categories = [
   'All',
@@ -33,33 +33,9 @@ export default function LandingPage() {
   console.log('The landing page is rendered again');
   const { games, isLoadingGames } = useContext(GamesContext);
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [favorites, setFavorites] = useState(new Set());
-  const { token, isAuthenticated } = useContext(AuthContext);
+  const { favoritesSet, isLoadingFavorites } = useContext(FavoritesContext);
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
   // const [messageError, setMessageError] = useState('');
-  const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  useEffect(() => {
-    console.log('AUTH STATUS:', isAuthenticated);
-    const fetchFavoritesUser = async () => {
-      try {
-        if (isAuthenticated) {
-          const responseFavorites = await axios.get(`${backendUrl}/favorites/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log('AQUI FAVORITES', JSON.stringify(responseFavorites.data, null, 2));
-          setFavorites(new Set(responseFavorites.data.map((favorite) => String(favorite.game_id))));
-        }
-      } catch (error) {
-        console.error(`The following error was obtained ${error}`);
-      } finally {
-        setIsLoadingFavorites(false);
-      }
-    };
-    fetchFavoritesUser();
-  }, [isAuthenticated, token]);
 
   // Es mejor controlar las requests en useEffect distintos para controlar mejor los errores
 
@@ -70,7 +46,7 @@ export default function LandingPage() {
   const filteredGames =
     selectedCategory === 'All' ? games : games.filter((game) => game.category === selectedCategory);
 
-  if (isLoadingGames || isLoadingFavorites) {
+  if (isLoadingGames) {
     return (
       <div className="landing-page-spinner-container">
         <Spinner size="50px" />
@@ -84,15 +60,24 @@ export default function LandingPage() {
     return (
       <>
         <div className="filter-buttons-container">
-          {categories.map((category) => (
-            <button className="filter-games-button" value={category} onClick={handleFilterButton}>
+          {categories.map((category, index) => (
+            <button
+              key={`${category}-${index}`}
+              className="filter-games-button"
+              value={category}
+              onClick={handleFilterButton}
+            >
               {category}
             </button>
           ))}
         </div>
         <section className="games-grid">
-          {filteredGames.map((game, index) => {
-            return (
+          {filteredGames.map((game, index) =>
+            isLoadingFavorites ? (
+              <div key={`${game.id}-${index}`} className="sidebar-spinner-container">
+                <Spinner size="30px" />
+              </div>
+            ) : (
               <Card
                 key={`${game.id}-${index}`}
                 id={game.id}
@@ -101,10 +86,11 @@ export default function LandingPage() {
                 imgSrc={game.thumb}
                 imgAlt={game.title}
                 category={game.category}
-                favorite={isAuthenticated ? favorites.has(String(game.id)) : false}
+                isLoadingFavorites={isLoadingFavorites}
+                favorite={isAuthenticated && !isLoading && !isLoadingFavorites ? favoritesSet.has(String(game.id)) : false}
               />
-            );
-          })}
+            ),
+          )}
         </section>
       </>
     );

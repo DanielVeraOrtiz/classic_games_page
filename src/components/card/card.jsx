@@ -1,11 +1,21 @@
 import './card.css';
 import PropTypes from 'prop-types';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo } from 'react';
 import { Link } from 'react-router-dom';
 import FavButton from '../favButton/favButton';
 import { AuthContext } from '../../auth/authContext';
+import Spinner from '../spinner/spinner';
 
-export default function Card({ id, title, content, imgSrc, imgAlt, category, favorite }) {
+function Card({
+  id,
+  title,
+  content,
+  imgSrc,
+  imgAlt,
+  category,
+  favorite,
+  isLoadingFavorites = false,
+}) {
   console.log('The card is rendered again');
   const [hoverColor, setHoverColor] = useState(`gray`);
   const { isAuthenticated } = useContext(AuthContext);
@@ -63,13 +73,19 @@ export default function Card({ id, title, content, imgSrc, imgAlt, category, fav
           <div className="card-heading">
             <h2 className="card-title">{title}</h2>
             {isAuthenticated ? (
-              <FavButton
-                favorite={favorite}
-                id={id}
-                imgUrl={imgSrc}
-                category={category}
-                title={title}
-              />
+              isLoadingFavorites ? (
+                <div>
+                  <Spinner size="30px" />
+                </div>
+              ) : (
+                <FavButton
+                  favorite={favorite}
+                  id={id}
+                  imgUrl={imgSrc}
+                  category={category}
+                  title={title}
+                />
+              )
             ) : (
               <></>
             )}
@@ -89,4 +105,11 @@ Card.propTypes = {
   content: PropTypes.string.isRequired,
   imgSrc: PropTypes.string.isRequired,
   imgAlt: PropTypes.string.isRequired,
+  category: PropTypes.string,
+  favorite: PropTypes.bool,
+  isLoadingFavorites: PropTypes.bool,
 };
+
+const MemoizedCard = memo(Card);
+MemoizedCard.displayName = 'Card';
+export default MemoizedCard;

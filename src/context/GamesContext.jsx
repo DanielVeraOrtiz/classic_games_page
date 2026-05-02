@@ -1,7 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
 import FALLBACK_GAMES from './gamesDataFallback.json';
+import FALLBACK_GAMES_TEST from './gamesDataTest.json';
 
 export const GamesContext = createContext();
+
+const isTest = import.meta.env.VITE_E2E === 'true';
 
 export const GamesProvider = ({ children }) => {
   const [games, setGames] = useState([]);
@@ -11,7 +14,11 @@ export const GamesProvider = ({ children }) => {
     const getGames = async () => {
       try {
         // Antes estaba el axios apuntando a la API de Gamemonetize
-        setGames(FALLBACK_GAMES);
+        if (isTest) {
+          setGames(FALLBACK_GAMES_TEST);
+        } else {
+          setGames(FALLBACK_GAMES);
+        }
       } catch (error) {
         console.error('Error: ', error);
         console.warn('Using fallback data');

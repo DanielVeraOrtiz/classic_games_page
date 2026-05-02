@@ -1,10 +1,10 @@
 import './sidebar.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import ButtonOpen from '../buttonOpen/buttonOpen';
 import { AuthContext } from '../../auth/authContext';
-import axios from 'axios';
+import { FavoritesContext } from '../../context/FavoritesContext';
 import Spinner from '../spinner/spinner';
 // Iconos
 import IconYoutube from '../../iconComponents/iconYoutube';
@@ -13,33 +13,8 @@ import { MdOutlineSettings } from 'react-icons/md';
 
 function Sidebar({ isOpen }) {
   console.log('The sidebar is rendered again');
-  const [favorites, setFavorites] = useState([]);
-  const { token, isAuthenticated } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(true);
-  const [messageError, setMessageError] = useState('');
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  useEffect(() => {
-    const fetchGameData = async () => {
-      try {
-        if (isAuthenticated) {
-          const responseFavorites = await axios.get(`${backendUrl}/favorites/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log(responseFavorites.data);
-          setFavorites(responseFavorites.data);
-        }
-      } catch (error) {
-        console.error(`The following error was obtained: ${error}`);
-        setMessageError('Add your first favorite game');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchGameData();
-  }, [isAuthenticated, backendUrl]);
+  const { favorites, isLoadingFavorites, messageError } = useContext(FavoritesContext);
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
 
   const owner_path = [
     { to: '/profile', label: 'Go to my profile', icon: FaRegUserCircle, testId: 'profile-link' },
@@ -69,49 +44,59 @@ function Sidebar({ isOpen }) {
       </div>
       <hr className="separator"></hr>
       <p className="sidebar-title">Favorites games</p>
-      <ul className="sidebar-links" data-testid="favorites-list">
-        {isAuthenticated ? (
-          !isLoading ? (
-            !messageError ? (
+      <ul className="sidebar-links sidebar-links--favorites" data-testid="favorites-list">
+        {!isLoadingFavorites && !isLoading ? (
+          isAuthenticated ? (
+            messageError ? (
+              <p className="error-message">{messageError}</p>
+            ) : favorites.length === 0 ? (
+              <p className="error-message">Add your first favorite game</p>
+            ) : (
               favorites.map((juego) => (
-                <li key={juego.game_id}>
+                <li key={juego.game_id} className="sidebar-favorite-item">
                   <Link to={`/game/${juego.game_id}`}>
                     <img className="sidebar-game-img" src={juego.game.imgUrl} />
                     <p className="sidebar-game-title-favorite">{juego.game.title}</p>
                   </Link>
                 </li>
               ))
-            ) : (
-              <p className="error-message">{messageError}</p>
             )
           ) : (
-            <div className="sidebar-spinner-container">
-              <Spinner size="30px" />
-            </div>
+            <li className="sidebar-message-login">
+              You must be logged in to add games to favorites
+            </li>
           )
         ) : (
-          <li className="sidebar-message-login">You must be logged in to add games to favorites</li>
+          <div className="sidebar-spinner-container">
+            <Spinner size="30px" />
+          </div>
         )}
       </ul>
-      {isAuthenticated && (
-        <>
-          <hr className="separator"></hr>
-          <p className="sidebar-title">You</p>
-          <ul className="sidebar-links">
-            {owner_path.map((path) => {
-              const Icon = path.icon;
-              return (
-                <li key={path.to}>
-                  <Link to={path.to} data-testid={path.testId}>
-                    <Icon className="icons-sidebar" />
-                    {path.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </>
-      )}
+      {isAuthenticated ? (
+        !isLoading ? (
+          <>
+            <hr className="separator" />
+            <p className="sidebar-title">You</p>
+            <ul className="sidebar-links">
+              {owner_path.map((path) => {
+                const Icon = path.icon;
+                return (
+                  <li key={path.to}>
+                    <Link to={path.to} data-testid={path.testId}>
+                      <Icon className="icons-sidebar" />
+                      {path.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        ) : (
+          <div className="sidebar-spinner-container">
+            <Spinner size="30px" />
+          </div>
+        )
+      ) : null}
     </aside>
   );
 }
