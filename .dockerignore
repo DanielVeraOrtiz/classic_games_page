@@ -1,0 +1,24 @@
+# Carpeta de dependencias del host: nunca debe mezclarse con la del contenedor.
+node_modules
+
+# Metadatos de control de versiones e IDE: no aportan al runtime de la app.
+.git
+.gitignore
+.cursor
+
+# Archivos de entorno: pueden contener contraseñas; no deben formar parte del contexto.
+.env
+.env.*
+# Excepción: permitir la plantilla de ejemplo en el contexto si algún paso la necesitara.
+!.env.example
+
+# Logs de npm que no deben influir en invalidación de caché ni copiarse al builder.
+npm-debug.log*
+
+# Archivo típico de macOS; irrelevante en Linux/containers.
+.DS_Store
+
+# Tests
+tests
+test-results
+playwright-report
